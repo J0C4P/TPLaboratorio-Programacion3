@@ -1,5 +1,7 @@
 # Poncho Digital
- 
+
+### (La rama presente corresponde al avance semanal de la semana del 19 al 21 de agosto: HTML)
+
 Plataforma digital de Artesanos de la Fiesta Nacional e Internacional del Poncho.
  
 Trabajo de Laboratorio 2026 — Cátedra Programación III — Facultad de Tecnología y Ciencias Aplicadas (FTyCA), Universidad Nacional de Catamarca (UNCa).
