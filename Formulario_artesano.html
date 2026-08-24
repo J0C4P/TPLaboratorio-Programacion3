@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PONCHO DIGITAL - Solicitud de Artesano</title>
+</head>
+<body>
+  <header>
+    <h1>Solicitud de participación</h1>
+    <a href="Portada.html">Volver al inicio</a>
+  </header>
+  <hr>
+  <main>
+  <article>
+  <header>
+    <h2>Registro de artesano</h2>
+    <p>
+    Completá el siguiente formulario para solicitar tu participación
+    en la Fiesta Nacional e Internacional del Poncho.
+    </p>
+  </header>
+
+  <form action="#" method="post">
+  <fieldset>
+  <legend>Datos personales</legend>
+    <label for="nombre">Nombre:</label><br>
+    <input type="text" id="nombre" name="nombre" required maxlength="50">
+    <br>
+    <label for="apellido">Apellido:</label><br>
+    <input type="text" id="apellido" name="apellido" required maxlength="50">
+    <br>
+    <label for="documento">DNI:</label><br>
+    <input type="text" id="documento" name="documento" required inputmode="numeric" maxlength="8">
+    <br>
+    <label for="email">Correo electrónico:</label><br>
+    <input type="email" id="email" name="email" required maxlength="100">
+    <br>
+    <label for="telefono">Teléfono:</label><br>
+    <input type="tel" id="telefono" name="telefono" required maxlength="20">
+    <br>
+    <label for="localidad">Localidad:</label><br>
+    <input type="text" id="localidad" name="localidad" required maxlength="60">
+    <br>
+    <label for="provincia">Provincia:</label><br>
+    <select id="provincia" name="provincia" required>
+        <option value="">Seleccioná una provincia</option>
+        <option value="catamarca">Catamarca</option>
+        <option value="buenos-aires">Buenos Aires</option>
+        <option value="cordoba">Córdoba</option>
+        <option value="jujuy">Jujuy</option>
+        <option value="la-rioja">La Rioja</option>
+        <option value="mendoza">Mendoza</option>
+        <option value="salta">Salta</option>
+        <option value="santa-fe">Santa Fe</option>
+        <option value="tucuman">Tucumán</option>
+        <option value="otra">Otra</option>
+    </select>
+  </fieldset>
+  <br>
+  <fieldset>
+  <legend>Datos del emprendimiento</legend>
+    <label for="emprendimiento">Nombre del emprendimiento:</label><br>
+    <input type="text" id="emprendimiento" name="emprendimiento"
+    required maxlength="100">
+    <br>
+    <label for="rubro">Rubro:</label><br>
+    <select id="rubro" name="rubro" required>
+      <option value="">Seleccioná un rubro</option>
+      <option value="textil">Textil</option>
+      <option value="artesania">Artesanía</option>
+      <option value="productos-regionales">Productos regionales</option>
+      <option value="cuero">Cuero</option>
+      <option value="madera">Madera</option>
+      <option value="ceramica">Cerámica</option>
+      <option value="otro">Otro</option>
+    </select>
+    <br>
+    <label for="descripcion">Descripción del emprendimiento:</label><br>
+    <textarea id="descripcion" name="descripcion"rows="5" cols="40" required maxlength="500" placeholder="Describí brevemente tu emprendimiento y productos."></textarea>
+    <br>
+    <label for="experiencia">Trayectoria o experiencia:</label><br>
+    <textarea id="experiencia" name="experiencia" rows="5" cols="40" required maxlength="500" placeholder="Contanos sobre tu experiencia como artesano."></textarea>
+    <br>
+    <label for="cantidad_productos">
+      Cantidad aproximada de productos a exhibir:
+    </label><br>
+    <input type="number" id="cantidad_productos" name="cantidad_productos" min="1" max="100" required>
+    <br>
+    <label for="observaciones">Observaciones:</label><br>
+    <textarea id="observaciones" name="observaciones" rows="4" cols="40" maxlength="300" placeholder="Información adicional."></textarea>
+  </fieldset>
+
+  <p>
+  <input type="checkbox" id="aceptacion" name="aceptacion" required>
+  <label for="aceptacion">
+    Declaro que los datos ingresados son verdaderos y acepto
+    las condiciones de participación.
+  </label>
+  </p>
+
+  <p>
+  <button type="submit">Enviar solicitud</button>
+  <button type="reset">Limpiar formulario</button>
+  </p>
+  </form>
+  </article>
+  </main>
+
+  <hr>
+
+  <footer>
+    <p>&copy; 2023 PONCHO DIGITAL. Todos los derechos reservados.</p>
+    <p>Fiesta Nacional e Internacional del Poncho</p>
+  </footer>
+</body>
+</html>
