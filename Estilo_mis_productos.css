@@ -1,0 +1,102 @@
+textarea{
+    resize: none;
+}
+
+/* nav */
+
+nav a, input[type="search"] + button[type="submit"]{
+    background-color: #ff8c42 !important;
+    color: white !important;
+    border-color: white !important;
+}
+
+nav a:hover, input[type="search"] + button[type="submit"]:hover{
+    background-color: #f7caa3 !important;
+}
+
+/* form */
+
+ul > li > input[type="submit"]{
+    background-color: #8c5a3c;
+}
+
+#nueva_publicacion > h2{
+    background-color: #eed7c0;
+ }
+
+details > summary{
+    color: #c44e00;
+}
+
+ul > li > input[type="submit"]{
+    background-color: #edc99d;
+}
+
+ul > li > input[type="reset"]{
+    background-color: #c2c0be;
+}
+
+ul > li > input[type="submit"]:hover{
+    background-color: #3da83c;
+    color: white;
+}
+
+ul > li > input[type="reset"]:hover{
+    background-color: #fd4246;
+    color: white;
+}
+
+section > details summary{
+    list-style: none;
+    background-color: #8c5a3c;
+    border-radius: 6px;
+    border: 1px solid #70452d;
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: inline-flex;
+    color: #ffffff;
+    gap: 8px;
+}
+
+section > details summary:hover {
+    background-color: #70452d;
+}
+
+section > details summary::before {
+    content: "+";
+    font-size: medium;
+    font-weight: bold;
+}
+
+section > details[open] summary::before {
+    content: "x";
+    font-size: small;
+    font-weight: bold;
+}
+
+#nueva_publicacion > h2 {
+    font-size: 1.25 rem;
+    border-left: 4px solid #8c5a3c;
+    padding-left: 0.75rem;
+}
+
+form ul li > input:not(input[type="submit"], input[type="reset"]):focus{
+    background-color: #faf0e6 !important;
+    border: 1px solid #d9ccb0;
+}
+
+form ul li > textarea:focus{
+    background-color: #faf0e6 !important;
+    border: 1px solid #d9ccb0;
+}
+
+form input:is([type="text"], [type="email"], [type="file"], [type="number"]):user-valid, form textarea:user-valid, form select:user-valid{
+    background-color: #edf7ee;
+    border-color: #4ade80;
+}
+
+form input:is([type="text"], [type="email"], [type="file"], [type="number"]):user-invalid, form textarea:user-invalid, form select:user-invalid{
+    background-color: #ffe5e5;
+    border-color: #dc3545;
+}

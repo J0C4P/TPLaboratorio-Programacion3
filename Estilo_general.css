@@ -1,0 +1,32 @@
+/* fuente de Google */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+/* etiquetas generales */
+
+body {
+    font-family: 'Poppins', sans-serif !important; /*Fuente importada*/
+    background-color: #FCE8DD !important;
+}
+
+h1{
+    color: #B85014 !important;
+}
+
+h2{
+    font-size: 1.8rem;
+}
+
+h3 {
+    font-size: 1.3rem !important;
+    font-weight: 600 !important;
+    color: #c44e00 !important;
+}
+
+p {
+    color: #2b2b2b !important;
+    font-size: 1rem !important;
+}
+
+ul li{
+    list-style: none;
+}
