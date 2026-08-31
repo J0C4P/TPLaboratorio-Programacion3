@@ -6,37 +6,38 @@
         <title>Poncho digital - Mis productos</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="Estilo_general.css">
+        <link rel="stylesheet" href="Estilo_formulario.css">
         <link rel="stylesheet" href="Estilo_mis_productos.css">
     </head>
 
     <body>
-        <header>
-    <nav class="navbar navbar-expand-lg bg-light px-1 shadow-sm">
-        <div class="container-fluid">
+    <header>
+        <nav class="navbar navbar-expand-lg bg-light shadow-sm">
+            <div class="container-fluid">
 
-            <button class="navbar-toggler me-auto" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavegacion" aria-controls="menuNavegacion" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+                <button class="navbar-toggler me-auto" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavegacion" aria-controls="menuNavegacion" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            <div class="collapse navbar-collapse" id="menuNavegacion">
+                <div class="collapse navbar-collapse" id="menuNavegacion">
+                    <div class="d-flex flex-column flex-lg-row align-items-start gap-2 my-lg-0 me-auto">
+                        <a href="Portada.html">Volver Inicio</a>
+                        <a href="#nueva_publicacion">Nueva publicación</a>
+                    </div>
 
-                <div class="d-flex flex-column flex-lg-row gap-2 my-2 my-lg-0 me-auto">
-                    <a class="btn btn-sm fw-semibold rounded-pill text-nowrap" href="Portada.html">Volver Inicio</a>
-                    <a class="btn btn-sm fw-semibold rounded-pill text-nowrap" href="#nueva_publicacion">Nueva publicación</a>
+                    <div class="d-flex gap-2">
+                        <input class="form-control form-control-sm" type="search" placeholder="Buscar">
+                        <button class="btn btn-sm" type="submit">Buscar</button>
+                    </div>
                 </div>
 
-                <form class="d-flex mt-2 mt-lg-0" role="search">
-                    <input class="form-control form-control-sm me-2 rounded-pill" type="search" placeholder="Buscar">
-                    <button class="btn btn-sm fw-semibold rounded-pill text-nowrap" type="submit">Buscar</button>
-                </form>
             </div>
-        </div>
-    </nav>
-</header>
+        </nav>
+    </header>
 
         <main class="container mx-auto">
-            <h1 class="h1 mt-3 fw-bold">Gestion de productos publicados</h1>
-            <p class="lead fw-normal text-dark pb-3 mb-4 border-bottom border-2 border-secondary-subtle">Bienvenido. Desde aquí puedes dar de alta nuevos productos, modificar la información existente o eliminar ítems de tu catálogo en la plataforma Poncho Digital.</p>
+            <h1>Gestion de productos publicados</h1>
+            <p>Bienvenido. Desde aquí puedes dar de alta nuevos productos, modificar la información existente o eliminar ítems de tu catálogo en la plataforma Poncho Digital.</p>
             <section id="productos_publicados">
                 <h2>Detalle de mis productos: </h2>
                     <ul class="row g-4">
@@ -165,25 +166,25 @@
             </section>
 
             <section id="nueva_publicacion">
-                <h2 class="h4 py-3"> ¿Desea publicar un Nuevo Producto?</h2>
+                <h2> ¿Desea publicar un Nuevo Producto?</h2>
                 <details>
-                    <summary class="fw-semibold mb-3">Crear Publicación</summary>
+                    <summary>Crear Publicación</summary>
                     <form action="#" method="post" class="bg-white p-3 rounded-4 shadow-sm border">
                         <fieldset>
-                            <legend class="h5 fw-bold mb-3 border-bottom pb-2">Formulario</legend>
-                            <ul class="row g-3 gx-4 justify-content-between">
+                            <legend>Formulario</legend>
+                            <ul class="row">
                                 <li class="col-12 col-md-6">
-                                    <label for="publicacion" class="form-label fw-semibold">Nombre publicacion: </label>
+                                    <label for="publicacion" class="form-label">Nombre publicacion: </label>
                                     <input type="text" name="nom_publicacion" class="form-control" id="publicacion" placeholder='"Dulce de Cayote"' required>
                                 </li>
 
                                 <li class="col-12 col-md-6">
-                                    <label for="imagen" class="form-label fw-semibold">Seleccione una imagen para la publicacion: </label>
+                                    <label for="imagen" class="form-label">Seleccione una imagen para la publicacion: </label>
                                     <input type="file" name="imagen_pub" class="form-control" id="imagen" accept=".jpg, .jpeg" required>
                                 </li>
 
                                 <li class="col-12 col-md-6">
-                                    <label for="categoria" class="form-label fw-semibold">Seleccione la categoria correspondiente</label>
+                                    <label for="categoria" class="form-label">Seleccione la categoria correspondiente</label>
                                     <select id="categoria" name="categoria" class="form-control" required>
                                         <option value="" disabled selected>-- Seleccione la indicada --</option>
                                         <option value="Textil">Textil</option>
@@ -194,23 +195,23 @@
                                 </li>
 
                                 <li class="col-12 col-md-6">
-                                    <label for="precio" class="form-label fw-semibold">Precio (sin $): </label>
+                                    <label for="precio" class="form-label">Precio (sin $): </label>
                                     <input type="number" name="precio" class="form-control" id="precio" placeholder="$12.500" required>
                                 </li>
 
                                 <li class="col-12">
-                                    <label for="desc" class="form-label fw-semibold">Descripcion del Producto: </label>
+                                    <label for="desc" class="form-label">Descripcion del Producto: </label>
                                     <textarea name="descripcion" class="form-control" id="desc" rows="3" cols="100" placeholder='"Dulce en hebras cocinado en paila de cobre sin conservantes."' required></textarea>
                                 </li>
 
                                 <li class="col-12">
-                                    <label for="stock" class="form-label fw-semibold">Stock disponible: </label>
+                                    <label for="stock" class="form-label">Stock disponible: </label>
                                     <input type="number" name="stock" class="form-control" id="stock" placeholder='"5 Unidades"' required>
                                 </li>
 
                                 <li class="col-12 d-flex gap-2 mt-4">
-                                    <input type="submit" class="btn fw-semibold rounded-pill px-4" value="Enviar">
-                                    <input type="reset" class="btn fw-semibold rounded-pill px-4" value="Cancelar">
+                                    <button type="submit">Enviar</button>
+                                    <button type="reset">Cancelar</button>
                                 </li>
                             </ul>
                         </fieldset>
