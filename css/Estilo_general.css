@@ -6,6 +6,9 @@
 body {
     font-family: 'Poppins', sans-serif !important;
     background-color: #FCE8DD !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 
@@ -80,6 +83,7 @@ footer {
     padding-bottom: 1rem;
     margin-top: 3rem;
     text-align: center;
+    margin-top: auto;
 }
 
 footer a {
