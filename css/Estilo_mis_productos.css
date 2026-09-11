@@ -1,25 +1,21 @@
 /* nav */
-nav a, nav input[type="search"] + button[type="submit"] {
-    background-color: #ff8c42 !important;
-    color: #ffffff !important;
-    border-color: #ff8c42 !important;
-    margin: 4px 0 !important;
-}
 
-nav a:hover, nav input[type="search"] + button[type="submit"]:hover, header nav button[type="submit"]:hover {
-    background-color: #CD5E17 !important;
-    border-color: #CD5E17 !important;
-    color: #ffffff !important;
-}
-
-.btn-naranja {
+/* boton buscar naranja */
+nav button[type="submit"] {
     background-color: #ff8c42;
+    border-color: #ff8c42;
     color: #ffffff;
-    border: none;
 }
 
-.btn-naranja:hover {
-    background-color: #c44e00;
+nav button[type="submit"]:hover{
+    background-color: #CD5E17;
+    border-color: #CD5E17;
+    color: white;
+}
+
+nav button[type="submit"].btn:active {
+    background-color: rgb(247 127 68 / 0.95);
+    border-color: #B85014;
     color: #ffffff;
 }
 
