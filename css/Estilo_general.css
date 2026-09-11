@@ -4,7 +4,7 @@
 /* etiquetas generales */
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif !important;
     background-color: #FCE8DD !important;
     display: flex;
     flex-direction: column;
