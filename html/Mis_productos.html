@@ -25,8 +25,8 @@
                         <a href="#nueva_publicacion">Nueva publicación</a>
                     </div>
 
-                    <div class="d-flex gap-2">
-                        <input class="form-control form-control-sm" type="search" placeholder="Buscar">
+                    <div class="d-flex gap-2" id="buscador_texto">
+                        <input class="form-control form-control-sm" type="search" placeholder="Buscar Ejm. Ruana de llama..." size="26">
                         <button class="btn btn-sm" type="submit">Buscar</button>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
             <p>Bienvenido. Desde aquí puedes dar de alta nuevos productos, modificar la información existente o eliminar ítems de tu catálogo en la plataforma Poncho Digital.</p>
             <section id="productos_publicados">
                 <h2>Detalle de mis productos: </h2>
-                    <ul class="row g-4">
+                    <ul class="row g-4" id="galeria_general">
                         <li class="col-12 col-md-6 col-lg-4 mb-2">
                             <article class="card h-100">
                                 <img src="../Imagenes%20publicaciones/Poncho_SanMartin_artesano1.jpg" class="card-img-top" width="300" height="300" alt="Poncho artesanal de fibra regional" >
@@ -51,9 +51,8 @@
                                     <p class="card-text mb-3"><strong>Precio:</strong> $450.000</p>
                                     <p class="card-text mb-3"><strong>Descripción:</strong> Poncho artesanal de fibra regional hecho a telar.</p>
                                     <p class="card-text mb-3"><strong>Stock disponible:</strong> 3 unidades</p>
-
-                                    <a href="modificar_producto.html" target="_blank" class="btn btn-outline-primary btn-sm">Modificar</a>
-                                    <a href="eliminar_publicacion.html" target="_blank" class="btn btn-outline-danger btn-sm">Eliminar publicacion</a>
+                                    <button class="btn btn-outline-primary btn-sm btn-modificar">Modificar</button>
+                                    <button class="btn btn-outline-danger btn-sm btn-eliminar">Eliminar publicacion</button>
                                 </div>
                             </article>
                         </li>
@@ -66,9 +65,9 @@
                                     <p class="card-text mb-3"><strong>Categoría:</strong> Textil</p>
                                     <p class="card-text mb-3"><strong>Precio:</strong> $250.000</p>
                                     <p class="card-text mb-3"><strong>Descripción:</strong> Pieza fina hilada a mano en telar criollo, sin tintes químicos.</p>
-                                    <p class="card-text mb-3"><strong>Stock disponible:</strong> 1 unidad</p>
-                                    <a href="modificar_producto.html" target="_blank" class="btn btn-outline-primary btn-sm">Modificar</a>
-                                    <a href="eliminar_publicacion.html" target="_blank" class="btn btn-outline-danger btn-sm">Eliminar publicacion</a>
+                                    <p class="card-text mb-3"><strong>Stock disponible:</strong> 1 unidades</p>
+                                    <button class="btn btn-outline-primary btn-sm btn-modificar">Modificar</button>
+                                    <button class="btn btn-outline-danger btn-sm btn-eliminar">Eliminar publicacion</button>
                                 </div>
                             </article>
                         </li>
@@ -82,8 +81,8 @@
                                     <p class="card-text mb-3"><strong>Precio:</strong> $87.000</p>
                                     <p class="card-text mb-3"><strong>Descripción:</strong> Ruana abrigo unisex con acabado desflecado a mano..</p>
                                     <p class="card-text mb-3"><strong>Stock disponible:</strong> 5 unidades</p>
-                                    <a href="modificar_producto.html" target="_blank" class="btn btn-outline-primary btn-sm">Modificar</a>
-                                    <a href="eliminar_publicacion.html" target="_blank" class="btn btn-outline-danger btn-sm">Eliminar publicacion</a>
+                                    <button class="btn btn-outline-primary btn-sm btn-modificar">Modificar</button>
+                                    <button class="btn btn-outline-danger btn-sm btn-eliminar">Eliminar publicacion</button>
                                 </div>
                             </article>
                         </li>
@@ -97,8 +96,8 @@
                                     <p class="card-text mb-3"><strong>Precio:</strong> $42.000</p>
                                     <p class="card-text mb-3"><strong>Descripción:</strong> Pieza modelada en arcilla roja con engobes minerales y pulido a piedra.</p>
                                     <p class="card-text mb-3"><strong>Stock disponible:</strong> 4 unidades</p>
-                                    <a href="modificar_producto.html" target="_blank" class="btn btn-outline-primary btn-sm">Modificar</a>
-                                    <a href="eliminar_publicacion.html" target="_blank" class="btn btn-outline-danger btn-sm">Eliminar publicacion</a>
+                                    <button class="btn btn-outline-primary btn-sm btn-modificar">Modificar</button>
+                                    <button class="btn btn-outline-danger btn-sm btn-eliminar">Eliminar publicacion</button>
                                 </div>
                             </article>
                         </li>
@@ -112,8 +111,8 @@
                                     <p class="card-text mb-3"><strong>Precio:</strong> $70.000</p>
                                     <p class="card-text mb-3"><strong>Descripción:</strong> Set de cuencos utilitarios horneados a leña, aptos para alimentos.</p>
                                     <p class="card-text mb-3"><strong>Stock disponible:</strong> 10 sets</p>
-                                    <a href="modificar_producto.html" target="_blank" class="btn btn-outline-primary btn-sm">Modificar</a>
-                                    <a href="eliminar_publicacion.html" target="_blank" class="btn btn-outline-danger btn-sm">Eliminar publicacion</a>
+                                    <button class="btn btn-outline-primary btn-sm btn-modificar">Modificar</button>
+                                    <button class="btn btn-outline-danger btn-sm btn-eliminar">Eliminar publicacion</button>
                                 </div>
                             </article>
                         </li>
@@ -127,8 +126,8 @@
                                     <p class="card-text mb-3"><strong>Precio:</strong> $500.000</p>
                                     <p class="card-text mb-3"><strong>Descripción:</strong> Colgante gota con piedra Rosa del Inca tallada y engarzada en plata.</p>
                                     <p class="card-text mb-3"><strong>Stock disponible:</strong> 5 unidades</p>
-                                    <a href="modificar_producto.html" target="_blank" class="btn btn-outline-primary btn-sm">Modificar</a>
-                                    <a href="eliminar_publicacion.html" target="_blank" class="btn btn-outline-danger btn-sm">Eliminar publicacion</a>
+                                    <button class="btn btn-outline-primary btn-sm btn-modificar">Modificar</button>
+                                    <button class="btn btn-outline-danger btn-sm btn-eliminar">Eliminar publicacion</button>
                                 </div>
                             </article>
                         </li>
@@ -142,8 +141,8 @@
                                     <p class="card-text mb-3"><strong>Precio:</strong> $90.000</p>
                                     <p class="card-text mb-3"><strong>Descripción:</strong> Hoja de acero al carbono forjada a mano con cabo en guampa y madera.</p>
                                     <p class="card-text mb-3"><strong>Stock disponible:</strong> 6 unidades</p>
-                                    <a href="modificar_producto.html" target="_blank" class="btn btn-outline-primary btn-sm">Modificar</a>
-                                    <a href="eliminar_publicacion.html" target="_blank" class="btn btn-outline-danger btn-sm">Eliminar publicacion</a>
+                                    <button class="btn btn-outline-primary btn-sm btn-modificar">Modificar</button>
+                                    <button class="btn btn-outline-danger btn-sm btn-eliminar">Eliminar publicacion</button>
                                 </div>
                             </article>
                         </li>
@@ -156,9 +155,9 @@
                                     <p class="card-text mb-3"><strong>Categoría:</strong> Gastronomía Regional</p>
                                     <p class="card-text mb-3"><strong>Precio:</strong> $15.000</p>
                                     <p class="card-text mb-3"><strong>Descripción:</strong> Dulce en hebras cocinado en paila de cobre sin conservantes.</p>
-                                    <p class="card-text mb-3"><strong>Stock disponible:</strong> 35 frascos</p>
-                                    <a href="modificar_producto.html" target="_blank" class="btn btn-outline-primary btn-sm">Modificar</a>
-                                    <a href="eliminar_publicacion.html" target="_blank" class="btn btn-outline-danger btn-sm">Eliminar publicacion</a>
+                                    <p class="card-text mb-3"><strong>Stock disponible:</strong> 35 unidades</p>
+                                    <button class="btn btn-outline-primary btn-sm btn-modificar">Modificar</button>
+                                    <button class="btn btn-outline-danger btn-sm btn-eliminar">Eliminar publicacion</button>
                                 </div>
                             </article>
                         </li>
@@ -169,7 +168,7 @@
                 <h2> ¿Desea publicar un Nuevo Producto?</h2>
                 <details>
                     <summary>Crear Publicación</summary>
-                    <form action="#" method="post" class="bg-white p-3 rounded-4 shadow-sm border">
+                    <form action="#" method="post" class="bg-white p-3 rounded-4 shadow-sm border" id="formulario">
                         <fieldset>
                             <legend>Formulario</legend>
                             <ul class="row">
@@ -231,5 +230,7 @@
                 <p class="text-center text-white-50 mb-0">© 2026 Poncho Digital</p>
             </div>
         </footer>
+    <script src="../js/gestion mis_productos y catalogo_general/buscador.js"></script>
+    <script src="../js/gestion mis_productos y catalogo_general/gestion_mis_productos.js"></script>
     </body>
 </html>
