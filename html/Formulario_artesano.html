@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/Estilo_general.css">
     <link rel="stylesheet" href="../css/Estilo_formulario.css">
+    <script src="../js/validaciones.js"></script>
+    <script src="../js/formulario_artesano.js"></script>
 </head>
 <body>
   <header>
@@ -22,23 +24,26 @@
   en la Fiesta Nacional e Internacional del Poncho.
   </p>
 
-  <form action="#" method="post">
+  <form id="formArtesano" action="#" method="post">
   <fieldset>
   <legend>Datos personales</legend>
     <ul>
       <li>
         <label for="nombre">Nombre:</label><br>
         <input type="text" id="nombre" name="nombre" required maxlength="50">
+        <span class="error" id="nombreError"></span>
       </li>
       <br>
       <li>
         <label for="apellido">Apellido:</label><br>
         <input type="text" id="apellido" name="apellido" required maxlength="50">
+        <span class="error" id="apellidoError"></span>
       </li>
       <br>
       <li>
         <label for="documento">DNI:</label><br>
         <input type="text" id="documento" name="documento" required inputmode="numeric" maxlength="8">
+        <span class="error" id="documentoError"></span>
       </li>
       <br>
       <li>
@@ -49,6 +54,7 @@
       <li>
         <label for="telefono">Teléfono:</label><br>
         <input type="tel" id="telefono" name="telefono" required maxlength="20">
+        <span class="error" id="telefonoError"></span>
       </li>
       <br>
       <li>
@@ -102,12 +108,14 @@
     <ul>
       <li>
         <label for="descripcion">Descripción del emprendimiento:</label><br>
-        <textarea id="descripcion" name="descripcion"rows="5" cols="40" required maxlength="500" placeholder="Describí brevemente tu emprendimiento y productos."></textarea>
+        <textarea id="descripcion" name="descripcion" rows="5" cols="40" required minlength="20" maxlength="500" placeholder="Describí brevemente tu emprendimiento y productos."></textarea>
+        <span id="descripcionContador">0/500</span>
       </li>
       <br>
       <li>
         <label for="experiencia">Trayectoria o experiencia:</label><br>
-        <textarea id="experiencia" name="experiencia" rows="5" cols="40" required maxlength="500" placeholder="Contanos sobre tu experiencia como artesano."></textarea>
+        <textarea id="experiencia" name="experiencia" rows="5" cols="40" required minlength="20" maxlength="500" placeholder="Contanos sobre tu experiencia como artesano."></textarea>
+        <span id="experienciaContador">0/500</span>
       </li>
     </ul>
     <br>
@@ -136,7 +144,7 @@
 
   <p>
   <button type="submit">Enviar solicitud</button>
-  <button type="reset">Limpiar formulario</button>
+  <button type="reset" id="botonLimpiar">Limpiar formulario</button>
   </p>
   </form>
   </article>
