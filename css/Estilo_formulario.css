@@ -123,3 +123,25 @@ section h2{
 form label{
     font-weight: 600;
 }
+
+/*Mensajes de error*/
+form .error{
+    display: block;
+    margin-top: 0.35rem;
+    padding: 0.35rem 0.6rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #b02a37;
+    background-color: #ffe5e5;
+    border-left: 4px solid #dc3545;
+    border-radius: 0.25rem;
+}
+
+form .error::before{
+    content: "\26A0";
+    margin-right: 0.4rem;
+}
+
+form .error:empty{
+    display: none;
+}
