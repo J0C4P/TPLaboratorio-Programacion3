@@ -12,7 +12,24 @@
 </head>
 <body>
   <header>
-    <nav><a href="Portada.html">Volver al inicio</a></nav>
+    <nav class="navbar navbar-expand-lg bg-light shadow-sm">
+      <div class="container-fluid">
+
+        <button class="navbar-toggler me-auto" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavegacion" aria-controls="menuNavegacion" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="menuNavegacion">
+          <div class="d-flex flex-column flex-lg-row align-items-start me-auto">
+            <a href="Portada.html">Inicio</a>
+            <a href="Portada.html#mapa">Mapa y Stands</a>
+            <a href="Catalogo_general.html">Catálogo</a>
+            <a href="Mis_productos.html">Panel Artesano</a>
+          </div>
+        </div>
+
+      </div>
+    </nav>
   </header>
   <main class="container mx-auto">
   <article>
@@ -160,5 +177,6 @@
       <p>© 2026 Poncho Digital</p>
     </div>
   </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
