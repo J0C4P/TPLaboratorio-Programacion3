@@ -77,3 +77,15 @@ function validarFormularioArtesano(event) {
         document.getElementById("formArtesano").submit();
     }
 }
+
+/* Formulario de producto */
+document.addEventListener("DOMContentLoaded", function () {
+    const formulario = document.getElementById("formProducto");
+    if (formulario !== null) {
+        formulario.addEventListener("submit", validarFormularioProducto);
+    }
+});
+
+function validarFormularioProducto(event) {
+    //
+}

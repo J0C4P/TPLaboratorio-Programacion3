@@ -50,6 +50,8 @@ document.addEventListener("DOMContentLoaded", () =>{
     })
 });
 
+
+// Modificar articulo
 document.addEventListener("DOMContentLoaded", () => {
     articulos.querySelectorAll("li").forEach(articulo =>{
         let btn_modificar = articulo.querySelector("button.btn-modificar");
