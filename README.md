@@ -1,74 +1,90 @@
 # Poncho Digital
 
-### La rama presente corresponde al avance de estilos del proyecto: CSS y Bootstrap
+### Rama actual: JavaScript (Frontend dinámico)
 
 ---
-## Entrega – Estilos visuales: CSS y Bootstrap
 
-En esta entrega se incorporaron estilos visuales al proyecto **Poncho Digital** a partir de hojas de estilo CSS propias y del framework Bootstrap 5. La estructura HTML de la entrega anterior se conserva y se complementa con una interfaz más consistente, responsive y orientada a la visualización del catálogo y los formularios.
+## Descripción general
 
-### Páginas implementadas
+Esta rama corresponde al avance del proyecto **Poncho Digital** centrado en la lógica del frontend con **JavaScript**. Se trabaja sobre una versión estática del sitio, con HTML, CSS y Bootstrap, pero incorporando comportamiento dinámico para catalogar productos, aplicar filtros, buscar, guardar favoritos y gestionar publicaciones.
 
-- `Portada.html`: página principal con bienvenida, descripción del proyecto y navegación.
-- `Formulario_artesano.html`: formulario para registrar la solicitud de participación de un artesano.
-- `Mis_productos.html`: gestión visual de productos publicados por un artesano.
+El proyecto sigue orientado a una plataforma digital para la **Fiesta Nacional e Internacional del Poncho**, con foco en la exhibición de productos artesanales y la postulación de artesanos.
 
-### Funcionalidades incluidas
-
-- Navegación entre las páginas mediante enlaces `<a>`.
-- Diseño compartido para encabezados, navegación, contenido principal y pie de página.
-- Aplicación de una tipografía, paleta de colores y estilos generales propios del proyecto.
-- Uso de Bootstrap 5 para navbar responsive, sistema de grilla, cards, formularios, botones y utilidades de espaciado.
-- Adaptación responsive de las páginas para distintos tamaños de pantalla.
-- Estilos específicos para el formulario de solicitud de participación de artesanos.
-- Estilos específicos para el formulario de publicación y la gestión de productos.
-- Estados visuales de validación y foco en los controles de los formularios.
-- Formulario de solicitud de participación para artesanos.
-- Formulario para publicar nuevos productos.
-- Visualización de productos con nombre, imagen, categoría, precio, descripción y stock.
-- Enlaces para modificar y eliminar publicaciones.
-- Uso de etiquetas semánticas HTML5 como `header`, `nav`, `main`, `section`, `article` y `footer`.
-- Controles de formulario acompañados por sus respectivas etiquetas `label`.
-- Validaciones básicas mediante atributos HTML como `required`, `maxlength`, `min` y `max`.
-
-### Recursos
-
-Las imágenes de los productos se encuentran en la carpeta:
-
-`Imagenes publicaciones/`
-
-Bootstrap y la tipografía utilizada se incorporan mediante enlaces a CDN en las páginas HTML. Para utilizar correctamente estos recursos se necesita conexión a Internet al abrirlas.
-
-Las hojas de estilo propias se encuentran en la carpeta `css/`:
-
-- `Estilo_general.css`: estilos compartidos y estructura visual general.
-- `Estilo_formulario.css`: estilos de formularios y controles.
-- `Estilo_mis_productos.css`: estilos de la página de gestión de productos.
-- `Estilo_Portada.css`: estilos específicos de la página principal.
-
-### Estado del proyecto
-
-Esta rama corresponde a la etapa de incorporación de estilos, enfocada en mejorar la presentación, la consistencia visual y la adaptación responsive de las páginas HTML. La lógica de negocio y la integración con Django y PostgreSQL permanecen pendientes.
 ---
 
-Plataforma digital de Artesanos de la Fiesta Nacional e Internacional del Poncho.
- 
-Trabajo de Laboratorio 2026 — Cátedra Programación III — Facultad de Tecnología y Ciencias Aplicadas (FTyCA), Universidad Nacional de Catamarca (UNCa).
- 
+## Páginas principales
+
+- `html/Portada.html`: portada con información general del evento, navegación y presentación del proyecto.
+- `html/Catalogo_general.html`: catálogo con listado de productos, filtros por categoría y localidad, barra de búsqueda y favoritos.
+- `html/Mis_productos.html`: sección de gestión de productos del artesano con carga y edición de publicaciones.
+- `html/Formulario_artesano.html`: formulario de inscripción para artesanos.
+
+---
+
+## Funcionalidades implementadas en esta rama
+
+- Carga dinámica de productos desde JavaScript.
+- Renderizado del catálogo en la interfaz sin necesidad de un backend.
+- Filtro por categoría y localidad.
+- Buscador de productos por nombre o contenido relevante.
+- Sistema de favoritos con almacenamiento en el navegador.
+- Visualización de productos con imagen, precio, descripción, categoría, localidad y puesto.
+- Formulario para agregar nuevas publicaciones al catálogo.
+- Edición y eliminación visual de publicaciones dentro de la gestión de productos.
+- Validaciones de formularios con JavaScript.
+- Comentarios con validación de longitud mínima.
+- Diseño responsive con Bootstrap y CSS propio.
+
+---
+
+## Estructura del proyecto
+
+- `css/`: estilos generales del sitio.
+- `html/`: archivos HTML de cada vista.
+- `js/`: scripts de comportamiento.
+  - `formulario_artesano.js`: validaciones del formulario de artesano.
+  - `validaciones.js`: validaciones generales.
+  - `portada/portada.js`: comportamiento de la portada.
+  - `gestion mis_productos y catalogo_general/`: lógica del catálogo, búsqueda, filtros, favoritos y gestión de productos.
+- `Imagenes publicaciones/`: imágenes de los productos.
+- `Imagenes-portada/`: imágenes de la portada.
+
+---
+
+## Tecnologías utilizadas
+
+- HTML5
+- CSS3
+- Bootstrap 5
+- JavaScript
+
+> En esta etapa del proyecto no hay integración con backend, base de datos ni servidor de aplicación. La funcionalidad se ejecuta en el navegador y simula la lógica de negocio del frontend.
+
+---
+
+## Instalación y uso
+
+1. Clonar o abrir el repositorio en el editor.
+2. Abrir cualquiera de los archivos HTML dentro de la carpeta `html/` en un navegador.
+3. Para visualizar mejor la navegación, se recomienda abrir `html/Portada.html` como punto de inicio.
+4. Si se desea probar funciones dinámicas del frontend, se puede abrir la aplicación directamente desde el navegador sin necesidad de un servidor local.
+
+> Debido a que el proyecto usa Bootstrap y recursos externos desde CDN, es conveniente contar con conexión a Internet para cargar correctamente los estilos.
+
+---
+
 ## Integrantes del equipo
- 
+
 | Nombre y Apellido | Matrícula | GitHub |
 |---|---|---|
 | Capdevila José | 01728 | J0C4P |
 | Vega Lourdes | 01767 | Lourdes-Vega |
 | Augusto Trainer | 01715 | Augusto-H4u |
- 
-## Instalación y configuración
- 
-Por el momento, el proyecto puede visualizarse abriendo `html/Portada.html` en un navegador. Las páginas cargan Bootstrap y la tipografía desde CDN, por lo que se requiere conexión a Internet para disponer de todos los estilos.
- 
-## Tecnologías
- 
-- Framework: Django
-- Base de datos: PostgreSQL
-- Frontend: HTML5, CSS3, Bootstrap, JavaScript
+
+---
+
+## Estado del proyecto
+
+La rama actual corresponde a la etapa de implementación del comportamiento del frontend con JavaScript. El proyecto ya cuenta con una base visual y funcional del catálogo y la gestión de productos, pero aún no incluye integración con backend, persistencia real de datos ni base de datos.
+
+Trabajo de Laboratorio 2026 — Cátedra Programación III — Facultad de Tecnología y Ciencias Aplicadas (FTyCA), Universidad Nacional de Catamarca (UNCa).
