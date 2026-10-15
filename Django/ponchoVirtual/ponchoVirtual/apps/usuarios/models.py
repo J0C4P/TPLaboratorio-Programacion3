@@ -1,3 +1,9 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-# Create your models here.
+
+class Usuario(AbstractUser):
+    documento_identidad = models.CharField(max_length=8, unique=True)
+
+    def str(self):
+        return f"{self.username} dni: {self.documento_identidad}"
