@@ -1,0 +1,7 @@
+.boton_fav{
+    background: transparent; /* Sin fondo */
+    border: none;            /* Sin borde cuadrado */
+    font-size: 24px;         /* Tamaño de la estrella */
+    cursor: pointer;         /* Manito al pasar el mouse */
+    color: #6c757d
+}

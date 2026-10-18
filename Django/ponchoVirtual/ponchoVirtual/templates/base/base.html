@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+        <title>{% block titulo %} {% endblock %}</title>
+        {% block estilos %} {% endblock %}
+    </head>
+
+    <body>
+        <header>
+            {% block barra_nav %}
+            {% endblock %}
+        </header>
+
+        <main class="container mx-auto my-2">
+            {% block contenido_principal %}
+            {% endblock %}
+        </main>
+
+        <footer class="bg-dark text-white py-3 mt-auto">
+                <div class="container text-center">
+                    <ul class="nav justify-content-center border-bottom border-secondary mb-2">
+                        <li class="nav-item"><a href="#" class="nav-link px-2 text-white-50">Home</a></li>
+                    </ul>
+                    <p>© 2026 Poncho Digital</p>
+                </div>
+        </footer>
+</body>
+</html>

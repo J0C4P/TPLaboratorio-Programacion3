@@ -14,7 +14,7 @@ class Producto(models.Model):
     artesano = models.ForeignKey('artesanos.Artesano', on_delete=models.CASCADE, related_name='productos_artesano')
 
     class Meta:
-        ordering = ('categoria__nombre', )
+        ordering = ('categoria', )
 
     def __str__(self):
         return f"Producto: {self.nombre} - categoria: {self.categoria} y precio: {self.precio}"

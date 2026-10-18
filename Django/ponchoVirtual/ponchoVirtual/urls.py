@@ -16,7 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.views.generic.base import TemplateView
+from ponchoVirtual.apps.productos.views import listar_productos
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("", TemplateView.as_view(template_name='base/portada.html'), name="principal"),
+    path("productos", listar_productos, name="listar_productos")
 ]
