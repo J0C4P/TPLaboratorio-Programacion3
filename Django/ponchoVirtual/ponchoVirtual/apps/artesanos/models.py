@@ -6,7 +6,7 @@ class Artesano(models.Model):
     nombre = models.CharField(max_length=50)
     apellido = models.CharField(max_length=50)
     dni = models.CharField(max_length=50)
-    correo = models.CharField(max_length=100)
+    correo = models.EmailField(max_length=100)
     telefono = models.CharField(max_length=50)
     localidad = models.CharField(max_length=50)
     provincia = models.CharField(max_length=80)
@@ -24,7 +24,7 @@ class Emprendimiento(models.Model):
     descripcion = models.TextField(max_length=500)
     trayectoria = models.TextField(max_length=500)
     observaciones = models.TextField(max_length=500, blank=True)
-    cantidad_productos = models.IntegerField(min('1'), max('15'))
+    cantidad_productos = models.IntegerField()
     ubicacion = models.CharField(max_length=100)
 
     class Meta:

@@ -1,0 +1,63 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %} Poncho digital - Nuevo postulante {% endblock %}
+{% block estilos %}
+    <link rel="stylesheet" href="{% static 'css/Estilo_general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Estilo_formulario.css' %}">
+{% endblock %}
+
+{% block barra_nav %}
+    <nav class="navbar navbar-expand-lg bg-light shadow-sm">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="menuNavegacion">
+                    <div class="d-flex flex-column flex-lg-row align-items-start me-auto">
+                        <a href="{% url 'productos:listar_productos' %}">Volver Inicio</a>
+                    </div>
+                </div>
+            </div>
+    </nav>
+{% endblock %}
+
+{% block contenido_principal %}
+    <section id="nueva_publicacion">
+        <h1>Solicitud de Participación</h1>
+        <h2>Registro de artesano</h2>
+        <p>Completá el siguiente formulario para solicitar tu participación en la Fiesta Nacional e Internacional del Poncho.</p>
+            <form action="#" method="post" enctype="multipart/form-data" class="bg-white p-3 rounded-4 shadow-sm border" id="formulario">
+                {% csrf_token %}
+                <fieldset>
+                    <legend>Datos personales</legend>
+                    <ul class="row">
+                        {% for field in form_art %}
+                        <li class="col-12 col-md-6">
+                            <label for="{{ field.id_for_label }}" class="form-label">
+                                {{ field.label }}
+                            </label>
+                            {{ field }}
+                            {{ field.errors }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Datos personales</legend>
+                    <ul class="row">
+                        {% for field in form_emp %}
+                        <li class="col-12 col-md-6">
+                            <label for="{{ field.id_for_label }}" class="form-label">
+                                {{ field.label }}
+                            </label>
+                            {{ field }}
+                            {{ field.errors }}
+                        </li>
+                        {% endfor %}
+                        <li class="col-12 d-flex gap-2 mt-4">
+                                <button type="submit">Enviar</button>
+                                <button type="reset">Cancelar</button>
+                        </li>
+                    </ul>
+                </fieldset>
+            </form>
+    </section>
+{% endblock %}

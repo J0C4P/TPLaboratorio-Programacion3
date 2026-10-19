@@ -1,12 +1,19 @@
+from django.contrib import messages
 from django.db.models import Model
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+
+from ponchoVirtual.apps.productos.forms import ProductoForm
 from ponchoVirtual.apps.productos.models import Producto
 
 
 def listar_productos(request):
     productos = Producto.objects.all()
+    categorias = Producto.objects.values_list('categoria', flat=True).distinct()
+    localidades = Producto.objects.values_list('localidad', flat=True).distinct()
 
-    return render(request, 'Catalogo_general.html', {'productos': productos})
+    context = {'productos': productos, 'categorias': categorias, 'localidades': localidades}
+
+    return render(request, 'Catalogo_general.html', context)
 
 
 def mis_productos(request, artesano_dni):
@@ -14,3 +21,17 @@ def mis_productos(request, artesano_dni):
 
     return render(request, 'Mis_productos.html', {'productos_artesano': productos_artesano})
 
+
+def agregar_productos(request):
+    if request.method == "POST":
+        form = ProductoForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "¡El producto ha sido ingresado con exito!")
+            return redirect('productos:mis_productos')
+
+    else:
+        form = ProductoForm()
+
+    return render(request, 'Crear_producto.html', {'form': form})

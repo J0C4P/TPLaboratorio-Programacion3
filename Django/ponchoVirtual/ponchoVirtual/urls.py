@@ -15,12 +15,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.views.generic.base import TemplateView
+from django.conf.urls.static import static
+
+from ponchoVirtual import settings
 from ponchoVirtual.apps.productos.views import listar_productos
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", TemplateView.as_view(template_name='base/portada.html'), name="principal"),
-    path("productos", listar_productos, name="listar_productos")
-]
+    path("productos/", include('ponchoVirtual.apps.productos.urls')),
+    path('artesano', include('ponchoVirtual.apps.artesanos.urls'))
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
