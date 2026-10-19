@@ -52,6 +52,12 @@
                             {{ field.errors }}
                         </li>
                         {% endfor %}
+
+                        <li class="col-12">
+                            <input type="checkbox" id="aceptacion" name="aceptacion" required>
+                            <label for="aceptacion">Declaro que los datos ingresados son verdaderos y acepto las condiciones de participación.</label>
+                        </li>
+
                         <li class="col-12 d-flex gap-2 mt-4">
                                 <button type="submit">Enviar</button>
                                 <button type="reset">Cancelar</button>
