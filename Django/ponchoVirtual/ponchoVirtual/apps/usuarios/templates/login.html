@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %} Poncho digital - Registro usuario {% endblock %}
+{% block estilos %}
+    <link rel="stylesheet" href="{% static 'css/Estilo_general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Estilo_formulario.css' %}">
+{% endblock %}
+
+{% block barra_nav %}
+<nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <ul class="navbar-nav ">
+                <a href="{% url 'principal' %}">Volver Inicio</a>
+            </ul>
+                <!-- inicio de sesion-->
+                <span class="navbar-text ms-auto">
+                    {% if user.is_authenticated %}
+                        {{ user.username }}
+                        <a class="btn btn-outline-success me-2" href="{% url 'usuario:logout' %}">Cerrar sesión</a>
+                    {% endif %}
+                </span>
+        </div>
+</nav>
+{% endblock %}
+
+{% block contenido_principal %}
+    <header id="home">
+        <h1>Login de Usuario</h1>
+        <p>Ingrese sus credenciales para Ingresar al Sistema</p>
+    </header>
+
+    <hr class="w-75">
+
+    {% if msj %}
+        <div style="color: red">{{ msj }}</div>
+    {% endif %}
+    <form action="{% url 'usuario:login' %}" method="post" class="w-75">
+    {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label" for="username">Nombre de Usuario: </label>
+            <input type="text" id="username" name="username" class="form-control" >
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="passw">Contraseña: </label>
+            <input type="password" id="passw" name="password" class="form-control" >
+        </div>
+        <input type="submit" class="btn btn-primary" value="Login">
+        <a class="btn btn-outline-success me-2 m-3" href="{% url 'usuario:crear_usuario' %}">Crear usuario</a>
+    </form>
+{% endblock %}

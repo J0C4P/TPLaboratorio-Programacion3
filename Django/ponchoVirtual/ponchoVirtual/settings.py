@@ -71,6 +71,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ponchoVirtual.wsgi.application'
 
+AUTH_USER_MODEL = 'usuarios.Usuario'
 
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases

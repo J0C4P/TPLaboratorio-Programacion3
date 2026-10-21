@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from ponchoVirtual.apps.artesanos.forms import ArtesanoForm, EmprendimientoForm
-from ponchoVirtual.apps.artesanos.models import Artesano
 
 
 def solicitud_artesano(request):
@@ -17,7 +16,7 @@ def solicitud_artesano(request):
 
             artesano.save()
             messages.success(request, "¡Registro completado con éxito!")
-            return redirect(request, 'productos:mis_productos')
+            return redirect('productos:listar_productos')
     else:
         form_artesano = ArtesanoForm()
         form_emprendimiento = EmprendimientoForm()

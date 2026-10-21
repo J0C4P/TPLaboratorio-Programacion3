@@ -1,5 +1,7 @@
 from django.db import models
 
+from ponchoVirtual.apps.artesanos.models import Artesano
+
 
 class Producto(models.Model):
     categoria = models.CharField(max_length=30)
@@ -17,4 +19,4 @@ class Producto(models.Model):
         ordering = ('categoria', )
 
     def __str__(self):
-        return f"Producto: {self.nombre} - categoria: {self.categoria} y precio: {self.precio}"
+        return f"Producto: '{self.nombre}' perteneciente a '{self.artesano.nombre} {self.artesano.apellido}'"

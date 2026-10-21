@@ -1,0 +1,49 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %} Poncho digital - Nuevo usuario {% endblock %}
+{% block estilos %}
+    <link rel="stylesheet" href="{% static 'css/Estilo_general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Estilo_formulario.css' %}">
+{% endblock %}
+
+{% block barra_nav %}
+    <nav class="navbar navbar-expand-lg bg-light shadow-sm">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="menuNavegacion">
+                    <div class="d-flex flex-column flex-lg-row align-items-start me-auto">
+                        <a href="{% url 'principal' %}">Volver Inicio</a>
+                    </div>
+                </div>
+            </div>
+    </nav>
+{% endblock %}
+
+{% block contenido_principal %}
+    <h1> Registrar nuevo usuario</h1>
+    <p>Ingrese los datos para completar el registro de su nueva cuenta</p>
+    <section id="nueva_publicacion">
+        <form action="" enctype="multipart/form-data" method="POST" class="bg-white p-3 rounded-4 shadow-sm border" id="formulario">
+        {% csrf_token %}
+            <fieldset>
+                <legend>Formulario</legend>
+                <ul class="row">
+                    {% for field in form %}
+                    <li class="col-12 col-md-6">
+                        <label for="{{ field.id_for_label }}" class="form-label">
+                            {{ field.label }}
+                        </label>
+                        {{field}}
+                        <div style="color: red">
+                            {{field.errors}}
+                        </div>
+                    </li>
+                    {% endfor %}
+                    <li class="col-12 d-flex gap-2 mt-4">
+                        <button type="submit">Enviar</button>
+                        <button type="reset">Cancelar</button>
+                    </li>
+                </ul>
+            </fieldset>
+        </form>
+    </section>
+{% endblock %}

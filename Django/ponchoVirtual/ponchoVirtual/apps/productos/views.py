@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.db.models import Model
-from django.shortcuts import render, redirect
-
+from django.shortcuts import render, redirect, get_object_or_404
+from ponchoVirtual.apps.artesanos.models import Artesano
 from ponchoVirtual.apps.productos.forms import ProductoForm
 from ponchoVirtual.apps.productos.models import Producto
 
@@ -27,9 +27,17 @@ def agregar_productos(request):
         form = ProductoForm(request.POST, request.FILES)
 
         if form.is_valid():
-            form.save()
+            producto = form.save(commit=False)
+
+            # completado datos producto con artesano
+            artesano_bd = get_object_or_404(Artesano, dni=request.user.documento_identidad)
+            producto.artesano = artesano_bd
+            producto.localidad = artesano_bd.localidad
+
+            producto.save()
+
             messages.success(request, "¡El producto ha sido ingresado con exito!")
-            return redirect('productos:mis_productos')
+            return redirect('productos:mis_productos', request.user.documento_identidad)
 
     else:
         form = ProductoForm()
