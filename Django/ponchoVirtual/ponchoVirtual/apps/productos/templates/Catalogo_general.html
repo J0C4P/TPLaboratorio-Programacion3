@@ -92,27 +92,29 @@
         <ul class="row g-4" id="galeria_general">
     {% for producto in productos %}
     <!-- galeria de productos -->
-            <li class="col-12 col-md-6 col-lg-4 mb-2">
-                <article class="card h-100">
-                    <img src="{{producto.imagen.url}}" class="card-img-top" width="300" height="300">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <h3 class="card-title h5 mb-3">{{producto.nombre}}</h3>
-                            <button type="button" class="boton_fav" title="Agregar a favoritos">☆</button>
-                        </div>
-                        <p class="card-text mb-2 categoria-art"><strong>Categoría:</strong> {{producto.categoria}}</p>
-                        <p class="card-text mb-2"><strong>Precio:</strong> ${{producto.precio}}</p>
-                        <p class="card-text mb-2"><strong>Descripción:</strong> {{producto.descripcion}}</p>
-                        <p class="card-text mb-2 localidad-art"><strong>Localidad:</strong> {{producto.localidad}}</p>
-                        <p class="card-text mb-3"><strong>Ubicación del puesto:</strong> {{producto.artesano.emprendimiento.ubicacion}}</p>
-                        <p class="card-text mb-3"><strong>Artesano:</strong> {{producto.artesano}}</p>
+            {% if producto.activo == True %}
+                <li class="col-12 col-md-6 col-lg-4 mb-2">
+                    <article class="card h-100">
+                        <img src="{{producto.imagen.url}}" class="card-img-top" width="300" height="300">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h3 class="card-title h5 mb-3">{{producto.nombre}}</h3>
+                                <button type="button" class="boton_fav" title="Agregar a favoritos">☆</button>
+                            </div>
+                            <p class="card-text mb-2 categoria-art"><strong>Categoría:</strong> {{producto.categoria}}</p>
+                            <p class="card-text mb-2"><strong>Precio:</strong> ${{producto.precio}} $</p>
+                            <p class="card-text mb-2"><strong>Descripción:</strong> {{producto.descripcion}}</p>
+                            <p class="card-text mb-2 localidad-art"><strong>Localidad:</strong> {{producto.localidad}}</p>
+                            <p class="card-text mb-3"><strong>Ubicación del puesto:</strong> {{producto.artesano.emprendimiento.ubicacion}}</p>
+                            <p class="card-text mb-3"><strong>Artesano:</strong> {{producto.artesano}}</p>
 
-                        <a href="#" class="btn btn-outline-secondary btn-sm flex-fill">Ver artesano</a>
-                        <a href="{% url 'productos:mis_productos' artesano_dni=producto.artesano.dni %}" class="btn btn-outline-secondary btn-sm flex-fill">Ver productos del artesano</a>
-                        <a href="#" class="btn btn-outline-primary btn-sm flex-fill">Ver en mapa</a>
-                    </div>
-                </article>
-            </li>
+                            <a href="{% url 'artesano:datos_artesano' dni_artesano=producto.artesano.dni%}" class="btn btn-outline-secondary btn-sm flex-fill">Ver artesano</a>
+                            <a href="{% url 'productos:mis_productos' artesano_dni=producto.artesano.dni %}" class="btn btn-outline-secondary btn-sm flex-fill">Ver productos del artesano</a>
+                            <a href="#" class="btn btn-outline-primary btn-sm flex-fill">Ver en mapa</a>
+                        </div>
+                    </article>
+                </li>
+            {% endif %}
     {% endfor %}
         </ul>
     </section>

@@ -29,27 +29,27 @@
 
 {% block contenido_principal %}
     <section id="nueva_publicacion">
-            <h2> ¿Desea publicar un Nuevo Producto?</h2>
-                <form action="#" method="post" enctype="multipart/form-data" class="bg-white p-3 rounded-4 shadow-sm border" id="formulario">
-                    {% csrf_token %}
-                    <fieldset>
-                        <legend>Formulario</legend>
-                        <ul class="row">
-                            {% for field in form %}
-                            <li class="col-12 col-md-6">
-                                <label for="{{ field.id_for_label }}" class="form-label">
-                                    {{ field.label }}
-                                </label>
-                                {{ field }}
-                                {{ field.errors }}
-                            </li>
-                            {% endfor %}
-                            <li class="col-12 d-flex gap-2 mt-4">
-                                    <button type="submit">Enviar</button>
-                                    <button type="reset">Cancelar</button>
-                            </li>
-                        </ul>
-                    </fieldset>
-                </form>
+        <h1> Datos del Producto: </h1>
+            <form action="#" method="post" enctype="multipart/form-data" class="bg-white p-3 rounded-4 shadow-sm border" id="formulario">
+                {% csrf_token %}
+                <fieldset>
+                    <legend>Formulario</legend>
+                    <ul class="row">
+                        {% for field in form %}
+                        <li class="col-12 col-md-6">
+                            <label for="{{ field.id_for_label }}" class="form-label">
+                                {{ field.label }}
+                            </label>
+                            {{ field }}
+                            {{ field.errors }}
+                        </li>
+                        {% endfor %}
+                        <li class="col-12 d-flex gap-2 mt-4">
+                                <button type="submit">Guardar</button>
+                                <button type="reset">Cancelar</button>
+                        </li>
+                    </ul>
+                </fieldset>
+            </form>
     </section>
 {% endblock %}

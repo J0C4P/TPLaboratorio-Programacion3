@@ -48,21 +48,20 @@
         <h2>Detalle de mis productos: </h2>
             <ul class="row g-4" id="galeria_general">
             {% for producto in productos_artesano %}
-                <li class="col-12 col-md-6 col-lg-4 mb-2">
-                    <article class="card h-100">
-                        <img src="{{producto.imagen.url}}" class="card-img-top" width="300" height="300" alt="Poncho artesanal de fibra regional" >
+                    <li class="col-12 col-md-6 col-lg-4 mb-2">
+                        <article class="card h-100">
+                            <img src="{{producto.imagen.url}}" class="card-img-top" width="300" height="300">
 
-                        <div class="card-body">
-                            <h3 class="card-title h5 mb-3">{{producto.nombre}}</h3>
-                            <p class="card-text mb-3"><strong>Categoría:</strong> {{producto.categoria}}</p>
-                            <p class="card-text mb-3"><strong>Precio:</strong> ${{producto.precio}} </p>
-                            <p class="card-text mb-3"><strong>Descripción:</strong> {{producto.descripcion}} </p>
-                            <p class="card-text mb-3"><strong>Stock disponible:</strong> {{producto.stock}} Unidades</p>
-                            <a href="" class="btn btn-outline-primary btn-sm btn-modificar">Modificar</a>
-                            <a href="" class="btn btn-outline-danger btn-sm btn-eliminar">Eliminar publicacion</a>
-                        </div>
-                    </article>
-                </li>
+                            <div class="card-body">
+                                <h3 class="card-title h5 mb-3">{{producto.nombre}}</h3>
+                                <p class="card-text mb-3"><strong>Categoría:</strong> {{producto.categoria}}</p>
+                                <p class="card-text mb-3"><strong>Precio:</strong> ${{producto.precio}} $</p>
+                                <p class="card-text mb-3"><strong>Descripción:</strong> {{producto.descripcion}} </p>
+                                <p class="card-text mb-3"><strong>Stock disponible:</strong> {{producto.stock}} Unidades</p>
+                                <a href="{% url 'productos:detalles_producto' id_producto=producto.id%}" class="btn btn-outline-primary btn-sm btn-modificar">Mas detalles</a>
+                            </div>
+                        </article>
+                    </li>
             {% endfor %}
             </ul>
     </section>
