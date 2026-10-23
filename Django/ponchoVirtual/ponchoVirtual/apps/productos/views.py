@@ -1,5 +1,4 @@
 from django.contrib import messages
-from django.db.models import Model
 from django.shortcuts import render, redirect, get_object_or_404
 from ponchoVirtual.apps.artesanos.models import Artesano
 from ponchoVirtual.apps.productos.forms import ProductoForm

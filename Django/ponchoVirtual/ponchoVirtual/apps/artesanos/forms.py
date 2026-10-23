@@ -33,7 +33,7 @@ class ArtesanoForm(forms.ModelForm):
 
 
 class EmprendimientoForm(forms.ModelForm):
-    pabellones = [('Pabellon A', 'Pabellon A'), ('Pabellon B', 'Pabellon B'), ('Pabellon C', 'Pabellon C'), ('D', 'Pabellon D'),]
+    pabellones = [('Pabellon A', 'Pabellon A'), ('Pabellon B', 'Pabellon B'), ('Pabellon C', 'Pabellon C'), ('Pabellon D', 'Pabellon D'),]
 
     ubicacion = forms.ChoiceField(choices=pabellones)
 
