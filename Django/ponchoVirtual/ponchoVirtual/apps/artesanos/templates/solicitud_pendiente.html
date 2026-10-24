@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poncho Digital - Solicitud Pendiente</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/Estilo_general.css' %}">
+    <style>
+        body {
+            background-color: #fcefe6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 20px;
+        }
+        .card-pendiente {
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            max-width: 560px;
+            width: 100%;
+            padding: 2.5rem;
+            text-align: center;
+        }
+        .badge-estado {
+            display: inline-block;
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            letter-spacing: 0.5px;
+        }
+        .datos-caja {
+            background-color: #fdfaf6;
+            border-left: 4px solid #b3541e;
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+        .btn-volver {
+            background-color: #b3541e;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.65rem 2rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: opacity 0.2s;
+        }
+        .btn-volver:hover {
+            opacity: 0.9;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card-pendiente">
+        <div class="badge-estado">⏳ SOLICITUD PENDIENTE DE REVISION</div>
+        
+        <h3 class="fw-bold mb-2" style="color: #333;">¡Solicitud enviada con exito!</h3>
+        <p class="text-secondary small mb-3">
+            Gracias <strong>{{ nombre }} {{ apellido }}</strong> por postularte para participar en la Fiesta Nacional e Internacional del Poncho.
+        </p>
+
+        <div class="datos-caja">
+            <h6 class="fw-bold mb-1" style="color: #b3541e;">Tus credenciales de acceso:</h6>
+            <p class="small text-muted mb-2">
+                Una vez que el administrador evalue y apruebe tu postulacion, podras iniciar sesión con estos datos:
+            </p>
+            <ul class="mb-0 small ps-3 text-dark">
+                <li><strong>Usuario:</strong> <code>{{ dni }}</code></li>
+                <li><strong>Contraseña inicial:</strong> <code>{{ dni }}</code></li>
+                <li><strong>Estado actual:</strong> <span class="text-danger fw-bold">Inactivo (No aprobado aun)</span></li>
+            </ul>
+        </div>
+
+        <p class="text-muted small mb-4">
+            * El Administrador debe activar tu usuario en el sistema para que puedas acceder a publicar y gestionar tus artesanias.
+        </p>
+
+        <a href="{% url 'productos:listar_productos' %}" class="btn-volver">Volver al Inicio</a>
+    </div>
+
+</body>
+</html>
