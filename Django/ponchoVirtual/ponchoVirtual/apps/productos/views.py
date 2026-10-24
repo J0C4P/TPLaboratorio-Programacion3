@@ -106,3 +106,37 @@ def eliminar_producto(request, id_producto):
     messages.success(request, f'El producto {nombre} ha sido eliminado con exito!')
 
     return redirect('productos:mis_productos', artesano_dni=artesano)
+
+
+@login_required(login_url=reverse_lazy('usuario:login'))
+def reporte_artesanos_rubro_pdf(request):
+    if not request.user.is_staff:
+        raise PermissionDenied
+
+    productos = Producto.objects.filter(activo=True).select_related('artesano')
+
+    por_rubro = {}
+    for p in productos:
+        rubro = por_rubro.setdefault(p.categoria, {'artesanos': set(), 'productos': 0})
+        rubro['artesanos'].add(f'{p.artesano.apellido}, {p.artesano.nombre}')
+        rubro['productos'] += 1
+
+    filas = [
+        (categoria, len(datos['artesanos']), datos['productos'], '; '.join(sorted(datos['artesanos'])))
+        for categoria, datos in sorted(por_rubro.items(), key=lambda item: (-len(item[1]['artesanos']), item[0]))
+    ]
+
+    sin_productos = Artesano.objects.exclude(productos_artesano__activo=True).order_by('apellido', 'nombre')
+    if sin_productos:
+        filas.append(('Sin productos publicados', len(sin_productos), 0,
+                      '; '.join(f'{a.apellido}, {a.nombre}' for a in sin_productos)))
+
+    return generar_reporte_pdf(
+        nombre_archivo='artesanos_por_rubro.pdf',
+        titulo='Artesanos registrados por rubro',
+        subtitulo='El rubro es la categoría de los productos activos; un artesano figura en cada rubro en el que publica',
+        encabezados=('Rubro', 'Artesanos', 'Productos', 'Detalle de artesanos'),
+        filas=filas,
+        anchos=(3.2, 1.7, 1.7, 7),
+        totales=[('Total de artesanos registrados', Artesano.objects.count())],
+    )

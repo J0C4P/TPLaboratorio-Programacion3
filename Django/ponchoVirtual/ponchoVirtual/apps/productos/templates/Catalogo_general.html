@@ -25,6 +25,8 @@
                     {% if user.is_staff %}
                         <a href="{% url 'artesano:reporte_artesanos_pdf' %}">Reporte artesanos (PDF)</a>
                         <a href="{% url 'artesano:reporte_artesanos_localidad_pdf' %}">Reporte por localidad (PDF)</a>
+                        <a href="{% url 'productos:reporte_artesanos_rubro_pdf' %}">Reporte por rubro (PDF)</a>
+                        <a href="{% url 'artesano:reporte_stands_pdf' %}">Reporte stands (PDF)</a>
                     {% endif %}
                 </div>
 

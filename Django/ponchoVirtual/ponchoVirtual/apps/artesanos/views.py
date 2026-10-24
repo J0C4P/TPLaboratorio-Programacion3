@@ -5,6 +5,7 @@ from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from ponchoVirtual.apps.artesanos.forms import ArtesanoForm, EmprendimientoForm, Artesano, ArtesanoModificarForm, EmprendimientoModificarForm
+from ponchoVirtual.apps.artesanos.models import Stand
 from ponchoVirtual.utils.pdf import generar_reporte_pdf
 
 
@@ -107,4 +108,28 @@ def reporte_artesanos_localidad_pdf(request):
         filas=filas,
         anchos=(3, 2.2, 1.6, 7),
         totales=[('Localidades', len(filas)), ('Total de artesanos', sum(l['total'] for l in localidades))],
+    )
+
+@login_required(login_url=reverse_lazy('usuario:login'))
+def reporte_stands_pdf(request):
+    if not request.user.is_staff:
+        raise PermissionDenied
+
+    stands = Stand.objects.select_related('artesano')
+
+    filas = [
+        (s.numero, s.zona, 'Ocupado' if s.artesano else 'Disponible',
+         f'{s.artesano.apellido}, {s.artesano.nombre}' if s.artesano else '-')
+        for s in stands
+    ]
+    ocupados = sum(1 for s in stands if s.artesano)
+
+    return generar_reporte_pdf(
+        nombre_archivo='stands_ocupados_disponibles.pdf',
+        titulo='Stands ocupados y disponibles',
+        subtitulo='Estado de ocupación de los stands del predio',
+        encabezados=('Stand', 'Zona', 'Estado', 'Artesano asignado'),
+        filas=filas,
+        anchos=(1.5, 4, 2.5, 6),
+        totales=[('Total de stands', len(filas)), ('Ocupados', ocupados), ('Disponibles', len(filas) - ocupados)],
     )
