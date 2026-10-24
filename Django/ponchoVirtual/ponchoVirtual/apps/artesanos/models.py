@@ -19,6 +19,18 @@ class Artesano(models.Model):
         return f"{self.nombre} {self.apellido}"
 
 
+class Stand(models.Model):
+    numero = models.PositiveIntegerField(unique=True)
+    zona = models.CharField(max_length=50)
+    artesano = models.OneToOneField('Artesano', on_delete=models.SET_NULL, null=True, blank=True, related_name='stand')
+
+    class Meta:
+        ordering = ('numero', )
+
+    def __str__(self):
+        return f"Stand {self.numero} ({self.zona})"
+
+
 class Emprendimiento(models.Model):
     nombre = models.CharField(max_length=50)
     descripcion = models.TextField(max_length=500)
