@@ -1,8 +1,13 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
+from django.utils import timezone
 from ponchoVirtual.apps.artesanos.models import Artesano
 from ponchoVirtual.apps.productos.forms import ProductoModificarForm, ProductoForm
 from ponchoVirtual.apps.productos.models import Producto
+from ponchoVirtual.utils.pdf import generar_reporte_pdf
 
 
 def listar_productos(request):
@@ -18,7 +23,35 @@ def listar_productos(request):
 def mis_productos(request, artesano_dni):
     productos_artesano = Producto.objects.filter(artesano__dni=artesano_dni)
 
-    return render(request, 'Mis_productos.html', {'productos_artesano': productos_artesano})
+    return render(request, 'Mis_productos.html',
+                  {'productos_artesano': productos_artesano, 'artesano_dni': artesano_dni})
+
+
+@login_required(login_url=reverse_lazy('usuario:login'))
+def reporte_productos_artesano_pdf(request, artesano_dni):
+    if not (request.user.is_staff or request.user.documento_identidad == artesano_dni):
+        raise PermissionDenied
+
+    artesano = get_object_or_404(Artesano, dni=artesano_dni)
+    productos = Producto.objects.filter(artesano=artesano).order_by('categoria', 'nombre')
+
+    filas = [
+        (p.nombre, p.categoria, f'$ {p.precio:.2f}', p.stock, 'Activo' if p.activo else 'Inactivo',
+         timezone.localtime(p.fecha_publicacion).strftime('%d/%m/%Y'))
+        for p in productos
+    ]
+    valor_stock = sum(p.precio * p.stock for p in productos)
+
+    return generar_reporte_pdf(
+        nombre_archivo=f'productos_{artesano.dni}.pdf',
+        titulo='Productos publicados por artesano',
+        subtitulo=f'Artesano: {artesano.nombre} {artesano.apellido} (DNI {artesano.dni}) - '
+                  f'Emprendimiento: {artesano.emprendimiento.nombre}',
+        encabezados=('Producto', 'Categoría', 'Precio', 'Stock', 'Estado', 'Publicado'),
+        filas=filas,
+        anchos=(4, 2.5, 2, 1.2, 1.8, 2),
+        totales=[('Productos publicados', len(filas)), ('Valor total del stock', f'$ {valor_stock:.2f}')],
+    )
 
 
 def detalles_producto(request, id_producto):

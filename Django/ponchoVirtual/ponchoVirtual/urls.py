@@ -27,5 +27,5 @@ urlpatterns = [
     path("", TemplateView.as_view(template_name='base/portada.html'), name="principal"),
     path("", include('ponchoVirtual.apps.usuarios.urls')),
     path("productos/", include('ponchoVirtual.apps.productos.urls')),
-    path('artesano', include('ponchoVirtual.apps.artesanos.urls'))
+    path('artesano/', include('ponchoVirtual.apps.artesanos.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
