@@ -1,6 +1,11 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
 from ponchoVirtual.apps.artesanos.forms import ArtesanoForm, EmprendimientoForm, Artesano, ArtesanoModificarForm, EmprendimientoModificarForm
+from ponchoVirtual.utils.pdf import generar_reporte_pdf
 
 
 def solicitud_artesano(request):
@@ -51,3 +56,55 @@ def modificar_datos_art(request, dni_artesano):
         form_art = ArtesanoModificarForm(instance=artesano)
         form_emp = EmprendimientoModificarForm(instance=emprendimiento)
     return render(request, 'Crear_art_emp.html', {'form_art': form_art, 'form_emp': form_emp})
+
+
+@login_required(login_url=reverse_lazy('usuario:login'))
+def reporte_artesanos_pdf(request):
+    if not request.user.is_staff:
+        raise PermissionDenied
+
+    artesanos = Artesano.objects.select_related('emprendimiento').order_by('apellido', 'nombre')
+
+    filas = [
+        (f'{a.apellido}, {a.nombre}', a.dni, a.emprendimiento.nombre, f'{a.localidad} ({a.provincia})',
+         f'{a.correo} / {a.telefono}')
+        for a in artesanos
+    ]
+
+    return generar_reporte_pdf(
+        nombre_archivo='artesanos_registrados.pdf',
+        titulo='Artesanos registrados',
+        subtitulo='Listado de artesanos con su emprendimiento y datos de contacto',
+        encabezados=('Artesano', 'DNI', 'Emprendimiento', 'Localidad', 'Contacto'),
+        filas=filas,
+        anchos=(3, 1.6, 3, 3, 4),
+        totales=[('Total de artesanos', len(filas))],
+    )
+
+
+@login_required(login_url=reverse_lazy('usuario:login'))
+def reporte_artesanos_localidad_pdf(request):
+    if not request.user.is_staff:
+        raise PermissionDenied
+
+    localidades = (Artesano.objects.values('localidad', 'provincia')
+                   .annotate(total=Count('id')).order_by('-total', 'localidad'))
+
+    nombres = {}
+    for a in Artesano.objects.order_by('apellido', 'nombre'):
+        nombres.setdefault((a.localidad, a.provincia), []).append(f'{a.apellido}, {a.nombre}')
+
+    filas = [
+        (l['localidad'], l['provincia'], l['total'], '; '.join(nombres[(l['localidad'], l['provincia'])]))
+        for l in localidades
+    ]
+
+    return generar_reporte_pdf(
+        nombre_archivo='artesanos_por_localidad.pdf',
+        titulo='Artesanos registrados por localidad',
+        subtitulo='Cantidad de artesanos agrupados por localidad y provincia',
+        encabezados=('Localidad', 'Provincia', 'Cantidad', 'Artesanos'),
+        filas=filas,
+        anchos=(3, 2.2, 1.6, 7),
+        totales=[('Localidades', len(filas)), ('Total de artesanos', sum(l['total'] for l in localidades))],
+    )
