@@ -86,7 +86,7 @@ def agregar_productos(request):
             producto.save()
 
             messages.success(request, f'¡El producto "{nombre}" ha sido ingresado con exito!')
-            return redirect('productos:mis_productos', request.user.documento_identidad)
+            return redirect('productos:ver_mis_productos', request.user.documento_identidad)
 
     else:
         form = ProductoForm()
