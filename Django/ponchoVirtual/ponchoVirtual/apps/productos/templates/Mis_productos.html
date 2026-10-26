@@ -18,8 +18,15 @@
             <div class="collapse navbar-collapse" id="menuNavegacion">
                 <div class="d-flex flex-column flex-lg-row align-items-start me-auto">
                     <a href="{% url 'productos:listar_productos' %}">Volver catálogo</a>
-                    <a href="{% url 'productos:agregar_productos' %}">Nueva publicación</a>
-                    <a href="{% url 'productos:reporte_mis_productos_pdf' artesano_dni=artesano_dni %}">Exportar PDF</a>
+                    {% if user.documento_identidad ==  artesano_dni%}
+                        {% if perms.productos.add_producto %}
+                            <a href="{% url 'productos:agregar_productos' %}">Nueva publicación</a>
+                        {% endif%}
+                        {% if perms.artesanos.change_artesano %}
+                            <a href="{% url 'artesano:datos_artesano' artesano_dni%}">Ver mi perfil</a>
+                        {% endif%}
+                        <a href="{% url 'productos:reporte_mis_productos_pdf' artesano_dni=artesano_dni %}">Exportar PDF</a>
+                    {% endif%}
                 </div>
 
                 <div class="d-flex gap-2" id="buscador_texto">
@@ -43,29 +50,35 @@
 {% endblock %}
 
 {% block contenido_principal %}
-    <h1>Gestion de productos publicados</h1>
-    <p>Bienvenido. Desde aquí puedes dar de alta nuevos productos, modificar la información existente o eliminar ítems de tu catálogo en la plataforma Poncho Digital.</p>
-    <section id="productos_publicados">
-        <h2>Detalle de mis productos: </h2>
-            <ul class="row g-4" id="galeria_general">
-            {% for producto in productos_artesano %}
-                    <li class="col-12 col-md-6 col-lg-4 mb-2">
-                        <article class="card h-100">
-                            <img src="{{producto.imagen.url}}" class="card-img-top" width="300" height="300">
+    {% if user.documento_identidad == artesano_dni %}
+        <h1>Gestion de productos publicados</h1>
+        <p>Bienvenido. Desde aquí puedes dar de alta nuevos productos, modificar la información existente o eliminar ítems de tu catálogo en la plataforma Poncho Digital.</p>
+        <section id="productos_publicados">
+            <h2>Detalle de mis productos: </h2>
+                <ul class="row g-4" id="galeria_general">
+                {% for producto in productos_artesano %}
+                        <li class="col-12 col-md-6 col-lg-4 mb-2">
+                            <article class="card h-100">
+                                <img src="{{producto.imagen.url}}" class="card-img-top" width="300" height="300">
 
-                            <div class="card-body">
-                                <h3 class="card-title h5 mb-3">{{producto.nombre}}</h3>
-                                <p class="card-text mb-3"><strong>Categoría:</strong> {{producto.categoria}}</p>
-                                <p class="card-text mb-3"><strong>Precio:</strong> ${{producto.precio}} $</p>
-                                <p class="card-text mb-3"><strong>Descripción:</strong> {{producto.descripcion}} </p>
-                                <p class="card-text mb-3"><strong>Stock disponible:</strong> {{producto.stock}} Unidades</p>
-                                <a href="{% url 'productos:detalles_producto' id_producto=producto.id%}" class="btn btn-outline-primary btn-sm btn-modificar">Mas detalles</a>
-                            </div>
-                        </article>
-                    </li>
-            {% endfor %}
-            </ul>
-    </section>
+                                <div class="card-body">
+                                    <h3 class="card-title h5 mb-3">{{producto.nombre}}</h3>
+                                    <p class="card-text mb-3"><strong>Categoría:</strong> {{producto.categoria}}</p>
+                                    <p class="card-text mb-3"><strong>Precio:</strong> ${{producto.precio}} $</p>
+                                    <p class="card-text mb-3"><strong>Descripción:</strong> {{producto.descripcion}} </p>
+                                    <p class="card-text mb-3"><strong>Stock disponible:</strong> {{producto.stock}} Unidades</p>
+                                    <a href="{% url 'productos:detalles_producto' id_producto=producto.id%}" class="btn btn-outline-primary btn-sm btn-modificar">Mas detalles</a>
+                                </div>
+                            </article>
+                        </li>
+                    {% empty %}
+                    <h3>No hay productos publicados actualmente</h3>
+                {% endfor %}
+                </ul>
+        </section>
 
-    <script src="{% static 'js/buscador.js' %}"></script>
+        <script src="{% static 'js/buscador.js' %}"></script>
+    {% else %}
+        <h1 style="color: red">No coincide el DNI del artesano con los productos solicitados</h1>
+    {% endif %}
 {% endblock %}

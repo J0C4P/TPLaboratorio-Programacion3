@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import PermissionDenied
 from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
@@ -37,6 +37,7 @@ def datos_artesano(request, dni_artesano):
 
 
 @login_required(login_url='usuario:login')
+@permission_required('artesanos.change_artesano', raise_exception=True)
 def modificar_datos_art(request, dni_artesano):
     artesano = get_object_or_404(Artesano, dni=dni_artesano)
     emprendimiento = artesano.emprendimiento

@@ -66,7 +66,9 @@
                 <p class="card-text mb-3"><strong>Cantidad de tipos productos a la venta:</strong> {{emprendimiento.cantidad_productos}}</p>
                 <p class="card-text mb-3"><strong>Ubicacion:</strong> {{emprendimiento.ubicacion}}</p>
                 {% if user.documento_identidad == artesano.dni %}
-                <a href="{% url 'artesano:modificar_datos_art' dni_artesano=artesano.dni %}" class="btn btn-outline-primary btn-sm btn-modificar">Modificar perfil</a>
+                    {%if perms.artesanos.change_artesano%}
+                        <a href="{% url 'artesano:modificar_datos_art' dni_artesano=artesano.dni %}" class="btn btn-outline-primary btn-sm btn-modificar">Modificar perfil</a>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>

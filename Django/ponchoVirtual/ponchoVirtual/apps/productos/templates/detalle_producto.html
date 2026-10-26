@@ -33,39 +33,47 @@
 
 {% block contenido_principal %}
     <div class="d-flex justify-content-center">
-        <h1>Detalle de Anuncio de Subasta</h1>
-    </div>
-    {% if messages %}
-        {% for message in messages %}
-            {% if message.tags == 'success' %}
-                <div style="background-color: lightseagreen" class="mb-3">{{message}}</div>
-            {% else %}
-                <div style="background-color: red" class="mb-3">{{message}}</div>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-
-    <section class="d-flex justify-content-center">
-        <div class="card w-50 mb-3 text-bg-light">
-            <img src="{{producto.imagen.url}}" class="card-img-top w-75 mx-auto d-block" width="300" height="300" alt="{{producto.nombre}}">
-
-            <div class="card-body">
-                <h3 class="card-title h5 mb-3">{{producto.nombre}}</h3>
-                <p class="card-text mb-3"><strong>Categoría:</strong> {{producto.categoria}}</p>
-                <p class="card-text mb-3"><strong>Precio:</strong> ${{producto.precio}} $</p>
-                <p class="card-text mb-3"><strong>Descripción:</strong> {{producto.descripcion}} </p>
-                <p class="card-text mb-3"><strong>Localidad:</strong> {{producto.localidad}} </p>
-                <p class="card-text mb-3"><strong>Stock disponible:</strong> {{producto.stock}} Unidades</p>
-                <p class="card-text mb-3"><strong>Fecha publicacion:</strong> {{producto.fecha_publicacion}} </p>
-                <p class="card-text mb-3"><strong>Estado:</strong>
-                    {% if producto.activo == True %} <span class="badge bg-success">✔ Activo </span>
-                    {% else %} <span class="badge bg-secondary">✖ Inactivo </span>
-                    {%endif%}
-                </p>
-                <p class="card-text mb-3"><strong>Artesano:</strong> {{producto.artesano}} </p>
-                <a href="{% url 'productos:modificar_producto' id_producto=producto.id %}" class="btn btn-outline-primary btn-sm btn-modificar">Modificar</a>
-                <a href="{% url 'productos:eliminar_producto'  id_producto=producto.id%}" class="btn btn-outline-danger btn-sm btn-eliminar" onclick="return confirm('¿Esta seguro que desea eliminar dicho anuncio?')">Eliminar publicacion</a>
+        {% if user.documento_identidad == producto.artesano.dni %}
+            <h1>Detalle de Anuncio de Subasta</h1>
             </div>
-        </div>
-    </section>
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == 'success' %}
+                        <div style="background-color: lightseagreen" class="mb-3">{{message}}</div>
+                    {% else %}
+                        <div style="background-color: red" class="mb-3">{{message}}</div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            <section class="d-flex justify-content-center">
+                <div class="card w-50 mb-3 text-bg-light">
+                    <img src="{{producto.imagen.url}}" class="card-img-top w-75 mx-auto d-block" width="300" height="300" alt="{{producto.nombre}}">
+
+                    <div class="card-body">
+                        <h3 class="card-title h5 mb-3">{{producto.nombre}}</h3>
+                        <p class="card-text mb-3"><strong>Categoría:</strong> {{producto.categoria}}</p>
+                        <p class="card-text mb-3"><strong>Precio:</strong> ${{producto.precio}} $</p>
+                        <p class="card-text mb-3"><strong>Descripción:</strong> {{producto.descripcion}} </p>
+                        <p class="card-text mb-3"><strong>Localidad:</strong> {{producto.localidad}} </p>
+                        <p class="card-text mb-3"><strong>Stock disponible:</strong> {{producto.stock}} Unidades</p>
+                        <p class="card-text mb-3"><strong>Fecha publicacion:</strong> {{producto.fecha_publicacion}} </p>
+                        <p class="card-text mb-3"><strong>Estado:</strong>
+                            {% if producto.activo == True %} <span class="badge bg-success">✔ Activo </span>
+                            {% else %} <span class="badge bg-secondary">✖ Inactivo </span>
+                            {%endif%}
+                        </p>
+                        <p class="card-text mb-3"><strong>Artesano:</strong> {{producto.artesano}} </p>
+                        {% if perms.productos.change_producto %}
+                            <a href="{% url 'productos:modificar_producto' id_producto=producto.id %}" class="btn btn-outline-primary btn-sm btn-modificar">Modificar</a>
+                        {% endif %}
+                        {% if perms.productos.delete_producto %}
+                            <a href="{% url 'productos:eliminar_producto'  id_producto=producto.id%}" class="btn btn-outline-danger btn-sm btn-eliminar" onclick="return confirm('¿Esta seguro que desea eliminar dicho anuncio?')">Eliminar publicacion</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+    {% else %}
+        <h1 style="color: red">No puede modificar anuncios que no le pertenecen</h1>
+    {% endif %}
 {% endblock %}

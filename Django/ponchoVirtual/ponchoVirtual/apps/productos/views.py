@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -62,6 +62,7 @@ def reporte_productos_artesano_pdf(request, artesano_dni):
 
 
 @login_required(login_url='usuario:login')
+@permission_required('productos.view_producto', raise_exception=True)
 def detalles_producto(request, id_producto):
     producto = get_object_or_404(Producto, id=id_producto)
 
@@ -69,6 +70,7 @@ def detalles_producto(request, id_producto):
 
 
 @login_required(login_url='usuario:login')
+@permission_required('productos.add_producto', raise_exception=True)
 def agregar_productos(request):
     if request.method == "POST":
         form = ProductoForm(request.POST, request.FILES)
@@ -93,6 +95,7 @@ def agregar_productos(request):
 
 
 @login_required(login_url='usuario:login')
+@permission_required('productos.change_producto', raise_exception=True)
 def modificar_producto(request, id_producto):
     producto = get_object_or_404(Producto, id=id_producto)
     if request.method == 'POST':
@@ -108,6 +111,7 @@ def modificar_producto(request, id_producto):
 
 
 @login_required(login_url='usuario:login')
+@permission_required('productos.delete_producto', raise_exception=True)
 def eliminar_producto(request, id_producto):
     producto = get_object_or_404(Producto, id=id_producto)
     nombre = producto.nombre

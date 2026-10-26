@@ -1,7 +1,5 @@
-from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import UsuarioForm
 
 
 def login_vista(request):
@@ -24,15 +22,3 @@ def logout_vista(request):
     logout(request)
     return redirect('principal')
 
-
-def crear_usuario(request):
-    if request.method == "POST":
-        form = UsuarioForm(request.POST)
-
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Se ha ingresado correctamente el usuario")
-            return redirect('usuario:login')
-    else:
-        form = UsuarioForm()
-    return render(request, 'crear_usuario.html', {'form': form})
