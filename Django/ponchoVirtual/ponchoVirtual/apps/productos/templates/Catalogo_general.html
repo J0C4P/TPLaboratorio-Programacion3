@@ -114,9 +114,13 @@
                             <p class="card-text mb-3"><strong>Ubicación del puesto:</strong> {{producto.artesano.emprendimiento.ubicacion}}</p>
                             <p class="card-text mb-3"><strong>Artesano:</strong> {{producto.artesano}}</p>
 
-                            <a href="{% url 'artesano:datos_artesano' dni_artesano=producto.artesano.dni%}" class="btn btn-outline-secondary btn-sm flex-fill">Ver artesano</a>
-                            <a href="{% url 'productos:ver_productos_artesano' artesano_dni=producto.artesano.dni %}" class="btn btn-outline-secondary btn-sm flex-fill">Ver productos del artesano</a>
-                            <a href="#" class="btn btn-outline-primary btn-sm flex-fill">Ver en mapa</a>
+                            <div class="d-flex flex-column gap-2 mt-3">
+                                <div class="d-flex gap-2">
+                                    <a href="{% url 'artesano:datos_artesano' dni_artesano=producto.artesano.dni %}" class="btn btn-outline-dark btn-sm flex-fill fw-semibold"> Ver artesano</a>
+                                    <a href="{% url 'productos:ver_productos_artesano' artesano_dni=producto.artesano.dni %}" class="btn btn-outline-secondary btn-sm flex-fill fw-semibold"> Ver productos del artesano</a>
+                                </div>
+                                <a href="#" class="btn btn-outline-primary btn-sm w-100 fw-semibold"> Ver en mapa</a>
+                            </div>
                         </div>
                     </article>
                 </li>
