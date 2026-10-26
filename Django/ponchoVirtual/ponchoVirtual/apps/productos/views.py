@@ -20,11 +20,17 @@ def listar_productos(request):
     return render(request, 'Catalogo_general.html', context)
 
 
-def mis_productos(request, artesano_dni):
+def ver_productos_artesano(request, artesano_dni):
+    productos_artesano = Producto.objects.filter(artesano__dni=artesano_dni)
+    artesano = get_object_or_404(Artesano, dni=artesano_dni)
+
+    return render(request, 'Productos_artesano.html',{'productos_artesano': productos_artesano, 'artesano': artesano})
+
+
+def ver_mis_productos(request, artesano_dni):
     productos_artesano = Producto.objects.filter(artesano__dni=artesano_dni)
 
-    return render(request, 'Mis_productos.html',
-                  {'productos_artesano': productos_artesano, 'artesano_dni': artesano_dni})
+    return render(request, 'Mis_productos.html',{'productos_artesano': productos_artesano, 'artesano_dni': artesano_dni})
 
 
 @login_required(login_url=reverse_lazy('usuario:login'))
