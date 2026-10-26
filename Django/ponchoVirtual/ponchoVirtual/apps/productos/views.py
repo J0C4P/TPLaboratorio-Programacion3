@@ -27,6 +27,7 @@ def ver_productos_artesano(request, artesano_dni):
     return render(request, 'Productos_artesano.html',{'productos_artesano': productos_artesano, 'artesano': artesano})
 
 
+@login_required(login_url='usuario:login')
 def ver_mis_productos(request, artesano_dni):
     productos_artesano = Producto.objects.filter(artesano__dni=artesano_dni)
 
@@ -60,12 +61,14 @@ def reporte_productos_artesano_pdf(request, artesano_dni):
     )
 
 
+@login_required(login_url='usuario:login')
 def detalles_producto(request, id_producto):
     producto = get_object_or_404(Producto, id=id_producto)
 
     return render(request, 'detalle_producto.html', {'producto': producto})
 
 
+@login_required(login_url='usuario:login')
 def agregar_productos(request):
     if request.method == "POST":
         form = ProductoForm(request.POST, request.FILES)
@@ -89,6 +92,7 @@ def agregar_productos(request):
     return render(request, 'Crear_producto.html', {'form': form})
 
 
+@login_required(login_url='usuario:login')
 def modificar_producto(request, id_producto):
     producto = get_object_or_404(Producto, id=id_producto)
     if request.method == 'POST':
@@ -103,6 +107,7 @@ def modificar_producto(request, id_producto):
     return render(request, 'Crear_producto.html', {'form': form_prod})
 
 
+@login_required(login_url='usuario:login')
 def eliminar_producto(request, id_producto):
     producto = get_object_or_404(Producto, id=id_producto)
     nombre = producto.nombre

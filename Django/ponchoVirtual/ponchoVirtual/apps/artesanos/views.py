@@ -36,6 +36,7 @@ def datos_artesano(request, dni_artesano):
     return render(request, 'artesano.html', {'artesano': artesano, 'emprendimiento': emprendimiento})
 
 
+@login_required(login_url='usuario:login')
 def modificar_datos_art(request, dni_artesano):
     artesano = get_object_or_404(Artesano, dni=dni_artesano)
     emprendimiento = artesano.emprendimiento
