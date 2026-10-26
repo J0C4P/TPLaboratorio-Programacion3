@@ -1,0 +1,40 @@
+{% load static %}
+{% block titulo %} Poncho digital - Nuevo postulante {% endblock %}
+{% block estilos %}
+    <link rel="stylesheet" href="{% static 'css/Estilo_general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Estilo_solicitud_pendiente.css' %}">
+{% endblock %}
+
+{% block barra_nav %}
+{% endblock %}
+
+{% block contenido_principal %}
+
+ <div class="card-pendiente">
+        <div class="badge-estado">⏳ SOLICITUD PENDIENTE DE REVISION</div>
+
+        <h3 class="fw-bold mb-2" style="color: #333;">¡Solicitud enviada con exito!</h3>
+        <p class="text-secondary small mb-3">
+            Gracias <strong>{{ nombre }} {{ apellido }}</strong> por postularte para participar en la Fiesta Nacional e Internacional del Poncho.
+        </p>
+
+        <div class="datos-caja">
+            <h6 class="fw-bold mb-1" style="color: #b3541e;">Tus credenciales de acceso:</h6>
+            <p class="small text-muted mb-2">
+                Una vez que el administrador evalue y apruebe tu postulacion, podras iniciar sesión con estos datos:
+            </p>
+            <ul class="mb-0 small ps-3 text-dark">
+                <li><strong>Usuario:</strong> <code>{{ dni }}</code></li>
+                <li><strong>Contraseña inicial:</strong> <code>{{ dni }}</code></li>
+                <li><strong>Estado actual:</strong> <span class="text-danger fw-bold">Inactivo (No aprobado aun)</span></li>
+            </ul>
+        </div>
+
+        <p class="text-muted small mb-4">
+            * El Administrador debe activar tu usuario en el sistema para que puedas acceder a publicar y gestionar tus artesanias.
+        </p>
+
+        <a href="{% url 'productos:listar_productos' %}" class="btn-volver">Volver al Inicio</a>
+    </div>
+
+{% endblock %}
