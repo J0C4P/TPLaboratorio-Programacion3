@@ -19,10 +19,10 @@ class ArtesanoForm(forms.ModelForm):
 
     class Meta:
         model = Artesano
-        fields = ['nombre', 'apellido', 'dni', 'correo', 'telefono', 'localidad', 'provincia']
+        fields = ['nombre_artesano', 'apellido', 'dni', 'correo', 'telefono', 'localidad', 'provincia']
 
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'nombre_artesano': forms.TextInput(attrs={'class': 'form-control'}),
             'apellido': forms.TextInput(attrs={'class': 'form-control'}),
             'dni': forms.NumberInput(attrs={'class': 'form-control'}),
             'correo': forms.EmailInput(attrs={'class': 'form-control'}),
@@ -39,10 +39,10 @@ class EmprendimientoForm(forms.ModelForm):
 
     class Meta:
         model = Emprendimiento
-        fields = ['nombre', 'descripcion', 'trayectoria', 'observaciones', 'cantidad_productos', 'ubicacion']
+        fields = ['nombre_emprendimiento', 'descripcion', 'trayectoria', 'observaciones', 'cantidad_productos', 'ubicacion']
 
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej: Manos Catamarqueñas'}),
+            'nombre_emprendimiento': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej: Manos Catamarqueñas'}),
             'descripcion': forms.Textarea(attrs={'class':'form-control', 'rows': 3, 'placeholder':'Breve descripción del emprendimiento'}),
             'trayectoria': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder':'Años de experiencia o historia...'}),
             'observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 2, 'placeholder':'Observaciones adicionales (opcional)'}),

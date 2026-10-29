@@ -3,7 +3,7 @@ from django.db.models.deletion import CASCADE
 
 
 class Artesano(models.Model):
-    nombre = models.CharField(max_length=50)
+    nombre_artesano = models.CharField(max_length=50)
     apellido = models.CharField(max_length=50)
     dni = models.CharField(max_length=50)
     correo = models.EmailField(max_length=100)
@@ -13,10 +13,10 @@ class Artesano(models.Model):
     emprendimiento = models.OneToOneField('Emprendimiento', on_delete=CASCADE, related_name="artesano")
 
     class Meta:
-        ordering = ('nombre', )
+        ordering = ('nombre_artesano', )
 
     def __str__(self):
-        return f"{self.nombre} {self.apellido}"
+        return f"{self.nombre_artesano} {self.apellido}"
 
 
 class Stand(models.Model):
@@ -32,7 +32,7 @@ class Stand(models.Model):
 
 
 class Emprendimiento(models.Model):
-    nombre = models.CharField(max_length=50)
+    nombre_emprendimiento = models.CharField(max_length=50)
     descripcion = models.TextField(max_length=500)
     trayectoria = models.TextField(max_length=500)
     observaciones = models.TextField(max_length=500, blank=True)
@@ -40,8 +40,8 @@ class Emprendimiento(models.Model):
     ubicacion = models.CharField(max_length=100)
 
     class Meta:
-        ordering = ('nombre', )
+        ordering = ('nombre_emprendimiento', )
 
     def __str__(self):
-        return f"{self.nombre}"
+        return f"{self.nombre_emprendimiento}"
 

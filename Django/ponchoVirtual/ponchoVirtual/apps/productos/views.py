@@ -4,7 +4,7 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils import timezone
-from ponchoVirtual.apps.artesanos.models import Artesano
+from ponchoVirtual.apps.artesanos.models import Artesano, Emprendimiento
 from ponchoVirtual.apps.productos.forms import ProductoModificarForm, ProductoForm
 from ponchoVirtual.apps.productos.models import Producto
 from ponchoVirtual.utils.pdf import generar_reporte_pdf
@@ -52,8 +52,8 @@ def reporte_productos_artesano_pdf(request, artesano_dni):
     return generar_reporte_pdf(
         nombre_archivo=f'productos_{artesano.dni}.pdf',
         titulo='Productos publicados por artesano',
-        subtitulo=f'Artesano: {artesano.nombre} {artesano.apellido} (DNI {artesano.dni}) - '
-                  f'Emprendimiento: {artesano.emprendimiento.nombre}',
+        subtitulo=f'Artesano: {artesano.nombre_artesano} {artesano.apellido} (DNI {artesano.dni}) - '
+                  f'Emprendimiento: {artesano.emprendimiento.nombre_emprendimiento}',
         encabezados=('Producto', 'Categoría', 'Precio', 'Stock', 'Estado', 'Publicado'),
         filas=filas,
         anchos=(4, 2.5, 2, 1.2, 1.8, 2),
@@ -133,7 +133,7 @@ def reporte_artesanos_rubro_pdf(request):
     por_rubro = {}
     for p in productos:
         rubro = por_rubro.setdefault(p.categoria, {'artesanos': set(), 'productos': 0})
-        rubro['artesanos'].add(f'{p.artesano.apellido}, {p.artesano.nombre}')
+        rubro['artesanos'].add(f'{p.artesano.apellido}, {p.artesano.nombre_artesano}')
         rubro['productos'] += 1
 
     filas = [
@@ -141,10 +141,10 @@ def reporte_artesanos_rubro_pdf(request):
         for categoria, datos in sorted(por_rubro.items(), key=lambda item: (-len(item[1]['artesanos']), item[0]))
     ]
 
-    sin_productos = Artesano.objects.exclude(productos_artesano__activo=True).order_by('apellido', 'nombre')
+    sin_productos = Artesano.objects.exclude(productos_artesano__activo=True).order_by('apellido', 'nombre_artesano')
     if sin_productos:
         filas.append(('Sin productos publicados', len(sin_productos), 0,
-                      '; '.join(f'{a.apellido}, {a.nombre}' for a in sin_productos)))
+                      '; '.join(f'{a.apellido}, {a.nombre_artesano}' for a in sin_productos)))
 
     return generar_reporte_pdf(
         nombre_archivo='artesanos_por_rubro.pdf',
@@ -155,6 +155,7 @@ def reporte_artesanos_rubro_pdf(request):
         anchos=(3.2, 1.7, 1.7, 7),
         totales=[('Total de artesanos registrados', Artesano.objects.count())],
     )
+
 
 # Vista empleada para el carrousel de portada
 def productos_destacados(request):

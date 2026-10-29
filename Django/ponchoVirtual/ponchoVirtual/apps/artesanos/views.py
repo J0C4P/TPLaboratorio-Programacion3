@@ -5,7 +5,7 @@ from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from ponchoVirtual.apps.artesanos.forms import ArtesanoForm, EmprendimientoForm, Artesano, ArtesanoModificarForm, EmprendimientoModificarForm
-from ponchoVirtual.apps.artesanos.models import Stand
+from ponchoVirtual.apps.artesanos.models import Stand, Emprendimiento, Artesano
 from ponchoVirtual.utils.pdf import generar_reporte_pdf
 # Importamos el modelo Usuario y el Group de permisos
 from ponchoVirtual.apps.usuarios.models import Usuario
@@ -21,7 +21,7 @@ def solicitud_artesano(request):
         if form_artesano.is_valid() and form_emprendimiento.is_valid():
             dni = str(form_artesano.cleaned_data['dni'])
             email = form_artesano.cleaned_data['correo']
-            nombre = form_artesano.cleaned_data['nombre']
+            nombre = form_artesano.cleaned_data['nombre_artesano']
             apellido = form_artesano.cleaned_data['apellido']
 
             #  Valida que no existe  un usuario con ese dni
@@ -88,7 +88,7 @@ def modificar_datos_art(request, dni_artesano):
             artesano.emprendimiento = emprendimiento
 
             artesano.save()
-            messages.success(request, f'El perfil del artesano {artesano.nombre} {artesano.apellido} ha sido modificado exitosamente!')
+            messages.success(request, f'El perfil del artesano {artesano.nombre_artesano} {artesano.apellido} ha sido modificado exitosamente!')
             return redirect('artesano:datos_artesano', dni_artesano=artesano.dni)
 
     else:
@@ -102,10 +102,10 @@ def reporte_artesanos_pdf(request):
     if not request.user.is_staff:
         raise PermissionDenied
 
-    artesanos = Artesano.objects.select_related('emprendimiento').order_by('apellido', 'nombre')
+    artesanos = Artesano.objects.select_related('emprendimiento').order_by('apellido', 'nombre_artesano')
 
     filas = [
-        (f'{a.apellido}, {a.nombre}', a.dni, a.emprendimiento.nombre, f'{a.localidad} ({a.provincia})',
+        (f'{a.apellido}, {a.nombre_artesano}', a.dni, a.emprendimiento.nombre_emprendimiento, f'{a.localidad} ({a.provincia})',
          f'{a.correo} / {a.telefono}')
         for a in artesanos
     ]
@@ -130,8 +130,8 @@ def reporte_artesanos_localidad_pdf(request):
                    .annotate(total=Count('id')).order_by('-total', 'localidad'))
 
     nombres = {}
-    for a in Artesano.objects.order_by('apellido', 'nombre'):
-        nombres.setdefault((a.localidad, a.provincia), []).append(f'{a.apellido}, {a.nombre}')
+    for a in Artesano.objects.order_by('apellido', 'nombre_artesano'):
+        nombres.setdefault((a.localidad, a.provincia), []).append(f'{a.apellido}, {a.nombre_artesano}')
 
     filas = [
         (l['localidad'], l['provincia'], l['total'], '; '.join(nombres[(l['localidad'], l['provincia'])]))
@@ -148,6 +148,7 @@ def reporte_artesanos_localidad_pdf(request):
         totales=[('Localidades', len(filas)), ('Total de artesanos', sum(l['total'] for l in localidades))],
     )
 
+
 @login_required(login_url=reverse_lazy('usuario:login'))
 def reporte_stands_pdf(request):
     if not request.user.is_staff:
@@ -157,7 +158,7 @@ def reporte_stands_pdf(request):
 
     filas = [
         (s.numero, s.zona, 'Ocupado' if s.artesano else 'Disponible',
-         f'{s.artesano.apellido}, {s.artesano.nombre}' if s.artesano else '-')
+         f'{s.artesano.apellido}, {s.artesano.nombre_artesano}' if s.artesano else '-')
         for s in stands
     ]
     ocupados = sum(1 for s in stands if s.artesano)
