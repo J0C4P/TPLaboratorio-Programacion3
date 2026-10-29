@@ -4,7 +4,6 @@
 {%block estilos%}
         <link rel="stylesheet" href="{%static 'css/Estilo_general.css'%}">
         <link rel="stylesheet" href="{%static 'css/Estilo_mis_productos.css'%}">
-        <link rel="stylesheet" href="{%static '/css/estrella.css'%}">
 {%endblock%}
 
 {%block barra_nav%}
@@ -31,22 +30,13 @@
                 </div>
 
                 <div class="d-flex align-items-center gap-2">
-                    <!-- Favoritos -->
-                    <div class="dropdown">
-                        <button class="btn btn-sm btn-light border dropdown-toggle" type="button" id="favoritos" data-bs-toggle="dropdown">
-                            <span class="text-warning">★</span> Favoritos
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" id="menu_favoritos">
-                            <li id="fav_vacio" class="dropdown-item-text text-center py-2">
-                                No tienes productos guardados
-                            </li>
-                        </ul>
-                    </div>
-
                      <div class="d-flex gap-2" id="buscador_texto">
                         <input class="form-control form-control-sm" type="search" placeholder="Buscar Ejm. Ruana de llama..." size="26">
                         <button class="btn btn-sm" type="submit">Buscar</button>
                     </div>
+
+                    <!-- separador-->
+                    <div class="vr d-none d-lg-block text-muted"></div>
 
                     <!-- inicio de sesion-->
                     {% if not user.is_authenticated %}
@@ -105,10 +95,9 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start">
                                 <h3 class="card-title h5 mb-3">{{producto.nombre}}</h3>
-                                <button type="button" class="boton_fav" title="Agregar a favoritos">☆</button>
                             </div>
                             <p class="card-text mb-2 categoria-art"><strong>Categoría:</strong> {{producto.categoria}}</p>
-                            <p class="card-text mb-2"><strong>Precio:</strong> ${{producto.precio}} $</p>
+                            <p class="card-text mb-2"><strong>Precio:</strong> {{producto.precio}} $</p>
                             <p class="card-text mb-2"><strong>Descripción:</strong> {{producto.descripcion}}</p>
                             <p class="card-text mb-2 localidad-art"><strong>Localidad:</strong> {{producto.localidad}}</p>
                             <p class="card-text mb-3"><strong>Ubicación del puesto:</strong> {{producto.artesano.emprendimiento.ubicacion}}</p>
@@ -133,5 +122,4 @@
 
         <script src="{% static 'js/filtros_catalogo.js' %}"></script>
         <script src="{% static 'js/buscador.js' %}"></script>
-        <script src="{% static 'js/favoritos.js' %}"></script>
 {%endblock%}
