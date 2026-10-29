@@ -23,6 +23,13 @@
         <h1>Solicitud de Participación</h1>
         <p>Completá el siguiente formulario para solicitar tu participación en la Fiesta Nacional e Internacional del Poncho.</p>
         <h2>Registro de artesano</h2>
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
             <form action="" method="post" enctype="multipart/form-data" class="bg-white p-4 rounded-4 shadow-sm border" id="formulario" novalidate>
                 {% csrf_token %}
                 <fieldset>

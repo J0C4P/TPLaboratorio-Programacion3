@@ -77,6 +77,18 @@
                     </div>
                 </div>
             </div>
+            {% if request.user.is_staff%}
+                <div class="col-12">
+                    <div class="card h-100 p-3 bg-white tarjeta-acceso">
+                        <div class="card-body">
+                            <div class="mb-3 text-primary fs-1"><i class="bi bi-person-check-fill"></i></div>
+                            <h3 class="h5 fw-bold text-dark">Evaluar solicitudes</h3>
+                            <p class="text-muted small">Aceptar o denegar solicitudes de artesanos postulados para el Poncho Digital.</p>
+                            <a href="#" class="btn btn-primary rounded-pill px-4 btn-sm fw-bold">Evaluar</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
 
@@ -96,47 +108,52 @@
             </div>
         </div>
     </div>
-
+<hr>
     <!-- CARRUSEL DINÁMICO DE PRODUCTOS -->
-    {% if productos_destacados %}
+{% if productos_destacados %}
     <div class="container my-5">
         <div class="text-center mb-4">
-            <h3 class="fw-bold texto-marron-principal">✨ PRODUCTOS DESTACADOS</h3>
+            <h3 class="fw-bold texto-marron-principal">PRODUCTOS DESTACADOS</h3>
             <p class="text-muted">Piezas artesanales subidas recientemente por nuestros creadores</p>
         </div>
 
-        <div id="carruselProductos" class="carousel slide shadow-sm rounded-4 p-4 bg-white border" data-bs-ride="carousel">
+        <!-- Contenedor del carrusel con mayor padding y presencia -->
+        <div id="carruselProductos" class="carousel slide shadow rounded-4 p-5 bg-white border border-2 border-opacity-10" data-bs-ride="carousel">
             <div class="carousel-inner">
                 {% for producto in productos_destacados %}
                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <div class="row align-items-center justify-content-center text-center">
-                            <div class="col-md-4">
-                                {% if producto.imagen %}
-                                    <img src="{{ producto.imagen.url }}" class="img-fluid rounded-3 shadow" style="max-height: 220px; object-fit: cover;" alt="{{ producto.nombre }}">
-                                {% else %}
-                                    <img src="{% static 'img/portada 1.jpg' %}" class="img-fluid rounded-3 shadow" style="max-height: 220px; object-fit: cover;" alt="Sin imagen">
-                                {% endif %}
+                        <div class="row align-items-center justify-content-center text-center text-md-start g-4">
+
+                            <!-- Columna de la Imagen (Con límite de alto para que no se deforme) -->
+                            <div class="col-12 col-md-5 text-center">
+                                <img src="{{ producto.imagen.url }}" class="img-fluid rounded-4 shadow-sm" style="max-height: 280px; width: 100%;" alt="{{ producto.nombre }}">
                             </div>
-                            <div class="col-md-6 text-md-start mt-3 mt-md-0">
-                                <span class="badge bg-secondary mb-2">{{ producto.categoria}}</span>
-                                <h4 class="fw-bold texto-marron-principal">{{ producto.nombre }}</h4>
-                                <h6 class="text-muted small">{{ producto.descripcion|truncatechars:100 }}</h6>
-                                <h6 class="fw-bold text-dark">Precio: ${{ producto.precio }}</h6>
+
+                            <!-- Columna de los Textos (Respetando tu estructura original) -->
+                            <div class="col-12 col-md-7 ps-md-4">
+                                <span class="badge bg-warning text-dark mb-3 px-3 py-2 rounded-pill fw-bold shadow-sm">
+                                    <i class="bi bi-tag-fill me-1"></i> {{ producto.categoria}}
+                                </span>
+                                <h2 class="fw-bold text-dark display-6 mb-3">{{ producto.nombre }}</h2>
+                                <p class="text-muted lead fs-6 mb-4">{{ producto.descripcion}}</p>
+                                <h3 class="fw-bold texto-marron-principal">Precio: ${{ producto.precio }}</h3>
                             </div>
+
                         </div>
                     </div>
                 {% endfor %}
             </div>
+
+            <!-- Botones de navegación del carrusel más visibles -->
             <button class="carousel-control-prev" type="button" data-bs-target="#carruselProductos" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+                <span class="carousel-control-prev-icon bg-secondary rounded-circle p-3 shadow" aria-hidden="true"></span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#carruselProductos" data-bs-slide="next">
-                <span class="carousel-control-next-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+                <span class="carousel-control-next-icon bg-secondary rounded-circle p-3 shadow" aria-hidden="true"></span>
             </button>
         </div>
     </div>
-    {% endif %}
-
+{% endif %}
     <!-- CROQUIS DE LOS STANDS (TAMAÑO ORIGINAL INTACTO) -->
     <div class="container my-5" id="mapa">
         <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">

@@ -39,9 +39,9 @@
             {% if messages %}
                 {% for message in messages %}
                     {% if message.tags == 'success' %}
-                        <div style="background-color: lightseagreen" class="mb-3">{{message}}</div>
+                        <div class="mb-3 alert alert-success" role="alert">{{message}}</div>
                     {% else %}
-                        <div style="background-color: red" class="mb-3">{{message}}</div>
+                        <div class="mb-3 alert alert-danger" role="alert">{{message}}</div>
                     {% endif %}
                 {% endfor %}
             {% endif %}
@@ -74,6 +74,8 @@
                 </div>
             </section>
     {% else %}
-        <h1 style="color: red">No puede modificar anuncios que no le pertenecen</h1>
+        <div class="alert alert-danger" role="alert">
+            <h1>No puede modificar anuncios que no le pertenecen</h1>
+        </div>
     {% endif %}
 {% endblock %}
