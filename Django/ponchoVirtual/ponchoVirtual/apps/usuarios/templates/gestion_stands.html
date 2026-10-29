@@ -1,0 +1,91 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %} Poncho digital - Gestión de stands {% endblock %}
+{% block estilos %}
+    <link rel="stylesheet" href="{% static 'css/Estilo_general.css' %}">
+{% endblock %}
+
+{% block barra_nav %}
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <a href="{% url 'principal' %}">Volver Inicio</a>
+        <span class="navbar-text ms-auto">
+            {{ user.username }}
+            <a class="btn btn-outline-success ms-2" href="{% url 'usuario:logout' %}">Cerrar sesión</a>
+        </span>
+    </div>
+</nav>
+{% endblock %}
+
+{% block contenido_principal %}
+    <header class="my-3">
+        <h1>Gestión de stands</h1>
+        <p>Asigná o liberá los stands del predio por pabellón.</p>
+    </header>
+
+    {% for mensaje in messages %}
+        <div class="alert alert-{% if mensaje.tags == 'error' %}danger{% else %}{{ mensaje.tags }}{% endif %}">{{ mensaje }}</div>
+    {% endfor %}
+
+    <div class="d-flex flex-wrap gap-3 mb-3 align-items-center">
+        <span class="badge text-bg-secondary">Total: {{ total }}</span>
+        <span class="badge text-bg-danger">Ocupados: {{ ocupados }}</span>
+        <span class="badge text-bg-success">Disponibles: {{ disponibles }}</span>
+        <div class="ms-auto d-flex gap-2">
+            {% if perms.artesanos.add_stand %}
+                <a class="btn btn-primary btn-sm" href="{% url 'usuario:crear_stand' %}">Nuevo stand</a>
+            {% endif %}
+            <a class="btn btn-outline-secondary btn-sm" href="{% url 'artesano:reporte_stands_pdf' %}">Reporte PDF</a>
+        </div>
+    </div>
+
+    {% regroup stands by zona as zonas %}
+    {% for zona in zonas %}
+        <section class="mb-4">
+            <h2 class="h4">{{ zona.grouper }}</h2>
+            <table class="table table-bordered align-middle">
+                <thead>
+                    <tr><th>Stand</th><th>Estado</th><th>Artesano</th><th style="width: 40%">Acción</th></tr>
+                </thead>
+                <tbody>
+                {% for stand in zona.list %}
+                    <tr>
+                        <td>{{ stand.numero }}</td>
+                        {% if stand.artesano %}
+                            <td><span class="badge text-bg-danger">Ocupado</span></td>
+                            <td>{{ stand.artesano.apellido }}, {{ stand.artesano.nombre }}</td>
+                            <td>
+                                {% if perms.artesanos.change_stand %}
+                                <form method="post" action="{% url 'usuario:liberar_stand' stand.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">Liberar</button>
+                                </form>
+                                {% endif %}
+                            </td>
+                        {% else %}
+                            <td><span class="badge text-bg-success">Disponible</span></td>
+                            <td>-</td>
+                            <td>
+                                {% if perms.artesanos.change_stand %}
+                                <form method="post" action="{% url 'usuario:asignar_stand' stand.id %}" class="d-flex gap-2">
+                                    {% csrf_token %}
+                                    <select name="artesano" class="form-select form-select-sm" required>
+                                        <option value="" selected disabled>Elegir artesano...</option>
+                                        {% for artesano in artesanos_sin_stand %}
+                                            <option value="{{ artesano.id }}">{{ artesano.apellido }}, {{ artesano.nombre }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="btn btn-success btn-sm">Asignar</button>
+                                </form>
+                                {% endif %}
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    {% empty %}
+        <p class="text-muted">Todavía no hay stands cargados.</p>
+    {% endfor %}
+{% endblock %}

@@ -19,6 +19,9 @@
                     <a href="#mapa">Pabellones y Stands </a>
                     <a href="{% url 'productos:listar_productos' %}"> Catalogo productos </a>
                     <a href="#calificacion">Comentarios y Sugerencias </a>
+                    {% if perms.artesanos.view_stand %}
+                        <a href="{% url 'usuario:gestion_stands' %}"> Gestión de stands </a>
+                    {% endif %}
                 </div>
             </div>
             <div class="navbar-nav ms-auto align-items-lg-center gap-2">

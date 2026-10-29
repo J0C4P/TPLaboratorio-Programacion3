@@ -1,0 +1,27 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %} Poncho digital - Nuevo stand {% endblock %}
+{% block estilos %}
+    <link rel="stylesheet" href="{% static 'css/Estilo_general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Estilo_formulario.css' %}">
+{% endblock %}
+
+{% block barra_nav %}
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <a href="{% url 'usuario:gestion_stands' %}">Volver a stands</a>
+    </div>
+</nav>
+{% endblock %}
+
+{% block contenido_principal %}
+    <header class="my-3">
+        <h1>Nuevo stand</h1>
+    </header>
+    <form method="post" class="w-75">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a class="btn btn-outline-secondary" href="{% url 'usuario:gestion_stands' %}">Cancelar</a>
+    </form>
+{% endblock %}
