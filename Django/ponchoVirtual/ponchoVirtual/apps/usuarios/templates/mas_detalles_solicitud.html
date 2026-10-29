@@ -1,0 +1,79 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %} Poncho digital - Mis productos {% endblock %}
+{% block estilos %}
+    <link rel="stylesheet" href="{% static 'css/Estilo_general.css' %}">
+{% endblock %}
+
+{% block barra_nav %}
+<nav class="navbar navbar-expand-lg bg-light shadow-sm">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="menuNavegacion">
+                <div class="d-flex flex-column flex-lg-row align-items-start me-auto">
+                    <a href="{% url 'artesano:solicitudes_artesanos_admin' %}">Volver solicitudes</a>
+                </div>
+                {% if user.is_staff %}
+                <div class="text-secondary">
+                    Administrador: <strong class="text-dark">{{ user.username }}</strong>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block contenido_principal %}
+    {% if user.is_staff %}
+    <div class="container my-5">
+        <div class="mb-4">
+            <h1 class="fw-bold texto-marron-principal">Detalle de la Postulación</h1>
+            <p class="text-muted">Revisión completa de los datos del artesano y su emprendimiento.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-12 col-md-6">
+                <div class="card shadow-sm border-0 rounded-4 p-4 bg-white h-100">
+                    <h3 class="h5 fw-bold text-dark mb-3 border-bottom pb-2">Datos Personales</h3>
+                    <ul class="list-unstyled mb-0 d-flex flex-column gap-2">
+                        <li class="p-2"><strong>Nombre y Apellido:</strong> {{ artesano.nombre_artesano }} {{ artesano.apellido }}</li>
+                        <li class="p-2"><strong>DNI:</strong> {{ artesano.dni }}</li>
+                        <li class="p-2"><strong>Correo electrónico:</strong> {{ artesano.correo }}</li>
+                        <li class="p-2"><strong>Teléfono:</strong> {{ artesano.telefono }}</li>
+                        <li class="p-2"><strong>Localidad:</strong> {{ artesano.localidad }}</li>
+                        <li class="p-2"><strong>Provincia:</strong> {{ artesano.provincia }}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="card shadow-sm border-0 rounded-4 p-4 bg-white h-100">
+                    <h3 class="h5 fw-bold text-dark mb-3 border-bottom pb-2">Datos del Emprendimiento</h3>
+                    <ul class="list-unstyled mb-0 d-flex flex-column gap-2">
+                        <li class="p-2"><strong>Emprendimiento:</strong> {{ artesano.emprendimiento.nombre_emprendimiento }}</li>
+                        <li class="p-2"><strong>Ubicación/Pabellón:</strong> {{ artesano.emprendimiento.ubicacion }}</li>
+                        <li class="p-2"><strong>Cantidad de productos:</strong> {{ artesano.emprendimiento.cantidad_productos }}</li>
+                        <li class="p-2"><strong>Descripción:</strong> {{ artesano.emprendimiento.descripcion }}</li>
+                        <li class="p-2"><strong>Trayectoria:</strong> {{ artesano.emprendimiento.trayectoria }}</li>
+                        {% if emprendimiento.observaciones %}
+                            <li class="p-2"><strong>Observaciones:</strong> {{ artesano.emprendimiento.observaciones }}</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card shadow-sm border-0 rounded-4 p-4 bg-white mt-4 text-center">
+            <h4 class="h6 fw-bold text-muted mb-3">Acciones de Evaluación</h4>
+            <div class="d-flex justify-content-center gap-3 pt-2">
+                <a href="#" class="btn btn-success px-4 rounded-pill fw-bold">Aprobar</a>
+                <a href="#" class="btn btn-danger px-4 rounded-pill fw-bold">Rechazar</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+        <div class="alert alert-danger" role="alert">
+          <p class="mb-0">No posee los permisos necesarios para ingresar a la página solicitada.</p>
+        </div>
+    {% endif %}
+{% endblock %}

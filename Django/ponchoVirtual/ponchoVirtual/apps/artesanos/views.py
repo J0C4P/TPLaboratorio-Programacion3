@@ -9,7 +9,10 @@ from ponchoVirtual.apps.artesanos.models import Stand, Emprendimiento, Artesano
 from ponchoVirtual.utils.pdf import generar_reporte_pdf
 # Importamos el modelo Usuario y el Group de permisos
 from ponchoVirtual.apps.usuarios.models import Usuario
-from django.contrib.auth.models import Group
+
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.urls import reverse_lazy
+from django.shortcuts import render, redirect, get_object_or_404
 
 
 def solicitud_artesano(request):
@@ -172,3 +175,33 @@ def reporte_stands_pdf(request):
         anchos=(1.5, 4, 2.5, 6),
         totales=[('Total de stands', len(filas)), ('Ocupados', ocupados), ('Disponibles', len(filas) - ocupados)],
     )
+
+
+@login_required(login_url=reverse_lazy('usuario:login'))
+def solicitudes_artesanos_admin(request):
+    usuarios_inactivos = Usuario.objects.filter(is_active=False)
+
+    # buscamos los dni de los usuarios con is_active en Falso
+    dnis_usuarios_inactivos = usuarios_inactivos.values_list('documento_identidad', flat=True)
+    artesanos = Artesano.objects.filter(dni__in=dnis_usuarios_inactivos)
+
+    return render(request, 'solicitudes_artesanos.html', {'artesanos': artesanos})
+
+
+@login_required(login_url=reverse_lazy('usuario:login'))
+def evaluar_solicitud_admin(request, dni):
+    artesano = get_object_or_404(Artesano, dni=dni)
+    usuario = get_object_or_404(Usuario, documento_identidad=dni)
+
+    return render(request, 'mas_detalles_solicitud.html', {'usuario': usuario, 'artesano': artesano})
+
+
+def consultar_estado_solicitud(request):
+    usuario = None
+    if request.method == "POST":
+        dni_ingresado = request.POST.get('dni')
+        usuario = Usuario.objects.filter(documento_identidad=dni_ingresado).first()
+
+        return render(request, 'estado_solicitud.html', {'usuario': usuario})
+    else:
+        return render(request, 'estado_solicitud.html')

@@ -18,6 +18,9 @@
                     <a href="{% url 'principal' %}">Inicio</a>
                     <a href="{% url 'principal' %}#mapa">Mapa y Stands</a>
                     <a href="{% url 'artesano:solicitud_artesano' %}">Postularse como Artesano</a>
+                    {% if not user.is_authenticated %}
+                    <a href="{% url 'artesano:consultar_estado_solicitud' %}">Consultar estado solicitud</a>
+                    {% endif %}
                     {% if user.is_authenticated %}
                         <a href="{% url 'productos:ver_mis_productos' artesano_dni=request.user.documento_identidad%}">Panel Artesano</a>
                     {% endif %}

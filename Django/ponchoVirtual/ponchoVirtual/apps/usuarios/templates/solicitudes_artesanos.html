@@ -1,0 +1,64 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %} Poncho digital - Mis productos {% endblock %}
+{% block estilos %}
+    <link rel="stylesheet" href="{% static 'css/Estilo_general.css' %}">
+{% endblock %}
+
+{% block barra_nav %}
+<nav class="navbar navbar-expand-lg bg-light shadow-sm">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="menuNavegacion">
+                <div class="d-flex flex-column flex-lg-row align-items-start me-auto">
+                    <a href="{% url 'principal' %}">Volver inicio</a>
+                </div>
+                {% if user.is_staff %}
+                <div class="text-secondary">
+                    Administrador: <strong class="text-dark">{{ user.username }}</strong>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block contenido_principal %}
+{% if user.is_staff %}
+    <div class="container my-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="fw-bold texto-marron-principal">Solicitudes de Artesanos Pendientes</h1>
+                <p>Listado de postulaciones recibidas pendientes de aprobación.</p>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-4 p-4 bg-white">
+            {% if artesanos %}
+                <div class="list-group list-group-flush">
+                    {% for art in artesanos %}
+                        <div class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-md-center py-3 gap-3 border-bottom">
+                            <div>
+                                <h5 class="mb-1 fw-bold text-dark">{{ art.apellido }}, {{ art.nombre_artesano }}</h5>
+                                <p class="mb-0 text-muted small">
+                                    <span class="me-3"><strong>DNI:</strong> {{ art.dni }}</span>
+                                    <span class="me-3"><strong>Emprendimiento:</strong> {{ art.emprendimiento.nombre_emprendimiento }}</span>
+                                    <span><strong>Localidad:</strong> {{ art.localidad }} ({{ art.provincia }})</span>
+                                </p>
+                            </div>
+                            <a href="{% url 'artesano:evaluar_solicitud_admin' art.dni%}" class="btn btn-primary btn-sm px-4 rounded-pill fw-semibold">Ver más detalles</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-5">
+                    <p class="text-muted fs-5 mb-0">No hay solicitudes pendientes de aprobación en este momento.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-danger" role="alert">
+      <p>No posee los permisos necesarios para ingresar a la pagina solicitada</p>
+    </div>
+{% endif %}
+{% endblock %}
