@@ -13,3 +13,66 @@ h1{
     font-size: 27px !important ;
 
 }
+
+ /* Cabecera marrón institucional */
+.header-estilo-marron {
+    background: linear-gradient(135deg, #4A2211 0%, #7A3E1D 100%);
+}
+
+/* Tarjetas flotantes de accesos rápidos */
+.tarjeta-acceso {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease;
+}
+
+.tarjeta-acceso:hover {
+    transform: translateY(-3px);
+}
+
+/* Contenedor controlado para la imagen de la cabecera (evita que se haga gigante) */
+.img-cabecera-portada {
+    max-width: 650px;
+    height: 320px;
+    object-fit: cover;
+    margin: 0 auto;
+}
+
+/* Clases de texto y botones */
+.texto-marron-principal {
+    color: #7A3E1D;
+}
+
+.btn-marron-custom {
+    background-color: #7A3E1D;
+    color: #ffffff;
+    border-radius: 50rem;
+}
+
+.btn-marron-custom:hover {
+    background-color: #5C2C16;
+    color: #ffffff;
+}
+
+.badge-keyword {
+    background-color: #F5EBE6;
+    color: #7A3E1D;
+    font-weight: 700;
+    padding: 0.25rem 0.6rem;
+    border-radius: 0.5rem;
+    display: inline-block;
+}
+/* Sección institucional limpia y con cuerpo */
+.seccion-bienvenida-artesanal {
+    background-color: #ffffff;
+    border: 1px solid #e7dcd5;
+    border-radius: 12px;
+    padding: 3rem;
+}
+
+.texto-destacado-artesanal {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #555555;
+}

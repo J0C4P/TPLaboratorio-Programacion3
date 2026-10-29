@@ -19,12 +19,13 @@ from django.urls import path, include
 from django.views.generic.base import TemplateView
 from django.conf.urls.static import static
 
+import ponchoVirtual
 from ponchoVirtual import settings
-from ponchoVirtual.apps.productos.views import listar_productos
+from ponchoVirtual.apps.productos.views import listar_productos, productos_destacados
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", TemplateView.as_view(template_name='base/portada.html'), name="principal"),
+    path("", productos_destacados, name="principal"),
     path("", include('ponchoVirtual.apps.usuarios.urls')),
     path("productos/", include('ponchoVirtual.apps.productos.urls')),
     path('artesano/', include('ponchoVirtual.apps.artesanos.urls'))

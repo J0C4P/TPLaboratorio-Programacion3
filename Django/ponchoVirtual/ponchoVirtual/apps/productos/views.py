@@ -155,3 +155,9 @@ def reporte_artesanos_rubro_pdf(request):
         anchos=(3.2, 1.7, 1.7, 7),
         totales=[('Total de artesanos registrados', Artesano.objects.count())],
     )
+
+# Vista empleada para el carrousel de portada
+def productos_destacados(request):
+    productos = Producto.objects.all()
+
+    return render(request, 'base/portada.html', {'productos_destacados': productos})

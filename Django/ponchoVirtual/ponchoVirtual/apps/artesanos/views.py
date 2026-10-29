@@ -14,7 +14,6 @@ from django.contrib.auth.models import Group
 
 def solicitud_artesano(request):
     if request.method == "POST":
-        print(">>> LLEGÓ LA PETICIÓN POST AL SERVIDOR")
         form_artesano = ArtesanoForm(request.POST)
         form_emprendimiento = EmprendimientoForm(request.POST)
 
