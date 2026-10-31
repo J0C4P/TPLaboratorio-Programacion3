@@ -120,7 +120,7 @@ def eliminar_producto(request, id_producto):
     producto.delete()
     messages.success(request, f'El producto {nombre} ha sido eliminado con exito!')
 
-    return redirect('productos:mis_productos', artesano_dni=artesano)
+    return redirect('productos:ver_mis_productos', artesano_dni=artesano)
 
 
 @login_required(login_url=reverse_lazy('usuario:login'))

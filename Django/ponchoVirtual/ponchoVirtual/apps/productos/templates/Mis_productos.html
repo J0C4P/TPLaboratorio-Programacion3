@@ -51,6 +51,15 @@
 
 {% block contenido_principal %}
     {% if user.documento_identidad == artesano_dni %}
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <div class="mb-3 alert alert-success" role="alert">{{message}}</div>
+                {% else %}
+                    <div class="mb-3 alert alert-danger" role="alert">{{message}}</div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
         <h1>Gestion de productos publicados</h1>
         <p>Bienvenido. Desde aquí puedes dar de alta nuevos productos, modificar la información existente o eliminar ítems de tu catálogo en la plataforma Poncho Digital.</p>
         <section id="productos_publicados">
