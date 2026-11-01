@@ -255,29 +255,40 @@ def listar_artesanos_aceptados(request):
     if not request.user.is_staff:
         raise PermissionDenied
 
-    # Traemos los artesanos cuyo usuario está activo
     dnis_activos = Usuario.objects.filter(is_active=True, is_staff=False).values_list('documento_identidad', flat=True)
     artesanos = Artesano.objects.filter(dni__in=dnis_activos).select_related('emprendimiento', 'stand')
-
-    # Stands disponibles para reasignar
     stands_disponibles = Stand.objects.filter(artesano__isnull=True)
 
     if request.method == "POST":
+        accion = request.POST.get('accion')
         artesano_id = request.POST.get('artesano_id')
-        nuevo_stand_id = request.POST.get('nuevo_stand_id')
-
         artesano = get_object_or_404(Artesano, id=artesano_id)
 
-        if nuevo_stand_id:
-            # 1. Liberamos el stand actual si ya tenía uno
+        # CASO A: Quitar rol / Dar de baja
+        if accion == 'dar_de_baja':
+            # 1. Liberar el stand que ocupaba
             Stand.objects.filter(artesano=artesano).update(artesano=None)
 
-            # 2. Asignamos el nuevo stand
+            # 2. Desactivar el usuario y quitarle permisos/grupos
+            usuario = Usuario.objects.filter(documento_identidad=artesano.dni).first()
+            if usuario:
+                usuario.is_active = False  # Ya no puede iniciar sesión
+                usuario.groups.clear()     # Se le quita el grupo 'Artesano'
+                usuario.user_permissions.clear()  # Se le limpian permisos individuales
+                usuario.save()
+
+            messages.warning(request, f"Se dieron de baja los permisos y el stand del artesano {artesano.nombre_artesano} {artesano.apellido}.")
+            return redirect('artesano:listar_artesanos_aceptados')
+
+        # CASO B: Reasignar stand
+        nuevo_stand_id = request.POST.get('nuevo_stand_id')
+        if nuevo_stand_id:
+            Stand.objects.filter(artesano=artesano).update(artesano=None)
             nuevo_stand = get_object_or_404(Stand, id=nuevo_stand_id)
             nuevo_stand.artesano = artesano
             nuevo_stand.save()
+            messages.success(request, f"Se actualizó la ubicación de {artesano.nombre_artesano}.")
 
-            messages.success(request, f"Se actualizó la ubicación de {artesano.nombre_artesano}: Stand {nuevo_stand.numero} ({nuevo_stand.zona}).")
         return redirect('artesano:listar_artesanos_aceptados')
 
     return render(request, 'artesanos_aceptados.html', {

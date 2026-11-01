@@ -40,6 +40,7 @@
                         <th>Emprendimiento</th>
                         <th>Stand Actual</th>
                         <th>Reasignar Pabellón / Stand</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -68,10 +69,19 @@
                                 <button type="submit" class="btn btn-sm btn-outline-primary text-nowrap">Guardar</button>
                             </form>
                         </td>
+                        <td>
+                            <form method="POST" onsubmit="return confirm('¿Seguro que deseas quitar los permisos y dar de baja a este artesano?');">
+                                {% csrf_token %}
+                                <input type="hidden" name="artesano_id" value="{{ art.id }}">
+                                <button type="submit" name="accion" value="dar_de_baja" class="btn btn-sm btn-outline-danger text-nowrap">
+                                    Dar de Baja
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="5" class="text-center text-muted py-4">No hay artesanos aprobados aún.</td>
+                        <td colspan="6" class="text-center text-muted py-4">No hay artesanos aprobados aún.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
