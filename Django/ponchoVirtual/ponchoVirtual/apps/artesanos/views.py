@@ -190,11 +190,55 @@ def solicitudes_artesanos_admin(request):
 
 @login_required(login_url=reverse_lazy('usuario:login'))
 def evaluar_solicitud_admin(request, dni):
+    if not request.user.is_staff:
+        raise PermissionDenied
+
     artesano = get_object_or_404(Artesano, dni=dni)
     usuario = get_object_or_404(Usuario, documento_identidad=dni)
 
-    return render(request, 'mas_detalles_solicitud.html', {'usuario': usuario, 'artesano': artesano})
+    # Buscamos stands que no tengan artesano asignado
+    stands_disponibles = Stand.objects.filter(artesano__isnull=True)
 
+    if request.method == "POST":
+        accion = request.POST.get('accion')
+
+        if accion == 'aprobar':
+            stand_id = request.POST.get('stand_id')
+
+            if not stand_id:
+                messages.error(request, "Debe seleccionar un Stand / Pabellón para aprobar al artesano.")
+                return render(request, 'mas_detalles_solicitud.html', {
+                    'usuario': usuario,
+                    'artesano': artesano,
+                    'stands_disponibles': stands_disponibles
+                })
+
+            stand_seleccionado = get_object_or_404(Stand, id=stand_id)
+
+            # Asignar el stand al artesano
+            stand_seleccionado.artesano = artesano
+            stand_seleccionado.save()
+
+            # Activar el usuario para que pueda ingresar al sistema
+            usuario.is_active = True
+            usuario.save()
+
+            messages.success(request, f"Solicitud aprobada con éxito. Stand {stand_seleccionado.numero} asignado.")
+            return redirect('artesano:solicitudes_artesanos_admin')
+
+        elif accion == 'rechazar':
+            # Se da de baja la solicitud y el usuario pendiente
+            usuario.delete()
+            artesano.emprendimiento.delete()  # Elimina el emprendimiento y al artesano asociado
+
+            messages.warning(request, f"La solicitud con DNI {dni} ha sido rechazada.")
+            return redirect('artesanos:solicitudes_artesanos_admin')
+
+    return render(request, 'mas_detalles_solicitud.html', {
+        'usuario': usuario,
+        'artesano': artesano,
+        'stands_disponibles': stands_disponibles
+    })
 
 def consultar_estado_solicitud(request):
     usuario = None
@@ -205,3 +249,38 @@ def consultar_estado_solicitud(request):
         return render(request, 'estado_solicitud.html', {'usuario': usuario})
     else:
         return render(request, 'estado_solicitud.html')
+
+@login_required(login_url=reverse_lazy('usuario:login'))
+def listar_artesanos_aceptados(request):
+    if not request.user.is_staff:
+        raise PermissionDenied
+
+    # Traemos los artesanos cuyo usuario está activo
+    dnis_activos = Usuario.objects.filter(is_active=True, is_staff=False).values_list('documento_identidad', flat=True)
+    artesanos = Artesano.objects.filter(dni__in=dnis_activos).select_related('emprendimiento', 'stand')
+
+    # Stands disponibles para reasignar
+    stands_disponibles = Stand.objects.filter(artesano__isnull=True)
+
+    if request.method == "POST":
+        artesano_id = request.POST.get('artesano_id')
+        nuevo_stand_id = request.POST.get('nuevo_stand_id')
+
+        artesano = get_object_or_404(Artesano, id=artesano_id)
+
+        if nuevo_stand_id:
+            # 1. Liberamos el stand actual si ya tenía uno
+            Stand.objects.filter(artesano=artesano).update(artesano=None)
+
+            # 2. Asignamos el nuevo stand
+            nuevo_stand = get_object_or_404(Stand, id=nuevo_stand_id)
+            nuevo_stand.artesano = artesano
+            nuevo_stand.save()
+
+            messages.success(request, f"Se actualizó la ubicación de {artesano.nombre_artesano}: Stand {nuevo_stand.numero} ({nuevo_stand.zona}).")
+        return redirect('artesano:listar_artesanos_aceptados')
+
+    return render(request, 'artesanos_aceptados.html', {
+        'artesanos': artesanos,
+        'stands_disponibles': stands_disponibles
+    })

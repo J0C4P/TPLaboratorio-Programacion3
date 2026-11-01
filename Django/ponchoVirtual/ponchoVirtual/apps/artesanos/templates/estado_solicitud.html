@@ -46,7 +46,11 @@
                     <div class="alert alert-info mt-3" role="alert">
                         <p>Las credenciales para acceder tanto para <strong>Usuario</strong> y <strong>Contraseña</strong> seran su <strong><u>Documento.</u></strong></p>
                     </div>
-                    <p>Si lo desea puede cambiar tanto Usuario como contraseña en el siguiente link.</p>
+                    <div class="text-center mt-3">
+                        <a href="{% url 'usuario:login' %}" class="btn btn-outline-primary px-4 rounded-pill fw-semibold">
+                            Iniciar Sesión
+                         </a>
+                    </div>
                 {% else %}
                     <div class="alert alert-warning mb-0" role="alert">
                         <strong>Pendiente de revisión.</strong> Tu solicitud todavía sigue <strong>PENDIENTE</strong> de evaluacion.
