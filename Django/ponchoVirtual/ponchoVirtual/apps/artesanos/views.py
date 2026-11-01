@@ -232,7 +232,7 @@ def evaluar_solicitud_admin(request, dni):
             artesano.emprendimiento.delete()  # Elimina el emprendimiento y al artesano asociado
 
             messages.warning(request, f"La solicitud con DNI {dni} ha sido rechazada.")
-            return redirect('artesanos:solicitudes_artesanos_admin')
+            return redirect('artesano:solicitudes_artesanos_admin')
 
     return render(request, 'mas_detalles_solicitud.html', {
         'usuario': usuario,
