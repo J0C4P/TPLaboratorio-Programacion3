@@ -1,0 +1,60 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block titulo %} Modificar Pabellón y Stand - Poncho Digital {% endblock %}
+
+{% block barra_nav %}
+<nav class="navbar navbar-expand-lg bg-light shadow-sm">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="menuNavegacion">
+            <a href="{% url 'artesano:listar_artesanos_aceptados' %}" class="btn btn-outline-secondary btn-sm me-3">← Volver al listado</a>
+            <span class="text-muted">Modificar Asignación de Espacio</span>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block contenido_principal %}
+<div class="container my-5" style="max-width: 650px;">
+    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+        <h3 class="fw-bold mb-1 texto-marron-principal">Modificar Pabellón y Stand</h3>
+        <p class="text-muted small mb-4">Actualizá la ubicación asignada en el predio ferial.</p>
+
+        <div class="p-3 mb-4 rounded-3 bg-light border">
+            <p class="mb-1"><strong>Expositor:</strong> {{ artesano.nombre_artesano }} {{ artesano.apellido }}</p>
+            <p class="mb-1"><strong>DNI:</strong> {{ artesano.dni }}</p>
+            <p class="mb-0"><strong>Emprendimiento:</strong> {{ artesano.emprendimiento.nombre_emprendimiento }}</p>
+            <hr class="my-2">
+            <p class="mb-0">
+                <strong>Ubicación actual:</strong>
+                {% if stand_actual %}
+                    <span class="badge bg-success">Stand N° {{ stand_actual.numero }} — {{ stand_actual.zona }}</span>
+                {% else %}
+                    <span class="badge bg-secondary">Sin Stand Asignado</span>
+                {% endif %}
+            </p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="stand_id" class="form-label fw-semibold">Seleccionar nueva ubicación (Pabellón y Stand):</label>
+                <select name="stand_id" id="stand_id" class="form-select rounded-3">
+                    <option value="">-- Sin asignar (Dejar libre) --</option>
+                    {% for stand in stands_opciones %}
+                        <option value="{{ stand.id }}" {% if stand_actual and stand.id == stand_actual.id %}selected{% endif %}>
+                            Stand N° {{ stand.numero }} — Zona/Pabellón: {{ stand.zona }} {% if stand_actual and stand.id == stand_actual.id %}(Actual){% endif %}
+                        </option>
+                    {% endfor %}
+                </select>
+                <div class="form-text">Podés mover al artesano a cualquier stand libre o cambiarlo de pabellón.</div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+                <a href="{% url 'artesano:listar_artesanos_aceptados' %}" class="btn btn-outline-secondary px-3 rounded-pill">Cancelar</a>
+                <button type="submit" class="btn btn-primary px-4 rounded-pill fw-semibold">Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

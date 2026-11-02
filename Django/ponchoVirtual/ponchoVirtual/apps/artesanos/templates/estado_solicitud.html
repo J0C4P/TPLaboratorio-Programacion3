@@ -35,27 +35,49 @@
         </form>
     </div>
 
-    {% if request.method == "POST" %}
+   {% if request.method == "POST" %}
         <div class="card border-0 shadow-sm rounded-4 p-4">
             {% if usuario %}
                 <h5 class="fw-bold mb-3">Estado actual</h5>
+
                 {% if usuario.is_active %}
-                    <div class="alert alert-success mb-0" role="alert">
+                    <!-- CASO APROBADA -->
+                    <div class="alert alert-success mb-3" role="alert">
                         <strong>Solicitud aprobada!!.</strong> Tu postulación fue <strong>ACEPTADA</strong>.
+                        {% if artesano.stand %}
+                            <div class="mt-2">
+                                <strong>Ubicación asignada:</strong> Stand N° {{ artesano.stand.numero }} ({{ artesano.stand.zona }})
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="alert alert-info mt-3" role="alert">
-                        <p>Las credenciales para acceder tanto para <strong>Usuario</strong> y <strong>Contraseña</strong> seran su <strong><u>Documento.</u></strong></p>
+                        <p class="mb-0">Las credenciales para acceder tanto para <strong>Usuario</strong> y <strong>Contraseña</strong> serán su <strong><u>Documento.</u></strong></p>
                     </div>
                     <div class="text-center mt-3">
                         <a href="{% url 'usuario:login' %}" class="btn btn-outline-primary px-4 rounded-pill fw-semibold">
                             Iniciar Sesión
-                         </a>
+                        </a>
                     </div>
+
+                {% elif artesano and "RECHAZADO:" in artesano.emprendimiento.observaciones %}
+                    <!-- CASO RECHAZADA CON MOTIVO -->
+                    <div class="alert alert-danger mb-0" role="alert">
+                        <h6 class="fw-bold mb-2">❌ Solicitud no admitida</h6>
+                        <p class="mb-2">Tu postulación fue evaluada y ha sido <strong>RECHAZADA</strong>.</p>
+                        <hr class="my-2">
+                        <p class="mb-0">
+                            <strong>Motivo informado por la administración:</strong><br>
+                            {{ artesano.emprendimiento.observaciones|slice:"11:" }}
+                        </p>
+                    </div>
+
                 {% else %}
+                    <!-- CASO PENDIENTE -->
                     <div class="alert alert-warning mb-0" role="alert">
-                        <strong>Pendiente de revisión.</strong> Tu solicitud todavía sigue <strong>PENDIENTE</strong> de evaluacion.
+                        <strong>Pendiente de revisión.</strong> Tu solicitud todavía sigue <strong>PENDIENTE</strong> de evaluación.
                     </div>
                 {% endif %}
+
             {% else %}
                 <div class="alert alert-danger mb-0" role="alert">
                     No se encontró una solicitud asociada al DNI ingresado.

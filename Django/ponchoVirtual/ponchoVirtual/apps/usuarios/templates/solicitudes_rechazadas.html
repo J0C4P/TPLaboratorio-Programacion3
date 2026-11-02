@@ -1,0 +1,85 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %} Solicitudes Rechazadas - Poncho Digital {% endblock %}
+
+{% block barra_nav %}
+<nav class="navbar navbar-expand-lg bg-light shadow-sm">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="menuNavegacion">
+            <a href="{% url 'artesano:solicitudes_artesanos_admin' %}" class="btn btn-outline-secondary btn-sm me-3">← Solicitudes Pendientes</a>
+            <a href="{% url 'artesano:listar_artesanos_aceptados' %}" class="btn btn-outline-secondary btn-sm me-3">Artesanos Aceptados</a>
+            <span class="text-muted">Registro de Solicitudes No Admitidas</span>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block contenido_principal %}
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold texto-marron-principal">Postulaciones Rechazadas</h2>
+            <p class="text-muted mb-0">Historial de solicitudes no admitidas y motivos informados.</p>
+        </div>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Artesano</th>
+                        <th>DNI</th>
+                        <th>Contacto</th>
+                        <th>Emprendimiento</th>
+                        <th>Procedencia</th>
+                        <th>Motivo del Rechazo</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for art in artesanos_rechazados %}
+                    <tr>
+                        <td class="fw-semibold">{{ art.nombre_artesano }} {{ art.apellido }}</td>
+                        <td>{{ art.dni }}</td>
+                        <td class="small">
+                            <div>{{ art.correo }}</div>
+                            <div class="text-muted">{{ art.telefono }}</div>
+                        </td>
+                        <td>
+                            <strong>{{ art.emprendimiento.nombre_emprendimiento }}</strong>
+                            <div class="small text-muted">{{ art.emprendimiento.ubicacion }}</div>
+                        </td>
+                        <td>{{ art.localidad }} ({{ art.provincia }})</td>
+                        <td>
+                            <div class="p-2 rounded-3 bg-light border-start border-danger border-4 text-danger small">
+                                {{ art.emprendimiento.observaciones|slice:"11:" }}
+                            </div>
+                        </td>
+                        <td>
+                            <a href="{% url 'artesano:reconsiderar_solicitud_admin' art.dni %}" 
+                               class="btn btn-sm btn-outline-primary text-nowrap"
+                               onclick="return confirm('¿Deseas volver a evaluar la solicitud de este artesano?');">
+                                Volver a evaluar
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">No hay solicitudes rechazadas en el sistema.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

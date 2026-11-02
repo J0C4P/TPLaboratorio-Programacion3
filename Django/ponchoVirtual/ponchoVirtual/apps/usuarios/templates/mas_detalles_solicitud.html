@@ -70,16 +70,17 @@
             </div>
         </div>
 
-        <!-- Formulario de Evaluación y Asignación de Stand -->
+       <!-- Formulario de Evaluación y Asignación de Stand -->
         <div class="card shadow-sm border-0 rounded-4 p-4 bg-white mt-4">
             <h4 class="h5 fw-bold text-dark mb-3 border-bottom pb-2">Resolución de la Postulación</h4>
             
             <form method="POST">
                 {% csrf_token %}
                 
-                <div class="row align-items-center mb-4">
+                <!-- Selector de Stand para Aprobar -->
+                <div class="row align-items-center mb-3">
                     <div class="col-12 col-md-8">
-                        <label for="stand_id" class="form-label fw-semibold">Asignar Pabellón / Stand:</label>
+                        <label for="stand_id" class="form-label fw-semibold">Asignar Pabellón / Stand (para Aprobar):</label>
                         {% if stands_disponibles %}
                             <select name="stand_id" id="stand_id" class="form-select rounded-3">
                                 <option value="">-- Seleccione un Stand disponible en el predio --</option>
@@ -91,9 +92,17 @@
                             </select>
                         {% else %}
                             <div class="alert alert-warning mb-0 py-2">
-                                No hay stands libres disponibles en la base de datos. Cree nuevos stands para poder aprobar.
+                                No hay stands libres disponibles en la base de datos.
                             </div>
                         {% endif %}
+                    </div>
+                </div>
+
+                <!-- Campo de Motivo para Rechazar -->
+                <div class="row mb-4">
+                    <div class="col-12 col-md-8">
+                        <label for="motivo_rechazo" class="form-label fw-semibold text-danger">Motivo de Rechazo (completar solo si presiona Rechazar):</label>
+                        <textarea name="motivo_rechazo" id="motivo_rechazo" class="form-control rounded-3" rows="3" placeholder="Escriba aquí los motivos por los cuales no se aprueba la postulación..."></textarea>
                     </div>
                 </div>
 
@@ -102,16 +111,11 @@
                         ✓ Aprobar y Asignar Stand
                     </button>
                     
-                    <button type="submit" name="accion" value="rechazar" class="btn btn-outline-danger px-4 rounded-pill fw-bold" onclick="return confirm('¿Seguro que desea rechazar y descartar esta postulación?');">
+                    <button type="submit" name="accion" value="rechazar" class="btn btn-outline-danger px-4 rounded-pill fw-bold" onclick="return confirm('¿Seguro que desea rechazar esta postulación?');">
                         ✕ Rechazar Postulación
                     </button>
                 </div>
             </form>
-        </div>
-    </div>
-    {% else %}
-        <div class="alert alert-danger" role="alert">
-          <p class="mb-0">No posee los permisos necesarios para ingresar a la página solicitada.</p>
         </div>
     {% endif %}
 {% endblock %}
