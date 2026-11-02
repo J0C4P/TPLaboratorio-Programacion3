@@ -237,7 +237,7 @@ def evaluar_solicitud_admin(request, dni):
                     'stands_disponibles': stands_disponibles
                 })
 
-<<<<<<< HEAD
+
             # Guardamos el motivo en las observaciones del emprendimiento
             emprendimiento = artesano.emprendimiento
             emprendimiento.observaciones = f"RECHAZADO: {motivo}"
@@ -248,9 +248,9 @@ def evaluar_solicitud_admin(request, dni):
             usuario.save()
 
             messages.warning(request, f"La solicitud del DNI {dni} ha sido rechazada.")
-=======
+
             messages.warning(request, f"La solicitud con DNI {dni} ha sido rechazada.")
->>>>>>> 485d93f22c7d7cb931e6ed38dbb282448de9e6f1
+
             return redirect('artesano:solicitudes_artesanos_admin')
 
     return render(request, 'mas_detalles_solicitud.html', {
