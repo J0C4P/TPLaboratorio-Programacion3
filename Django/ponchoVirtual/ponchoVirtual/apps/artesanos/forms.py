@@ -1,5 +1,5 @@
 from django import forms
-from .models import Artesano, Emprendimiento
+from .models import Artesano, Emprendimiento, Stand
 
 
 class ArtesanoForm(forms.ModelForm):
@@ -94,3 +94,9 @@ class EmprendimientoModificarForm(forms.ModelForm):
             'cantidad_productos': forms.NumberInput(attrs={'class': 'form-control'}),
             'ubicacion': forms.Select(attrs={'class': 'form-control'}),
         }
+
+
+class StandForm(forms.ModelForm):
+    class Meta:
+        model = Stand
+        fields = ('numero', 'zona')

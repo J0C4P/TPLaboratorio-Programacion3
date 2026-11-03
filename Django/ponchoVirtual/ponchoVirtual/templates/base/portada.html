@@ -76,7 +76,7 @@
                 </div>
             </div>
             {% if request.user.is_authenticated and request.user.is_staff%}
-                <div class="col-12">
+                <div class="col-md-6">
                     <div class="card h-100 p-3 bg-white tarjeta-acceso">
                         <div class="card-body">
                             <div class="mb-3 text-primary fs-1"><i class="bi bi-person-check-fill"></i></div>
@@ -87,10 +87,22 @@
                     </div>
                 </div>
             {% endif %}
+            {% if perms.artesanos.view_stand %}
+            <div class="col-md-6">
+                <div class="card h-100 p-3 bg-white tarjeta-acceso">
+                    <div class="card-body">
+                        <div class="mb-3 text-secondary fs-1"><i class="bi bi-shop"></i></div>
+                        <h3 class="h5 fw-bold text-dark">Gestión de Stands</h3>
+                        <p class="text-muted small">Administración y asignación de espacios para los artesanos.</p>
+                        <a href="{% url 'artesano:gestion_stands' %}" class="btn btn-secondary rounded-pill px-4 fw-bold">Gestión de stands</a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
         </div>
     </div>
 
-    <!-- SECCIÓN INSTITUCIONAL COMPACTA -->
+
     <div class="container my-4">
         <div class="seccion-bienvenida-artesanal mb-4">
             <div class="row align-items-center g-4">
