@@ -33,21 +33,16 @@ class ArtesanoForm(forms.ModelForm):
 
 
 class EmprendimientoForm(forms.ModelForm):
-    pabellones = [('Pabellon A', 'Pabellon A'), ('Pabellon B', 'Pabellon B'), ('Pabellon C', 'Pabellon C'), ('Pabellon D', 'Pabellon D'),]
-
-    ubicacion = forms.ChoiceField(choices=pabellones)
-
     class Meta:
         model = Emprendimiento
-        fields = ['nombre_emprendimiento', 'descripcion', 'trayectoria', 'observaciones', 'cantidad_productos', 'ubicacion']
+        fields = ['nombre_emprendimiento', 'descripcion', 'trayectoria', 'observaciones', 'cantidad_productos']
 
         widgets = {
             'nombre_emprendimiento': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej: Manos Catamarqueñas'}),
             'descripcion': forms.Textarea(attrs={'class':'form-control', 'rows': 3, 'placeholder':'Breve descripción del emprendimiento'}),
             'trayectoria': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder':'Años de experiencia o historia...'}),
             'observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 2, 'placeholder':'Observaciones adicionales (opcional)'}),
-            'cantidad_productos': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Ej: 10'}),
-            'ubicacion': forms.Select(attrs={'class': 'form-control'}),
+            'cantidad_productos': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Ej: 10'})
         }
 
 
@@ -79,26 +74,28 @@ class ArtesanoModificarForm(forms.ModelForm):
 
 
 class EmprendimientoModificarForm(forms.ModelForm):
-    pabellones = [('Pabellon A', 'Pabellon A'), ('Pabellon B', 'Pabellon B'), ('Pabellon C', 'Pabellon C'), ('Pabellon D', 'Pabellon D'),]
-
-    ubicacion = forms.ChoiceField(choices=pabellones)
-
     class Meta:
         model = Emprendimiento
-        fields = ['descripcion', 'trayectoria', 'observaciones', 'cantidad_productos', 'ubicacion']
+        fields = ['descripcion', 'trayectoria', 'observaciones', 'cantidad_productos']
 
         widgets = {
             'descripcion': forms.Textarea(attrs={'class':'form-control', 'rows': 3}),
             'trayectoria': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
             'cantidad_productos': forms.NumberInput(attrs={'class': 'form-control'}),
-            'ubicacion': forms.Select(attrs={'class': 'form-control'}),
         }
 
 
 class StandForm(forms.ModelForm):
-    zonas = [("A", "A"), ("B", "B"), ("C", "C"), ("D", "D")]
+    zonas = [('', '-- Seleccione una Zona --'), ("A", "A"), ("B", "B"), ("C", "C"), ("D", "D")]
+
+    zona = forms.ChoiceField(choices=zonas)
 
     class Meta:
         model = Stand
         fields = ('numero', 'zona')
+
+        widgets = {
+            'numero': forms.NumberInput(attrs={'class': 'form-control'}),
+            'zona': forms.Select(attrs={'class': 'form-control'})
+        }

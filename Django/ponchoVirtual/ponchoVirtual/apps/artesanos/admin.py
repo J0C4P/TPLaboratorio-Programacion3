@@ -11,9 +11,8 @@ class ArtesanoAdmin(admin.ModelAdmin):
 
 @admin.register(Emprendimiento)
 class EmprendimientoAdmin(admin.ModelAdmin):
-    list_display = ['nombre_emprendimiento', 'descripcion', 'trayectoria', 'observaciones', 'cantidad_productos', 'ubicacion']
-    search_fields = ('nombre_emprendimiento', 'ubicacion')
-    list_filter = ('ubicacion', )
+    list_display = ['nombre_emprendimiento', 'descripcion', 'trayectoria', 'observaciones', 'cantidad_productos']
+    search_fields = ('nombre_emprendimiento',)
 
 
 @admin.register(Stand)

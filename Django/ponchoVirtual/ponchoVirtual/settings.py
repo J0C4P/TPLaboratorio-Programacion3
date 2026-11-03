@@ -78,8 +78,12 @@ AUTH_USER_MODEL = 'usuarios.Usuario'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'poncho_db',
+        'USER': 'postgres',
+        'PASSWORD': 'bd2026',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 

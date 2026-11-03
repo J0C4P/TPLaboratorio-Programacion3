@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import PermissionDenied
-from django.db.models import Count
+from django.db.models import Count, Model
 from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -299,8 +299,9 @@ def listar_artesanos_aceptados(request):
 
         # CASO A: Quitar rol / Dar de baja
         if accion == 'dar_de_baja':
-            # 1. Liberar el stand que ocupaba
+            # 1. Liberar el stand que ocupaba y eliminar todos sus datos y emprendimiento
             Stand.objects.filter(artesano=artesano).update(artesano=None)
+            artesano.emprendimiento.delete() # Eliminamos el emprendimiento y por cascada se elimina el artesano
 
             # 2. Desactivar el usuario y quitarle permisos/grupos
             usuario = Usuario.objects.filter(documento_identidad=artesano.dni).first()
