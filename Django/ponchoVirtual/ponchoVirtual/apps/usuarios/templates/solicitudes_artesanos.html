@@ -11,8 +11,8 @@
             <div class="collapse navbar-collapse" id="menuNavegacion">
                 <div class="d-flex flex-column flex-lg-row align-items-start me-auto">
                     <a href="{% url 'principal' %}">Volver inicio</a>
-                    <a href="{% url 'artesano:listar_artesanos_aceptados' %}">Ver Artesanos Aceptados y Stands</a>
-                    <a href="{% url 'artesano:solicitudes_rechazadas_admin' %}">Ver Rechazados</a>
+                    <a href="{% url 'usuario:listar_artesanos_aceptados' %}">Ver Artesanos Aceptados y Stands</a>
+                    <a href="{% url 'usuario:solicitudes_rechazadas_admin' %}">Ver Rechazados</a>
                 </div>
                 {% if user.is_staff %}
                 <div class="text-secondary">
@@ -47,7 +47,7 @@
                                     <span><strong>Localidad:</strong> {{ art.localidad }} ({{ art.provincia }})</span>
                                 </p>
                             </div>
-                            <a href="{% url 'artesano:evaluar_solicitud_admin' art.dni%}" class="btn btn-primary btn-sm px-4 rounded-pill fw-semibold">Ver más detalles</a>
+                            <a href="{% url 'usuario:evaluar_solicitud_admin' art.dni%}" class="btn btn-primary btn-sm px-4 rounded-pill fw-semibold">Ver más detalles</a>
                         </div>
                     {% endfor %}
                 </div>
