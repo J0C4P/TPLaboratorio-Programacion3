@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import PermissionDenied
 from django.db.models import Count
+from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 
@@ -227,6 +228,10 @@ def evaluar_solicitud_admin(request, dni):
             usuario.is_active = True
             usuario.save()
 
+            # Le asignamos el rol correspondiente a artesano
+            grupo_permisos = Group.objects.get(name='rol_artesano')
+            usuario.groups.add(grupo_permisos)
+
             messages.success(request, f"Solicitud aprobada con éxito. Stand {stand_seleccionado.numero} asignado.")
             return redirect('artesano:solicitudes_artesanos_admin')
 
@@ -300,10 +305,9 @@ def listar_artesanos_aceptados(request):
             # 2. Desactivar el usuario y quitarle permisos/grupos
             usuario = Usuario.objects.filter(documento_identidad=artesano.dni).first()
             if usuario:
-                usuario.is_active = False  # Ya no puede iniciar sesión
                 usuario.groups.clear()     # Se le quita el grupo 'Artesano'
                 usuario.user_permissions.clear()  # Se le limpian permisos individuales
-                usuario.save()
+                usuario.delete()
 
             messages.warning(request, f"Se dieron de baja los permisos y el stand del artesano {artesano.nombre_artesano} {artesano.apellido}.")
             return redirect('artesano:listar_artesanos_aceptados')

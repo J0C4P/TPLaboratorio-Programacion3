@@ -53,7 +53,7 @@
                         <td>{{ stand.numero }}</td>
                         {% if stand.artesano %}
                             <td><span class="badge text-bg-danger">Ocupado</span></td>
-                            <td>{{ stand.artesano.apellido }}, {{ stand.artesano.nombre }}</td>
+                            <td>{{ stand.artesano.apellido }}, {{ stand.artesano.nombre_artesano }}</td>
                             <td>
                                 {% if perms.artesanos.change_stand %}
                                 <form method="post" action="{% url 'artesano:liberar_stand' stand.id %}">
@@ -72,7 +72,7 @@
                                     <select name="artesano" class="form-select form-select-sm" required>
                                         <option value="" selected disabled>Elegir artesano...</option>
                                         {% for artesano in artesanos_sin_stand %}
-                                            <option value="{{ artesano.id }}">{{ artesano.apellido }}, {{ artesano.nombre }}</option>
+                                            <option value="{{ artesano.id }}">{{ artesano.apellido }}, {{ artesano.nombre_artesano }}</option>
                                         {% endfor %}
                                     </select>
                                     <button type="submit" class="btn btn-success btn-sm">Asignar</button>
