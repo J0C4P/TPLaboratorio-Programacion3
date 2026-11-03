@@ -97,6 +97,8 @@ class EmprendimientoModificarForm(forms.ModelForm):
 
 
 class StandForm(forms.ModelForm):
+    zonas = [("A", "A"), ("B", "B"), ("C", "C"), ("D", "D")]
+
     class Meta:
         model = Stand
         fields = ('numero', 'zona')

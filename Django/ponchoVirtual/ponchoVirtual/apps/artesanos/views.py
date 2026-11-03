@@ -433,7 +433,7 @@ def crear_stand(request):
         if form.is_valid():
             stand = form.save()
             messages.success(request, f'Se creó el {stand}.')
-            return redirect('usuario:gestion_stands')
+            return redirect('artesano:gestion_stands')
     else:
         form = StandForm()
     return render(request, 'crear_stand.html', {'form': form})
@@ -454,7 +454,7 @@ def asignar_stand(request, id_stand):
         stand.artesano = artesano
         stand.save()
         messages.success(request, f'{artesano} fue asignado al {stand}.')
-    return redirect('usuario:gestion_stands')
+    return redirect('artesano:gestion_stands')
 
 
 @login_required(login_url='usuario:login')
@@ -468,4 +468,4 @@ def liberar_stand(request, id_stand):
         messages.success(request, f'El {stand} fue liberado.')
     else:
         messages.info(request, f'El {stand} ya estaba disponible.')
-    return redirect('usuario:gestion_stands')
+    return redirect('artesano:gestion_stands')
