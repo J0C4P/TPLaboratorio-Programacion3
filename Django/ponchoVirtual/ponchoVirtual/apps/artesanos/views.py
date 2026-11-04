@@ -224,7 +224,7 @@ def evaluar_solicitud_admin(request, dni):
             usuario.is_active = True
             usuario.save()
 
-            messages.success(request, f"Solicitud aprobada con éxito. Stand {stand_seleccionado.numero} asignado.")
+            messages.success(request, f"Solicitud aprobada con exito. Stand {stand_seleccionado.numero} asignado.")
             return redirect('artesano:solicitudes_artesanos_admin')
 
         elif accion == 'rechazar':
