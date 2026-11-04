@@ -4,7 +4,6 @@
 {% block estilos %}
     <link rel="stylesheet" href="{% static 'css/Estilo_general.css' %}">
     <link rel="stylesheet" href="{% static 'css/Estilo_Portada.css' %}">
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 {% endblock %}
 
@@ -42,7 +41,6 @@
 {% endblock %}
 
 {% block contenido_principal %}
-    <!-- Tarjetas de accesos rápidos -->
     <div class="container my-5">
         <div class="row text-center g-4">
             <div class="col-md-4">
@@ -119,7 +117,6 @@
         </div>
     </div>
 <hr>
-    <!-- CARRUSEL DINÁMICO DE PRODUCTOS -->
 {% if productos_destacados %}
     <div class="container my-5">
         <div class="text-center mb-4">
@@ -178,7 +175,6 @@
         </div>
     </div>
 
-    <!-- Mapa -->
     <div class="container my-5">
         <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white" id="UBICACION">
             <h3 class="h3 mb-3 fw-bold texto-marron-principal">UBICACIÓN</h3>

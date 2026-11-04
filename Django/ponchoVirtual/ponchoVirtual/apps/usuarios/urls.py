@@ -1,6 +1,6 @@
 from django.urls import path
 from ponchoVirtual.apps.usuarios.views import login_vista, logout_vista
-from usuarios.views import (solicitudes_artesanos_admin, evaluar_solicitud_admin, consultar_estado_solicitud,
+from ponchoVirtual.apps.usuarios.views import (solicitudes_artesanos_admin, evaluar_solicitud_admin, consultar_estado_solicitud,
                             listar_artesanos_aceptados, solicitudes_rechazadas_admin, reconsiderar_solicitud_admin)
 
 app_name = 'usuario'
