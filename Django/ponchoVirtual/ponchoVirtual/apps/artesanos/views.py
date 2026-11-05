@@ -14,6 +14,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, get_object_or_404
 
+from ponchoVirtual.apps.artesanos.models import Artesano
+
 
 def solicitud_artesano(request):
     if request.method == "POST":
@@ -221,10 +223,13 @@ def evaluar_solicitud_admin(request, dni):
             stand_seleccionado.artesano = artesano
             stand_seleccionado.save()
 
+            artesano.estado = "APROBADO"
+            artesano.save()
+
             usuario.is_active = True
             usuario.save()
 
-            messages.success(request, f"Solicitud aprobada con exito. Stand {stand_seleccionado.numero} asignado.")
+            messages.success(request, f"Solicitud aprobada con éxito. Stand {stand_seleccionado.numero} asignado.")
             return redirect('artesano:solicitudes_artesanos_admin')
 
         elif accion == 'rechazar':
@@ -237,20 +242,20 @@ def evaluar_solicitud_admin(request, dni):
                     'stands_disponibles': stands_disponibles
                 })
 
+            # Ñamohenda tekotee Artesano rehe ha ndajatavýi emprendimiento.observaciones
+            artesano.estado = "RECHAZADO"
+            if hasattr(artesano, 'motivo_rechazo'):
+                artesano.motivo_rechazo = motivo
+            artesano.save()
 
-            # Guardamos el motivo en las observaciones del emprendimiento
-            emprendimiento = artesano.emprendimiento
-            emprendimiento.observaciones = f"RECHAZADO: {motivo}"
-            emprendimiento.save()
+            # Ñamosãso stand oimérõ oguereko kuri peteĩ
+            Stand.objects.filter(artesano=artesano).update(artesano=None)
 
-            # Mantenemos al usuario inactivo (sin borrarlo)
+            # Usuario opyta inactivo ramo
             usuario.is_active = False
             usuario.save()
 
-            messages.warning(request, f"La solicitud del DNI {dni} ha sido rechazada.")
-
             messages.warning(request, f"La solicitud con DNI {dni} ha sido rechazada.")
-
             return redirect('artesano:solicitudes_artesanos_admin')
 
     return render(request, 'mas_detalles_solicitud.html', {
@@ -258,7 +263,6 @@ def evaluar_solicitud_admin(request, dni):
         'artesano': artesano,
         'stands_disponibles': stands_disponibles
     })
-
 
 
 
@@ -371,14 +375,16 @@ def modificar_stand_artesano(request, artesano_id):
         'stands_opciones': stands_opciones
     })
 
+
+
 @login_required(login_url=reverse_lazy('usuario:login'))
 def solicitudes_rechazadas_admin(request):
     if not request.user.is_staff:
         raise PermissionDenied
 
-    # Traemos los artesanos que tienen la marca de rechazo en observaciones
+    # Filtramos por el estado propio del artesano o de su postulación
     artesanos_rechazados = Artesano.objects.filter(
-        emprendimiento__observaciones__startswith="RECHAZADO:"
+        estado="RECHAZADO" 
     ).select_related('emprendimiento').order_by('-id')
 
     return render(request, 'solicitudes_rechazadas.html', {
@@ -392,12 +398,13 @@ def reconsiderar_solicitud_admin(request, dni):
 
     artesano = get_object_or_404(Artesano, dni=dni)
     
-    # Limpiamos el motivo de rechazo del emprendimiento
-    if artesano.emprendimiento:
-        artesano.emprendimiento.observaciones = ""
-        artesano.emprendimiento.save()
+    # Actualizamos el estado del artesano a PENDIENTE
+    artesano.estado = "PENDIENTE"
+    artesano.save()
+
+    # NOTA: Ya no tocamos artesano.emprendimiento.observaciones
+    # para no borrar los datos reales del taller.
 
     messages.info(request, f"La postulación de {artesano.nombre_artesano} {artesano.apellido} volvió a estado pendiente para su evaluación.")
     
-    # Redirige directamente a la pantalla de evaluar
     return redirect('artesano:evaluar_solicitud_admin', dni=artesano.dni)

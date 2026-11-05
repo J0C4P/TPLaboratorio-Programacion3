@@ -8,6 +8,10 @@ from ponchoVirtual.apps.artesanos.models import Artesano, Emprendimiento
 from ponchoVirtual.apps.productos.forms import ProductoModificarForm, ProductoForm
 from ponchoVirtual.apps.productos.models import Producto
 from ponchoVirtual.utils.pdf import generar_reporte_pdf
+from ponchoVirtual.apps.artesanos.models import Stand
+
+from ponchoVirtual.apps.productos.models import Producto  
+
 
 
 def listar_productos(request):
@@ -162,3 +166,66 @@ def productos_destacados(request):
     productos = Producto.objects.all()
 
     return render(request, 'base/portada.html', {'productos_destacados': productos})
+
+
+
+
+
+def productos_destacados(request):
+    try:
+        productos = Producto.objects.all()[:6]
+    except Exception:
+        productos = []
+
+    pabellones_dict = {
+        "Pabellón A: Textiles y Telar": {"lat": -28.4480, "lng": -65.7583, "stands": []},
+        "Pabellón B: Cerámica, Madera y Metal": {"lat": -28.4482, "lng": -65.7570, "stands": []},
+        "Pabellón C: Gastronomía y Sabores": {"lat": -28.4495, "lng": -65.7573, "stands": []},
+        "Pabellón D: Artesanías en Cuero": {"lat": -28.4475, "lng": -65.7576, "stands": []},
+    }
+
+    stands_db = Stand.objects.select_related('artesano__emprendimiento').order_by('numero')
+
+    for st in stands_db:
+        zona_texto = (st.zona or "").upper()
+
+        if "PABELLÓN A" in zona_texto or "PABELLON A" in zona_texto or "TEXTILES" in zona_texto:
+            destino = "Pabellón A: Textiles y Telar"
+        elif "PABELLÓN B" in zona_texto or "PABELLON B" in zona_texto or "CERÁMICA" in zona_texto or "CERAMICA" in zona_texto:
+            destino = "Pabellón B: Cerámica, Madera y Metal"
+        elif "PABELLÓN C" in zona_texto or "PABELLON C" in zona_texto or "GASTRONOMÍA" in zona_texto or "GASTRONOMIA" in zona_texto:
+            destino = "Pabellón C: Gastronomía y Sabores"
+        elif "PABELLÓN D" in zona_texto or "PABELLON D" in zona_texto or "CUERO" in zona_texto:
+            destino = "Pabellón D: Artesanías en Cuero"
+        else:
+            destino = "Pabellón A: Textiles y Telar"
+
+        tiene_artesano = st.artesano is not None
+        artesano_nom = f"{st.artesano.nombre_artesano} {st.artesano.apellido}" if tiene_artesano else None
+
+        emp_nom = None
+        emp_rubro = None
+        if tiene_artesano:
+            try:
+                emp = getattr(st.artesano, 'emprendimiento', None)
+                if emp:
+                    emp_nom = getattr(emp, 'nombre_emprendimiento', None) or getattr(emp, 'nombre', None) or str(emp)
+                    emp_rubro = getattr(emp, 'rubro', None)
+                else:
+                    emp_nom = getattr(st.artesano, 'nombre_emprendimiento', None)
+            except Exception:
+                emp_nom = str(getattr(st.artesano, 'emprendimiento', ''))
+
+        pabellones_dict[destino]["stands"].append({
+            "numero": st.numero,
+            "ocupado": tiene_artesano,
+            "artesano": artesano_nom,
+            "emprendimiento": emp_nom,
+            "rubro": emp_rubro
+        })
+
+    contexto = {
+        'productos_destacados': productos,
+        'datos_mapa': pabellones_dict,
+    }
+    return render(request, 'base/portada.html', contexto)
