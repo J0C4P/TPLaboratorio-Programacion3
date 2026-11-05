@@ -1,12 +1,13 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from ponchoVirtual.apps.artesanos.models import Artesano, Stand
 from ponchoVirtual.apps.usuarios.models import Usuario
 from django.contrib import messages
+from django.contrib.auth.forms import PasswordChangeForm
+from django.urls import reverse_lazy
 
 
 def login_vista(request):
@@ -17,6 +18,11 @@ def login_vista(request):
 
         if user:
             login(request, user)
+            # para continuar el link en el que clickeo y no vuelva a principal
+            next_url = request.POST.get('next')
+            if next_url:
+                return redirect(next_url)
+
             return redirect('principal')
         else:
             return render(request, 'login.html', {"msj": "Credenciales incorrectas"})
@@ -28,6 +34,20 @@ def login_vista(request):
 def logout_vista(request):
     logout(request)
     return redirect('principal')
+
+@login_required(login_url=reverse_lazy('usuario:login'))
+def cambiar_contraseña(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Importante para que no se cierre la sesión
+            messages.success(request, '¡Contraseña actualizada con éxito!')
+            return redirect('principal')
+    else:
+        form = PasswordChangeForm(request.user)
+
+    return render(request, 'cambiar_contraseña.html', {'form': form})
 
 
 @login_required(login_url=reverse_lazy('usuario:login'))

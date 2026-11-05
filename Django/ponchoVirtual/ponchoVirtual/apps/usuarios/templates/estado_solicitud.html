@@ -54,11 +54,9 @@
                         <p class="mb-0">Las credenciales para acceder tanto para <strong>Usuario</strong> y <strong>Contraseña</strong> serán su <strong><u>Documento.</u></strong></p>
                     </div>
                     <div class="text-center mt-3">
-                        <a href="{% url 'usuario:login' %}" class="btn btn-outline-primary px-4 rounded-pill fw-semibold">
-                            Iniciar Sesión
-                        </a>
+                        <p>Si desea cambiar su contraseña por <strong>motivos de seguridad</strong> ingrese al siguiente link</p>
+                        <a href="{% url 'usuario:cambiar_contraseña' %}" class="btn btn-info px-4 rounded-pill fw-semibold">Cambiar contraseña</a>
                     </div>
-
                 {% elif artesano and "RECHAZADO:" in artesano.emprendimiento.observaciones %}
                     <!-- CASO RECHAZADA CON MOTIVO -->
                     <div class="alert alert-danger mb-0" role="alert">
