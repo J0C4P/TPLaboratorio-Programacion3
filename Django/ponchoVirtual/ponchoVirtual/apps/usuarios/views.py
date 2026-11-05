@@ -3,6 +3,7 @@ from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
+from ponchoVirtual.apps.artesanos.forms import ArtesanoForm, EmprendimientoForm
 from ponchoVirtual.apps.artesanos.models import Artesano, Stand
 from ponchoVirtual.apps.usuarios.models import Usuario
 from django.contrib import messages
@@ -138,6 +139,28 @@ def evaluar_solicitud_admin(request, dni):
     })
 
 
+def modificar_solicitud(request, dni):
+    artesano = get_object_or_404(Artesano, dni=dni)
+    emprendimiento = artesano.emprendimiento
+    if request.method == "POST":
+        form_artesano = ArtesanoForm(request.POST, instance=artesano)
+        form_emprendimiento = EmprendimientoForm(request.POST, instance=emprendimiento)
+
+        if form_artesano.is_valid() and form_emprendimiento.is_valid():
+
+            emprendimiento = form_emprendimiento.save()
+            artesano = form_artesano.save(commit=False)
+            artesano.emprendimiento = emprendimiento
+            artesano.save()
+            return redirect('usuario:consultar_estado_solicitud')
+
+    else:
+        form_artesano = ArtesanoForm(instance=artesano)
+        form_emprendimiento = EmprendimientoForm(instance=emprendimiento)
+
+    return render(request, 'modificar_solicitud.html', {'form_artesano': form_artesano, 'form_emprendimiento': form_emprendimiento})
+
+
 @login_required(login_url=reverse_lazy('usuario:login'))
 def reconsiderar_solicitud_admin(request, dni):
     if not request.user.is_staff:
@@ -173,7 +196,6 @@ def solicitudes_rechazadas_admin(request):
 
 
 def consultar_estado_solicitud(request):
-    usuario = None
     artesano = None
 
     if request.method == "POST":

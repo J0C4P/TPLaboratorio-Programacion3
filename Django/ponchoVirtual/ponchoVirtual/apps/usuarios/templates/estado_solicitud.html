@@ -31,7 +31,7 @@
                 <label for="dni" class="form-label fw-semibold">DNI del artesano</label>
                 <input type="text" class="form-control rounded-3" id="dni" name="dni" placeholder="Ej.: 43995835" value="{{ request.POST.dni}}" required>
             </div>
-            <button type="submit" class="btn btn-primary w-100 fw-semibold">Consultar estado</button>
+            <button type="submit" class="btn btn-primary fw-semibold">Consultar estado</button>
         </form>
     </div>
 
@@ -69,11 +69,17 @@
                         </p>
                     </div>
 
+                    <div class="text-center mt-4">
+                        <p>Modifica los datos necesarios para completar correctamente tu solicitud.</p>
+                        <a href="{% url 'usuario:modificar_solicitud' request.POST.dni %}" class="btn btn-danger px-4 rounded-pill fw-semibold">Modificar solicitud</a>
+                    </div>
+
                 {% else %}
                     <!-- CASO PENDIENTE -->
                     <div class="alert alert-warning mb-0" role="alert">
                         <strong>Pendiente de revisión.</strong> Tu solicitud todavía sigue <strong>PENDIENTE</strong> de evaluación.
                     </div>
+
                 {% endif %}
 
             {% else %}

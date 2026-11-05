@@ -22,7 +22,9 @@
                 {% else %}
                     <span class="text-white me-2 align-self-center small">Hola, {{ user.username }}</span>
                     <a class="btn btn-light text-dark btn-sm px-4 rounded-pill fw-bold" href="{% url 'usuario:logout' %}">Salir</a>
-                <a class="btn btn-light text-dark btn-sm px-4 rounded-pill fw-bold" href="{% url 'usuario:cambiar_contraseña' %}">Cambiar contraseña</a>
+                    {% if not user.is_staff %}
+                        <a class="btn btn-light text-dark btn-sm px-4 rounded-pill fw-bold" href="{% url 'usuario:cambiar_contraseña' %}">Cambiar contraseña</a>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>
