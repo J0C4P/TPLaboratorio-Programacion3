@@ -44,7 +44,7 @@ def cambiar_contraseña(request):
             user = form.save()
             update_session_auth_hash(request, user)  # Importante para que no se cierre la sesión
             messages.success(request, '¡Contraseña actualizada con éxito!')
-            return redirect('principal')
+            return redirect('usuario:cambiar_contraseña')
     else:
         form = PasswordChangeForm(request.user)
 
