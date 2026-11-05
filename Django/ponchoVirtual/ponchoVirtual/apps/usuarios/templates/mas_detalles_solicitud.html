@@ -10,7 +10,7 @@
     <div class="container-fluid">
         <div class="collapse navbar-collapse" id="menuNavegacion">
             <div class="d-flex flex-column flex-lg-row align-items-start me-auto">
-                <a href="{% url 'artesano:solicitudes_artesanos_admin' %}">← Volver a solicitudes</a>
+                <a href="{% url 'usuario:solicitudes_artesanos_admin' %}">← Volver a solicitudes</a>
             </div>
             {% if user.is_staff %}
             <div class="text-secondary">
@@ -27,9 +27,15 @@
     <div class="container my-5">
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                </div>
+                {% if message.tags == 'success' %}
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
+                    </div>
+                {% else %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                {%endif%}
             {% endfor %}
         {% endif %}
 

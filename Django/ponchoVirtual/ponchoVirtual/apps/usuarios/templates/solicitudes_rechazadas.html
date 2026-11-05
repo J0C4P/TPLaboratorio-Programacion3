@@ -1,15 +1,18 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {% block titulo %} Solicitudes Rechazadas - Poncho Digital {% endblock %}
+{% block estilos %}
+    <link rel="stylesheet" href="{% static 'css/Estilo_general.css' %}">
+{% endblock %}
+
 
 {% block barra_nav %}
 <nav class="navbar navbar-expand-lg bg-light shadow-sm">
     <div class="container-fluid">
         <div class="collapse navbar-collapse" id="menuNavegacion">
-            <a href="{% url 'artesano:solicitudes_artesanos_admin' %}" class="btn btn-outline-secondary btn-sm me-3">← Solicitudes Pendientes</a>
-            <a href="{% url 'artesano:listar_artesanos_aceptados' %}" class="btn btn-outline-secondary btn-sm me-3">Artesanos Aceptados</a>
-            <span class="text-muted">Registro de Solicitudes No Admitidas</span>
+            <a href="{% url 'usuario:solicitudes_artesanos_admin' %}">← Solicitudes Pendientes</a>
         </div>
+        <span class="text-muted">Registro de Solicitudes No Admitidas</span>
     </div>
 </nav>
 {% endblock %}
@@ -18,7 +21,7 @@
 <div class="container my-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h2 class="fw-bold texto-marron-principal">Postulaciones Rechazadas</h2>
+            <h1 class="fw-bold texto-marron-principal">Postulaciones Rechazadas</h1>
             <p class="text-muted mb-0">Historial de solicitudes no admitidas y motivos informados.</p>
         </div>
     </div>
@@ -65,7 +68,7 @@
                             </div>
                         </td>
                         <td>
-                            <a href="{% url 'artesano:reconsiderar_solicitud_admin' art.dni %}" 
+                            <a href="{% url 'usuario:reconsiderar_solicitud_admin' art.dni %}"
                                class="btn btn-sm btn-outline-primary text-nowrap"
                                onclick="return confirm('¿Deseas volver a evaluar la solicitud de este artesano?');">
                                 Volver a evaluar

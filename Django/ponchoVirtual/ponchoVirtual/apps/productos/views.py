@@ -4,7 +4,7 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils import timezone
-from ponchoVirtual.apps.artesanos.models import Artesano, Emprendimiento
+from ponchoVirtual.apps.artesanos.models import Artesano
 from ponchoVirtual.apps.productos.forms import ProductoModificarForm, ProductoForm
 from ponchoVirtual.apps.productos.models import Producto
 from ponchoVirtual.utils.pdf import generar_reporte_pdf
@@ -161,10 +161,11 @@ def reporte_artesanos_rubro_pdf(request):
     )
 
 
-# Vista empleada para el carrousel de portada
-def productos_destacados(request):
+# Vista empleada para el carrousel de portada y mapa
+def vista_portada(request):
     productos = Producto.objects.all()
 
+<<<<<<< HEAD
     return render(request, 'base/portada.html', {'productos_destacados': productos})
 
 
@@ -227,5 +228,9 @@ def productos_destacados(request):
     contexto = {
         'productos_destacados': productos,
         'datos_mapa': pabellones_dict,
+=======
+    contexto = {
+        'productos': productos,
+>>>>>>> origin/Semana19-23Octubre-AdminDjango
     }
     return render(request, 'base/portada.html', contexto)

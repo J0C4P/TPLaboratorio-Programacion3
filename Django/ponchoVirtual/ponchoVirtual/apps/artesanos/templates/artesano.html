@@ -49,8 +49,8 @@
         <div class="card w-50 mb-3 text-bg-light">
             <div class="card-body pt-2">
                 <h2 class="border-bottom pb-2 mb-3">Datos artesano: </h2>
-                <h3 class="card-title h5 mb-3">{{artesano.nombre}} {{artesano.apellido}}</h3>
-                <p class="card-text mb-3"><strong>Localidad:</strong> {{artesano.localidad}}</p>
+                <h3 class="card-title h5 mb-3">{{artesano.nombre_artesano}} {{artesano.apellido}}</h3>
+                <p class="card-text mb-3"><strong>Localidad de origen:</strong> {{artesano.localidad}}</p>
                 <p class="card-text mb-3"><strong>Provincia:</strong> {{artesano.provincia}}</p>
                 <p class="card-text mb-3"><strong>Telefono de contacto:</strong> {{artesano.telefono}}</p>
                 {% if user.documento_identidad == artesano.dni %}
@@ -61,10 +61,11 @@
             <div class="card-body pt-2">
                 <h2 class="border-bottom pb-2 mb-3">Datos emprendimiento: </h2>
                 <h3 class="card-title h5 mb-3">{{emprendimiento.nombre}}</h3>
-                <p class="card-text mb-3"><strong>Descripcion:</strong> {{emprendimiento.localidad}}</p>
+                <p class="card-text mb-3"><strong>Descripcion:</strong> {{emprendimiento.descripcion}}</p>
+                <p class="card-text mb-3"><strong>Trayectoria:</strong> {{emprendimiento.trayectoria}}</p>
                 <p class="card-text mb-3"><strong>Observaciones:</strong> {{emprendimiento.observaciones}}</p>
                 <p class="card-text mb-3"><strong>Cantidad de tipos productos a la venta:</strong> {{emprendimiento.cantidad_productos}}</p>
-                <p class="card-text mb-3"><strong>Ubicacion:</strong> {{emprendimiento.ubicacion}}</p>
+                <p class="card-text mb-3"><strong>Ubicacion:</strong> {{artesano.stand}}</p>
                 {% if user.documento_identidad == artesano.dni %}
                     {%if perms.artesanos.change_artesano%}
                         <a href="{% url 'artesano:modificar_datos_art' dni_artesano=artesano.dni %}" class="btn btn-outline-primary btn-sm btn-modificar">Modificar perfil</a>

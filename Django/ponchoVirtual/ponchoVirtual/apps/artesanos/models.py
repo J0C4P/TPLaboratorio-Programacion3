@@ -5,7 +5,7 @@ from django.db.models.deletion import CASCADE
 class Artesano(models.Model):
     nombre_artesano = models.CharField(max_length=50)
     apellido = models.CharField(max_length=50)
-    dni = models.CharField(max_length=50)
+    dni = models.CharField(max_length=50, unique=True)
     correo = models.EmailField(max_length=100)
     telefono = models.CharField(max_length=50)
     localidad = models.CharField(max_length=50)
@@ -20,24 +20,27 @@ class Artesano(models.Model):
 
 
 class Stand(models.Model):
-    numero = models.PositiveIntegerField(unique=True)
+    numero = models.PositiveIntegerField()
     zona = models.CharField(max_length=50)
     artesano = models.OneToOneField('Artesano', on_delete=models.SET_NULL, null=True, blank=True, related_name='stand')
 
     class Meta:
+        # Numero y zona en conjunto clave primaria compuesta
+        constraints = [
+            models.UniqueConstraint(fields=['zona', 'numero'], name='unique_zona_numero')
+        ]
         ordering = ('numero', )
 
     def __str__(self):
-        return f"Stand {self.numero} ({self.zona})"
+        return f"Stand Nº{self.numero} - Pabellon ({self.zona})"
 
 
 class Emprendimiento(models.Model):
-    nombre_emprendimiento = models.CharField(max_length=50)
+    nombre_emprendimiento = models.CharField(max_length=50, unique=True)
     descripcion = models.TextField(max_length=500)
     trayectoria = models.TextField(max_length=500)
     observaciones = models.TextField(max_length=500, blank=True)
     cantidad_productos = models.IntegerField()
-    ubicacion = models.CharField(max_length=100)
 
     class Meta:
         ordering = ('nombre_emprendimiento', )

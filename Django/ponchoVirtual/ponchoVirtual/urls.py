@@ -16,16 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic.base import TemplateView
 from django.conf.urls.static import static
-
-import ponchoVirtual
 from ponchoVirtual import settings
-from ponchoVirtual.apps.productos.views import listar_productos, productos_destacados
+from ponchoVirtual.apps.productos.views import vista_portada
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", productos_destacados, name="principal"),
+    path("", vista_portada, name="principal"),
     path("", include('ponchoVirtual.apps.usuarios.urls')),
     path("productos/", include('ponchoVirtual.apps.productos.urls')),
     path('artesano/', include('ponchoVirtual.apps.artesanos.urls'))

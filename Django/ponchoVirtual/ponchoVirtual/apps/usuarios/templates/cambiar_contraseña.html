@@ -1,0 +1,82 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %} Poncho digital - Registro usuario {% endblock %}
+{% block estilos %}
+    <link rel="stylesheet" href="{% static 'css/Estilo_general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Estilo_formulario.css' %}">
+{% endblock %}
+
+{% block barra_nav %}
+<nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <ul class="navbar-nav ">
+                <a href="{% url 'principal' %}">Volver Inicio</a>
+            </ul>
+                <span class="navbar-text ms-auto">
+                    {% if user.is_authenticated %}
+                        {{ user.username }}
+                        <a class="btn btn-outline-success me-2" href="{% url 'usuario:logout' %}">Cerrar sesión</a>
+                    {% endif %}
+                </span>
+        </div>
+</nav>
+{% endblock %}
+
+{% block contenido_principal %}
+    {% if messages %}
+        {%for message in messages%}
+            {% if message.tags == 'success' %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% else %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {%endif%}
+        {% endfor %}
+    {% endif %}
+
+    <div class="container my-5">
+        <header id="home" class="mb-4">
+            <h1>Cambiar Contraseña</h1>
+            <p class="text-muted">Ingrese su contraseña actual y la nueva clave</p>
+        </header>
+
+        {% if form.errors %}
+            <div class="alert alert-danger py-2">
+                Por favor, verifique los datos ingresados.
+            </div>
+        {% endif %}
+
+        <form method="post" class="w-100">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label" for="id_old_password">Contraseña Actual: </label>
+                <input type="password" name="old_password" id="id_old_password" class="form-control" required>
+                {% if form.old_password.errors %}
+                    <div class="text-danger small mt-1">{{ form.old_password.errors}}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="id_new_password1">Nueva Contraseña: </label>
+                <input type="password" name="new_password1" id="id_new_password1" class="form-control" required>
+                {% if form.new_password1.errors %}
+                    <div class="text-danger small mt-1">{{ form.new_password1.errors}}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="id_new_password2">Confirmar Nueva Contraseña: </label>
+                <input type="password" name="new_password2" id="id_new_password2" class="form-control" required>
+                {% if form.new_password2.errors %}
+                    <div class="text-danger small mt-1">{{ form.new_password2.errors}}</div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary py-2">Guardar nueva contraseña</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
