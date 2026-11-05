@@ -162,11 +162,52 @@ def reporte_artesanos_rubro_pdf(request):
 
 
 # Vista empleada para el carrousel de portada y mapa
+import json
+from django.shortcuts import render
+from ponchoVirtual.apps.artesanos.models import Stand
+
 def vista_portada(request):
-    productos = Producto.objects.all()
+    pabellones_validos = [
+        "Pabellón A: Textiles y Telar",
+        "Pabellón B: Cerámica, Madera y Metal",
+        "Pabellón C: Gastronomía y Sabores",
+        "Pabellón D: Artesanías en Cuero",
+    ]
 
+    datos_mapa = {p: {"stands": []} for p in pabellones_validos}
 
-    return render(request, 'base/portada.html', {'productos_destacados': productos})
+    stands = Stand.objects.select_related('artesano', 'artesano__emprendimiento').order_by('numero')
+
+    for s in stands:
+        # Búsqueda flexible de zona/pabellón
+        pabellon_key = next((p for p in pabellones_validos if s.zona and (s.zona in p or p.split(':')[0] in s.zona)), None)
+        if not pabellon_key:
+            pabellon_key = s.zona
+
+        if pabellon_key not in datos_mapa:
+            datos_mapa[pabellon_key] = {"stands": []}
+
+        artesano_info = None
+        rubro_info = None
+        emprendimiento_info = None
+
+        if s.artesano:
+            artesano_info = f"{s.artesano.nombre_artesano} {s.artesano.apellido}"
+            if hasattr(s.artesano, 'emprendimiento') and s.artesano.emprendimiento:
+                emprendimiento_info = s.artesano.emprendimiento.nombre_emprendimiento
+                rubro_info = getattr(s.artesano.emprendimiento, 'rubro', None)
+
+        datos_mapa[pabellon_key]["stands"].append({
+            "numero": s.numero,
+            "ocupado": s.artesano_id is not None,
+            "artesano": artesano_info,
+            "emprendimiento": emprendimiento_info,
+            "rubro": rubro_info,
+        })
+
+    return render(request, 'base/portada.html', {
+        'datos_mapa': datos_mapa
+    })
 
 
 

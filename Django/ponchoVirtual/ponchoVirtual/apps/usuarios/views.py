@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from ponchoVirtual.apps.artesanos.models import Stand
-
+from django.db.models import Q
 from django.shortcuts import render
 from ponchoVirtual.apps.artesanos.models import Stand
 
@@ -191,22 +191,19 @@ def evaluar_solicitud_admin(request, dni):
                     'stands_disponibles': stands_disponibles
                 })
 
+            # 1. Guardamos el motivo en su campo independiente
+            artesano.motivo_rechazo = motivo
+            artesano.save()
 
-            # Guardamos el motivo en las observaciones del emprendimiento
-            emprendimiento = artesano.emprendimiento
-            emprendimiento.observaciones = f"RECHAZADO: {motivo}"
-            emprendimiento.save()
-
-            # Mantenemos al usuario inactivo (sin borrarlo)
+            # 2. Desactivamos al usuario y liberamos stand (sin tocar observaciones)
             usuario.is_active = False
             usuario.save()
-
-            messages.warning(request, f"La solicitud del DNI {dni} ha sido rechazada.")
+            Stand.objects.filter(artesano=artesano).update(artesano=None)
 
             messages.warning(request, f"La solicitud con DNI {dni} ha sido rechazada.")
+            return redirect('usuario:solicitudes_rechazadas_admin')
 
-            return redirect('usuario:solicitudes_artesanos_admin')
-
+            
     return render(request, 'mas_detalles_solicitud.html', {
         'usuario': usuario,
         'artesano': artesano,
@@ -256,13 +253,33 @@ def reconsiderar_solicitud_admin(request, dni):
 
 
 @login_required(login_url=reverse_lazy('usuario:login'))
+def solicitudes_artesanos_admin(request):
+    if not request.user.is_staff:
+        raise PermissionDenied
+
+    usuarios_inactivos = Usuario.objects.filter(is_active=False)
+    dnis_usuarios_inactivos = usuarios_inactivos.values_list('documento_identidad', flat=True)
+
+    # Solo postulantes inactivos que NO tengan motivo de rechazo (o que sea vacío)
+    artesanos = Artesano.objects.filter(
+        dni__in=dnis_usuarios_inactivos
+    ).filter(
+        Q(motivo_rechazo__isnull=True) | Q(motivo_rechazo="")
+    ).select_related('emprendimiento').order_by('-id')
+
+    return render(request, 'solicitudes_artesanos.html', {'artesanos': artesanos})
+
+
+@login_required(login_url=reverse_lazy('usuario:login'))
 def solicitudes_rechazadas_admin(request):
     if not request.user.is_staff:
         raise PermissionDenied
 
-    # Traemos los artesanos que tienen la marca de rechazo en observaciones
+    # Trae a todos los artesanos que SÍ tienen un motivo de rechazo cargado
     artesanos_rechazados = Artesano.objects.filter(
-        emprendimiento__observaciones__startswith="RECHAZADO:"
+        motivo_rechazo__isnull=False
+    ).exclude(
+        motivo_rechazo=""
     ).select_related('emprendimiento').order_by('-id')
 
     return render(request, 'solicitudes_rechazadas.html', {

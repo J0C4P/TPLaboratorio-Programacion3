@@ -17,6 +17,8 @@ class Artesano(models.Model):
 
     def __str__(self):
         return f"{self.nombre_artesano} {self.apellido}"
+    # Campo independiente para el motivo
+    motivo_rechazo = models.TextField(blank=True, null=True)
 
 
 class Stand(models.Model):
