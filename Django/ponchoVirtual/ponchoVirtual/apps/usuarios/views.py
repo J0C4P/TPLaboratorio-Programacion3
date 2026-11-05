@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from ponchoVirtual.apps.artesanos.models import Stand
@@ -10,7 +10,7 @@ from ponchoVirtual.apps.artesanos.models import Stand
 
 
 
-=======
+
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect, get_object_or_404
@@ -22,7 +22,6 @@ from ponchoVirtual.apps.usuarios.models import Usuario
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
 from django.urls import reverse_lazy
->>>>>>> origin/Semana19-23Octubre-AdminDjango
 
 
 def login_vista(request):
@@ -50,7 +49,7 @@ def logout_vista(request):
     logout(request)
     return redirect('principal')
 
-<<<<<<< HEAD
+
 
 
 
@@ -111,7 +110,7 @@ def portada(request):
 
 
 
-=======
+
 @login_required(login_url=reverse_lazy('usuario:login'))
 def cambiar_contraseña(request):
     if request.method == 'POST':
@@ -331,4 +330,3 @@ def listar_artesanos_aceptados(request):
         'stands_disponibles': stands_disponibles
     })
 
->>>>>>> origin/Semana19-23Octubre-AdminDjango

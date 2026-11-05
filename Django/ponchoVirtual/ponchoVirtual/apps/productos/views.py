@@ -165,7 +165,7 @@ def reporte_artesanos_rubro_pdf(request):
 def vista_portada(request):
     productos = Producto.objects.all()
 
-<<<<<<< HEAD
+
     return render(request, 'base/portada.html', {'productos_destacados': productos})
 
 
@@ -228,9 +228,6 @@ def productos_destacados(request):
     contexto = {
         'productos_destacados': productos,
         'datos_mapa': pabellones_dict,
-=======
-    contexto = {
-        'productos': productos,
->>>>>>> origin/Semana19-23Octubre-AdminDjango
     }
+
     return render(request, 'base/portada.html', contexto)
