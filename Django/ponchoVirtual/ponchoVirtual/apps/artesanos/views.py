@@ -37,7 +37,7 @@ def solicitud_artesano(request):
             artesano.emprendimiento = emprendimiento
             artesano.save()
 
-            # Crear el usuario pendiente
+            # Crea el usuario pendiente
             Usuario.objects.create_user(
                 username=dni,
                 email=email,
@@ -48,15 +48,9 @@ def solicitud_artesano(request):
                 is_active=False  # Inactivo hasta que el administrador lo apruebe en el Admin
             )
 
-            # Renderizar pantalla  con boton de volver al inicio
-            #  Mostrar la pantalla   estado pendiente
-            contexto = {
-                'nombre': nombre,
-                'apellido': apellido,
-                'dni': dni
-            }
-            return render(request, 'solicitud_pendiente.html', contexto)
+            contexto = {'nombre': nombre,'apellido': apellido,'dni': dni}
 
+            return render(request, 'solicitud_pendiente.html', contexto)
 
     else:
         form_artesano = ArtesanoForm()
@@ -65,6 +59,7 @@ def solicitud_artesano(request):
     return render(request, 'Crear_art_emp.html', {'form_art': form_artesano, 'form_emp': form_emprendimiento})
 
 
+# Para visualizar los datos del artesano respectivo a un producto
 def datos_artesano(request, dni_artesano):
     artesano = get_object_or_404(Artesano, dni=dni_artesano)
     emprendimiento = artesano.emprendimiento
@@ -180,7 +175,7 @@ def modificar_stand_artesano(request, artesano_id):
         raise PermissionDenied
 
     artesano = get_object_or_404(Artesano, id=artesano_id)
-    # Stand actual del artesano (si tiene uno asignado)
+    # Stand actual del artesano (si es que tiene uno asignado)
     stand_actual = getattr(artesano, 'stand', None)
 
     # Stands disponibles + el stand que actualmente ya posee
@@ -224,17 +219,6 @@ def modificar_stand_artesano(request, artesano_id):
     })
 
 
-@login_required(login_url=reverse_lazy('usuario:login'))
-def solicitudes_rechazadas_admin(request):
-    if not request.user.is_staff:
-        raise PermissionDenied
-
-    # Filtramos por el estado propio del artesano o de su postulación
-    artesanos_rechazados = Artesano.objects.filter(
-        estado="RECHAZADO" 
-    ).select_related('emprendimiento').order_by('-id')
-
-
 @login_required(login_url='usuario:login')
 @permission_required('artesanos.view_stand', raise_exception=True)
 def gestion_stands(request):
@@ -242,6 +226,7 @@ def gestion_stands(request):
     dnis_aprobados = Usuario.objects.filter(is_active=True).values('documento_identidad')
     artesanos_sin_stand = Artesano.objects.filter(stand__isnull=True, dni__in=dnis_aprobados)
     ocupados = sum(1 for s in stands if s.artesano_id)
+
     contexto = {
         'stands': stands,
         'artesanos_sin_stand': artesanos_sin_stand,

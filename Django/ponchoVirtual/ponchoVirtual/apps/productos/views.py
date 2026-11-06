@@ -9,6 +9,7 @@ from ponchoVirtual.apps.productos.forms import Producto, ProductoModificarForm, 
 from ponchoVirtual.utils.pdf import generar_reporte_pdf
 
 
+# Lista todos los productos del catalogo general
 def listar_productos(request):
     productos = Producto.objects.all()
     categorias = Producto.objects.values_list('categoria', flat=True).distinct()
@@ -19,6 +20,7 @@ def listar_productos(request):
     return render(request, 'Catalogo_general.html', context)
 
 
+# Lista todos los productos de un artesano particular desde el lado del visitante
 def ver_productos_artesano(request, artesano_dni):
     productos_artesano = Producto.objects.filter(artesano__dni=artesano_dni)
     artesano = get_object_or_404(Artesano, dni=artesano_dni)
@@ -26,6 +28,7 @@ def ver_productos_artesano(request, artesano_dni):
     return render(request, 'Productos_artesano.html',{'productos_artesano': productos_artesano, 'artesano': artesano})
 
 
+# Lista todos los productos de un artesano particular desde el lado del artesano dueño
 @login_required(login_url='usuario:login')
 def ver_mis_productos(request, artesano_dni):
     productos_artesano = Producto.objects.filter(artesano__dni=artesano_dni)
@@ -77,7 +80,8 @@ def agregar_productos(request):
         if form.is_valid():
             producto = form.save(commit=False)
             nombre = producto.nombre
-            # completado datos producto con artesano
+
+            # completado datos del producto con artesano
             artesano_bd = get_object_or_404(Artesano, dni=request.user.documento_identidad)
             producto.artesano = artesano_bd
             producto.localidad = artesano_bd.localidad
@@ -158,13 +162,13 @@ def reporte_artesanos_rubro_pdf(request):
 
 # Vista empleada para el carrousel de portada y mapa
 def vista_portada(request):
-    # 1. Obtenemos los productos para alimentar el carrusel de la portada
+    # Obtenemos los productos para alimentar el carrusel de la portada
     try:
         productos_destacados = Producto.objects.all()[:6]
     except Exception:
         productos_destacados = []
 
-    # 2. Definimos los pabellones válidos con sus estructuras para el mapa
+    # Definimos los pabellones validos con sus estructuras para el mapa
     pabellones_validos = [
         "Pabellón A: Textiles",
         "Pabellón B: Cerámica",
@@ -174,13 +178,12 @@ def vista_portada(request):
 
     datos_mapa = {p: {"stands": []} for p in pabellones_validos}
 
-    # 3. Traemos todos los stands y aplicamos el mapeo blindado
+    # Traemos todos los stands y aplicamos el mapeo
     stands = Stand.objects.select_related('artesano', 'artesano__emprendimiento').order_by('numero')
 
     for s in stands:
         zona_texto = (s.zona or "").upper()
 
-        # Mapeo a prueba de tildes y errores de tipeo de tus compañeros
         if "B" in zona_texto or "CERAM" in zona_texto:
             pabellon_key = "Pabellón B: Cerámica"
         elif "C" in zona_texto or "GASTRONOM" in zona_texto:
@@ -208,8 +211,5 @@ def vista_portada(request):
             "rubro": rubro_info,
         })
 
-    # 4. Devolvemos AMBAS cosas al template: el carrusel y el mapa completo
-    return render(request, 'base/portada.html', {
-        'productos_destacados': productos_destacados,
-        'datos_mapa': datos_mapa
-    })
+    # Devolvemos AMBAS cosas al template, el carrusel y el mapa
+    return render(request, 'base/portada.html', {'productos_destacados': productos_destacados,'datos_mapa': datos_mapa})

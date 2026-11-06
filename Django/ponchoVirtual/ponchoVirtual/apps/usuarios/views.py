@@ -1,16 +1,4 @@
-
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from ponchoVirtual.apps.artesanos.models import Stand
 from django.db.models import Q
-from django.shortcuts import render
-from ponchoVirtual.apps.artesanos.models import Stand
-
-
-
-
-
-
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect, get_object_or_404
@@ -96,7 +84,6 @@ def portada(request):
             "rubro": emp_rubro
         })
 
-    # Pasamos el diccionario directo
     contexto = {
         "datos_mapa": pabellones_dict,
     }
@@ -123,15 +110,10 @@ def solicitudes_artesanos_admin(request):
     if not request.user.is_staff:
         raise PermissionDenied
 
-    # 1. Buscamos los DNI de usuarios inactivos
+    # buscamos los DNI de usuarios inactivos
     usuarios_inactivos = Usuario.objects.filter(is_active=False)
     dnis_usuarios_inactivos = usuarios_inactivos.values_list('documento_identidad', flat=True)
-
-    artesanos = Artesano.objects.filter(
-        dni__in=dnis_usuarios_inactivos
-    ).exclude(
-        motivo_rechazo__is_null=True
-    )
+    artesanos = Artesano.objects.filter(dni__in=dnis_usuarios_inactivos).exclude(motivo_rechazo__is_null=True)
 
     return render(request, 'solicitudes_artesanos.html', {'artesanos': artesanos})
 
@@ -148,6 +130,7 @@ def evaluar_solicitud_admin(request, dni):
     if request.method == "POST":
         accion = request.POST.get('accion')
 
+        # Aceptar solicitud por parte del admin
         if accion == 'aprobar':
             stand_id = request.POST.get('stand_id')
             if not stand_id:
@@ -172,6 +155,7 @@ def evaluar_solicitud_admin(request, dni):
             messages.success(request, f"Solicitud aprobada con éxito. Stand {stand_seleccionado.numero} asignado.")
             return redirect('usuario:solicitudes_artesanos_admin')
 
+        # Rechazar solicitud por parte del admin
         elif accion == 'rechazar':
             motivo = request.POST.get('motivo_rechazo', '').strip()
             if not motivo:
@@ -182,11 +166,11 @@ def evaluar_solicitud_admin(request, dni):
                     'stands_disponibles': stands_disponibles
                 })
 
-            # 1. Guardamos el motivo en su campo independiente
+            # Guardamos el motivo en su campo independiente
             artesano.motivo_rechazo = motivo
             artesano.save()
 
-            # 2. Desactivamos al usuario y liberamos stand
+            # Desactivamos al usuario y liberamos stand
             usuario.is_active = False
             usuario.save()
             Stand.objects.filter(artesano=artesano).update(artesano=None)
@@ -235,8 +219,7 @@ def reconsiderar_solicitud_admin(request, dni):
         artesano.motivo_rechazo = None
         artesano.save()
 
-    messages.info(request,
-                  f"La postulación de {artesano.nombre_artesano} {artesano.apellido} volvió a estado pendiente para su evaluación.")
+    messages.info(request,f"La postulación de {artesano.nombre_artesano} {artesano.apellido} volvió a estado pendiente para su evaluación.")
 
     # Redirige directamente a la pantalla de evaluar
     return redirect('usuario:evaluar_solicitud_admin', dni=artesano.dni)
@@ -250,10 +233,8 @@ def solicitudes_artesanos_admin(request):
     usuarios_inactivos = Usuario.objects.filter(is_active=False)
     dnis_usuarios_inactivos = usuarios_inactivos.values_list('documento_identidad', flat=True)
 
-    # Solo postulantes inactivos que NO tengan motivo de rechazo (o que sea vacío)
-    artesanos = Artesano.objects.filter(
-        dni__in=dnis_usuarios_inactivos
-    ).filter(
+    # Solo postulantes inactivos que NO tengan motivo de rechazo (que sea nulo)
+    artesanos = Artesano.objects.filter(dni__in=dnis_usuarios_inactivos).filter(
         Q(motivo_rechazo__isnull=True) | Q(motivo_rechazo="")
     ).select_related('emprendimiento').order_by('-id')
 
@@ -265,16 +246,11 @@ def solicitudes_rechazadas_admin(request):
     if not request.user.is_staff:
         raise PermissionDenied
 
-    # Trae a todos los artesanos que SÍ tienen un motivo de rechazo cargado
+    # Trae a todos los artesanos que SI tienen un motivo de rechazo cargado
     artesanos_rechazados = Artesano.objects.filter(
-        motivo_rechazo__isnull=False
-    ).exclude(
-        motivo_rechazo=""
-    ).select_related('emprendimiento').order_by('-id')
+        motivo_rechazo__isnull=False).exclude(motivo_rechazo="").select_related('emprendimiento').order_by('-id')
 
-    return render(request, 'solicitudes_rechazadas.html', {
-        'artesanos_rechazados': artesanos_rechazados
-    })
+    return render(request, 'solicitudes_rechazadas.html', {'artesanos_rechazados': artesanos_rechazados})
 
 
 def consultar_estado_solicitud(request):
@@ -307,14 +283,14 @@ def listar_artesanos_aceptados(request):
 
         # CASO A: Quitar rol / Dar de baja
         if accion == 'dar_de_baja':
-            # 1. Liberar el stand que ocupaba y eliminar todos sus datos y emprendimiento
+            # Liberar el stand que ocupaba y eliminar todos sus datos y emprendimiento
             Stand.objects.filter(artesano=artesano).update(artesano=None)
             artesano.emprendimiento.delete() # Eliminamos el emprendimiento y por cascada se elimina el artesano
 
-            # 2. Desactivar el usuario y quitarle permisos/grupos
+            # Desactivar el usuario y quitarle permisos/grupos
             usuario = Usuario.objects.filter(documento_identidad=artesano.dni).first()
             if usuario:
-                usuario.groups.clear()     # Se le quita el grupo 'Artesano'
+                usuario.groups.clear()     # Se le quita el grupo 'rol_artesano'
                 usuario.user_permissions.clear()  # Se le limpian permisos individuales
                 usuario.delete()
 
@@ -332,8 +308,5 @@ def listar_artesanos_aceptados(request):
 
         return redirect('usuario:listar_artesanos_aceptados')
 
-    return render(request, 'artesanos_aceptados.html', {
-        'artesanos': artesanos,
-        'stands_disponibles': stands_disponibles
-    })
+    return render(request, 'artesanos_aceptados.html', {'artesanos': artesanos,'stands_disponibles': stands_disponibles})
 
