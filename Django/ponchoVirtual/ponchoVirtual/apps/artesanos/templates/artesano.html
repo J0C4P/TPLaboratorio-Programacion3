@@ -38,7 +38,7 @@
     {% if messages %}
         {% for message in messages %}
             {% if message.tags == 'success' %}
-                <div class="mb-3 alert-success" role="alert">{{message}}</div>
+                <div class="mb-3 alert alert-success" role="alert">{{message}}</div>
             {% else %}
                 <div class="mb-3 alert alert-danger" role="alert">{{message}}</div>
             {% endif %}
