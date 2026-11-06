@@ -7,5 +7,5 @@ class Usuario(AbstractUser):
 
     REQUIRED_FIELDS = ['email', 'documento_identidad']
 
-    def str(self):
+    def __str__(self):
         return f"{self.username} dni: {self.documento_identidad}"
