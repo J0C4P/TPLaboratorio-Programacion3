@@ -211,14 +211,7 @@
         </div>
     </div>
 
-    <hr>
-
-    <!-- CARRUSEL DINÁMICO DE PRODUCTOS -->
     {% if productos_destacados %}
-
-<hr>
-{% if productos %}
-
     <div class="container my-5">
         <div class="text-center mb-4">
             <h3 class="fw-bold texto-marron-principal">PRODUCTOS DESTACADOS</h3>
@@ -227,16 +220,13 @@
 
         <div id="carruselProductos" class="carousel slide shadow rounded-4 p-5 bg-white border border-2 border-opacity-10" data-bs-ride="carousel">
             <div class="carousel-inner">
-                {% for producto in productos %}
+                {% for producto in productos_destacados %}
                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
                         <div class="row align-items-center justify-content-center text-center text-md-start g-4">
                             <div class="col-12 col-md-5 text-center">
-                                <img src="{{ producto.imagen.url }}" class="img-fluid rounded-4 shadow-sm" style="max-height: 280px; width: 100%;" alt="{{ producto.nombre }}">
-                            </div>
-
-
-                            <div class="col-12 col-md-5 text-center">
-                                <img src="{{ producto.imagen.url }}" class="img-fluid rounded-4 shadow-sm" style="max-height: 280px; width: 100%;" alt="{{ producto.nombre }}">
+                                {% if producto.imagen %}
+                                    <img src="{{ producto.imagen.url }}" class="img-fluid rounded-4 shadow-sm" style="max-height: 280px; width: 100%; object-fit: cover;" alt="{{ producto.nombre }}">
+                                {% endif %}
                             </div>
 
                             <div class="col-12 col-md-7 ps-md-4">
@@ -260,13 +250,7 @@
             </button>
         </div>
     </div>
-
     {% endif %}
-
-    <!-- CROQUIS DE REFERENCIA DE PABELLONES -->
-
-{% endif %}
-
 
     <div class="container my-5" id="mapa">
         <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
@@ -282,34 +266,20 @@
         </div>
     </div>
 
-
-    <!-- MAPA GEOGRÁFICO INTERACTIVO (PABELLONES Y STANDS EN VIVO) -->
-    <section class="container my-5 text-center">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="fw-bold mb-0" style="color: #c0392b;">
-            <i class="bi bi-geo-alt-fill"></i> UBICACIÓN Y PABELLONES INTERACTIVOS
-        </h3>
-        <div>
-            <span class="badge rounded-pill bg-success px-3 py-2 me-2">● Stand Libre</span>
-            <span class="badge rounded-pill bg-danger px-3 py-2">● Stand Ocupado</span>
+    <section id="UBICACION" class="container my-5 text-center">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="fw-bold mb-0" style="color: #c0392b;">
+                <i class="bi bi-geo-alt-fill"></i> UBICACIÓN Y PABELLONES INTERACTIVOS
+            </h3>
+            <div>
+                <span class="badge rounded-pill bg-success px-3 py-2 me-2">● Stand Libre</span>
+                <span class="badge rounded-pill bg-danger px-3 py-2">● Stand Ocupado</span>
+            </div>
         </div>
-    </div>
-    <p class="text-muted">Predio Ferial Catamarca. Los nombres y puestos se actualizan en vivo según las asignaciones del sistema.</p>
+        <p class="text-muted">Predio Ferial Catamarca. Los nombres y puestos se actualizan en vivo según las asignaciones del sistema.</p>
 
-    <!-- Contenedor único del mapa de Leaflet -->
-    <div id="map-pabellones" style="height: 520px; width: 100%; border-radius: 16px; box-shadow: 0 4px 14px rgba(0,0,0,0.15); border: 2px solid #e0e0e0;"></div>
-</section>
-
-<!-- Inyección limpia de los datos de los stands -->
-{{ datos_mapa|json_script:"datos-mapa-data" }}
-
-<!-- Script de Leaflet -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="{% static 'js/mapa_pabellones.js' %}?v=60"></script>
-
-         s
-
-    <!-- OPINIONES -->
+        <div id="map-pabellones" style="height: 520px; width: 100%; border-radius: 16px; box-shadow: 0 4px 14px rgba(0,0,0,0.15); border: 2px solid #e0e0e0;"></div>
+    </section>
 
     <div class="container my-5">
         <div class="col-12 col-md-9 mx-auto bg-white p-5 rounded-4 shadow-sm border" id="calificacion">
@@ -328,13 +298,8 @@
         </div>
     </div>
 
-    <!-- Inyección nativa limpia de Django -->
     {{ datos_mapa|json_script:"datos-mapa-data" }}
 
-    <!-- Leaflet JS y Archivo externo del Mapa -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-
-
-    <script src="{% static 'js/mapa_pabellones.js' %}?v=5"></script>
+    <script src="{% static 'js/mapa_pabellones.js' %}?v=70"></script>
 {% endblock %}

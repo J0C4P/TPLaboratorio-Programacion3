@@ -2,14 +2,13 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import PermissionDenied
 from django.db.models import Count
-from ponchoVirtual.apps.artesanos.forms import ArtesanoForm, EmprendimientoForm, Artesano, ArtesanoModificarForm, EmprendimientoModificarForm, StandForm
-from ponchoVirtual.apps.artesanos.models import Stand, Artesano
+from ponchoVirtual.apps.artesanos.forms import ArtesanoForm, EmprendimientoForm, ArtesanoModificarForm, EmprendimientoModificarForm, StandForm
+from ponchoVirtual.apps.artesanos.models import Stand
 from ponchoVirtual.utils.pdf import generar_reporte_pdf
 from ponchoVirtual.apps.usuarios.models import Usuario
 from django.views.decorators.http import require_POST
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, get_object_or_404
-
 from ponchoVirtual.apps.artesanos.models import Artesano
 
 
@@ -225,8 +224,6 @@ def modificar_stand_artesano(request, artesano_id):
     })
 
 
-
-
 @login_required(login_url=reverse_lazy('usuario:login'))
 def solicitudes_rechazadas_admin(request):
     if not request.user.is_staff:
@@ -236,6 +233,7 @@ def solicitudes_rechazadas_admin(request):
     artesanos_rechazados = Artesano.objects.filter(
         estado="RECHAZADO" 
     ).select_related('emprendimiento').order_by('-id')
+
 
 @login_required(login_url='usuario:login')
 @permission_required('artesanos.view_stand', raise_exception=True)
@@ -254,7 +252,6 @@ def gestion_stands(request):
     return render(request, 'gestion_stands.html', contexto)
 
 
-
 @login_required(login_url='usuario:login')
 @permission_required('artesanos.add_stand', raise_exception=True)
 def crear_stand(request):
@@ -268,20 +265,6 @@ def crear_stand(request):
         form = StandForm()
     return render(request, 'crear_stand.html', {'form': form})
 
-
-
-    artesano = get_object_or_404(Artesano, dni=dni)
-    
-    # Actualizamos el estado del artesano a PENDIENTE
-    artesano.estado = "PENDIENTE"
-    artesano.save()
-
-    # NOTA: Ya no tocamos artesano.emprendimiento.observaciones
-    # para no borrar los datos reales del taller.
-
-    messages.info(request, f"La postulación de {artesano.nombre_artesano} {artesano.apellido} volvió a estado pendiente para su evaluación.")
-    
-    return redirect('artesano:evaluar_solicitud_admin', dni=artesano.dni)
 
 @login_required(login_url='usuario:login')
 @permission_required('artesanos.change_stand', raise_exception=True)

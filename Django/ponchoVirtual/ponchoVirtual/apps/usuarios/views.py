@@ -50,17 +50,13 @@ def logout_vista(request):
     return redirect('principal')
 
 
-
-
-
-
 def portada(request):
     # Coordenadas exactas centradas en los galpones del Predio Ferial
     pabellones_dict = {
-        "Pabellón A: Textiles y Telar": {"lat": -28.4480, "lng": -65.7583, "stands": []},
-        "Pabellón B: Cerámica, Madera y Metal": {"lat": -28.4482, "lng": -65.7570, "stands": []},
-        "Pabellón C: Gastronomía y Sabores": {"lat": -28.4495, "lng": -65.7573, "stands": []},
-        "Pabellón D: Artesanías en Cuero": {"lat": -28.4475, "lng": -65.7576, "stands": []},
+        "Pabellón A: Textiles": {"lat": -28.4480, "lng": -65.7583, "stands": []},
+        "Pabellón B: Cerámica": {"lat": -28.4482, "lng": -65.7570, "stands": []},
+        "Pabellón C: Gastronomía regional": {"lat": -28.4495, "lng": -65.7573, "stands": []},
+        "Pabellón D: Orfebreria y Joyeria": {"lat": -28.4475, "lng": -65.7576, "stands": []},
     }
 
     # Traemos todos los stands con su artesano y emprendimiento en vivo
@@ -71,13 +67,13 @@ def portada(request):
         
         # Mapeamos según la letra del pabellón
         if "B" in zona_texto:
-            destino = "Pabellón B: Cerámica, Madera y Metal"
+            destino = "Pabellón B: Cerámica"
         elif "C" in zona_texto:
-            destino = "Pabellón C: Gastronomía y Sabores"
+            destino = "Pabellón C: Gastronomía regional"
         elif "D" in zona_texto:
-            destino = "Pabellón D: Artesanías en Cuero"
+            destino = "Pabellón D: Orfebreria y Joyeria"
         else:
-            destino = "Pabellón A: Textiles y Telar"
+            destino = "Pabellón A: Textiles"
 
         tiene_artesano = st.artesano is not None
         artesano_nom = f"{st.artesano.nombre_artesano} {st.artesano.apellido}" if tiene_artesano else None
@@ -106,9 +102,6 @@ def portada(request):
         "datos_mapa": pabellones_dict,
     }
     return render(request, "base/portada.html", contexto)
-
-
-
 
 
 @login_required(login_url=reverse_lazy('usuario:login'))
@@ -203,7 +196,6 @@ def evaluar_solicitud_admin(request, dni):
             messages.warning(request, f"La solicitud con DNI {dni} ha sido rechazada.")
             return redirect('usuario:solicitudes_rechazadas_admin')
 
-            
     return render(request, 'mas_detalles_solicitud.html', {
         'usuario': usuario,
         'artesano': artesano,
