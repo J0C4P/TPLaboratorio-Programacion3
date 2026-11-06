@@ -127,11 +127,10 @@ def solicitudes_artesanos_admin(request):
     usuarios_inactivos = Usuario.objects.filter(is_active=False)
     dnis_usuarios_inactivos = usuarios_inactivos.values_list('documento_identidad', flat=True)
 
-    # 2. Excluimos los que contengan la marca "RECHAZADO:" en sus observaciones
     artesanos = Artesano.objects.filter(
         dni__in=dnis_usuarios_inactivos
     ).exclude(
-        emprendimiento__observaciones__icontains="RECHAZADO:"
+        motivo_rechazo__is_null=True
     )
 
     return render(request, 'solicitudes_artesanos.html', {'artesanos': artesanos})
@@ -187,7 +186,7 @@ def evaluar_solicitud_admin(request, dni):
             artesano.motivo_rechazo = motivo
             artesano.save()
 
-            # 2. Desactivamos al usuario y liberamos stand (sin tocar observaciones)
+            # 2. Desactivamos al usuario y liberamos stand
             usuario.is_active = False
             usuario.save()
             Stand.objects.filter(artesano=artesano).update(artesano=None)
@@ -232,9 +231,9 @@ def reconsiderar_solicitud_admin(request, dni):
     artesano = get_object_or_404(Artesano, dni=dni)
 
     # Limpiamos el motivo de rechazo del emprendimiento
-    if artesano.emprendimiento:
-        artesano.emprendimiento.observaciones = ""
-        artesano.emprendimiento.save()
+    if artesano:
+        artesano.motivo_rechazo = None
+        artesano.save()
 
     messages.info(request,
                   f"La postulación de {artesano.nombre_artesano} {artesano.apellido} volvió a estado pendiente para su evaluación.")
