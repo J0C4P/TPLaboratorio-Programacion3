@@ -175,68 +175,6 @@ def reporte_stands_pdf(request):
     )
 
 
-@login_required(login_url=reverse_lazy('usuario:login'))
-def modificar_stand_artesano(request, artesano_id):
-    if not request.user.is_staff:
-        raise PermissionDenied
-
-    artesano = get_object_or_404(Artesano, id=artesano_id)
-    # Stand actual del artesano (si tiene uno asignado)
-    stand_actual = getattr(artesano, 'stand', None)
-
-    # Stands disponibles + el stand que actualmente ya posee
-    stands_opciones = Stand.objects.filter(artesano__isnull=True)
-    if stand_actual:
-        stands_opciones = (stands_opciones | Stand.objects.filter(id=stand_actual.id)).distinct()
-
-    if request.method == "POST":
-        nuevo_stand_id = request.POST.get('stand_id')
-
-        # Si el usuario selecciono un stand
-        if nuevo_stand_id:
-            nuevo_stand = get_object_or_404(Stand, id=nuevo_stand_id)
-
-            # Si ya tenia un stand distinto asignado, lo liberamos
-            if stand_actual and stand_actual.id != nuevo_stand.id:
-                stand_actual.artesano = None
-                stand_actual.save()
-
-            # Asignamos el nuevo stand
-            nuevo_stand.artesano = artesano
-            nuevo_stand.save()
-
-            messages.success(
-                request,
-                f"Ubicación actualizada: {artesano.nombre_artesano} ahora está en el Stand N° {nuevo_stand.numero} ({nuevo_stand.zona})."
-            )
-        else:
-            # Opcion dejarlo sin stand
-            if stand_actual:
-                stand_actual.artesano = None
-                stand_actual.save()
-                messages.warning(request, f"Se ha retirado la asignación de stand a {artesano.nombre_artesano}.")
-
-        return redirect('artesano:listar_artesanos_aceptados')
-
-    return render(request, 'modificar_stand_artesano.html', {
-        'artesano': artesano,
-        'stand_actual': stand_actual,
-        'stands_opciones': stands_opciones
-    })
-
-
-
-
-@login_required(login_url=reverse_lazy('usuario:login'))
-def solicitudes_rechazadas_admin(request):
-    if not request.user.is_staff:
-        raise PermissionDenied
-
-    # Filtramos por el estado propio del artesano o de su postulación
-    artesanos_rechazados = Artesano.objects.filter(
-        estado="RECHAZADO" 
-    ).select_related('emprendimiento').order_by('-id')
-
 @login_required(login_url='usuario:login')
 @permission_required('artesanos.view_stand', raise_exception=True)
 def gestion_stands(request):
@@ -268,20 +206,6 @@ def crear_stand(request):
         form = StandForm()
     return render(request, 'crear_stand.html', {'form': form})
 
-
-
-    artesano = get_object_or_404(Artesano, dni=dni)
-    
-    # Actualizamos el estado del artesano a PENDIENTE
-    artesano.estado = "PENDIENTE"
-    artesano.save()
-
-    # NOTA: Ya no tocamos artesano.emprendimiento.observaciones
-    # para no borrar los datos reales del taller.
-
-    messages.info(request, f"La postulación de {artesano.nombre_artesano} {artesano.apellido} volvió a estado pendiente para su evaluación.")
-    
-    return redirect('artesano:evaluar_solicitud_admin', dni=artesano.dni)
 
 @login_required(login_url='usuario:login')
 @permission_required('artesanos.change_stand', raise_exception=True)
