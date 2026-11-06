@@ -157,7 +157,6 @@ def reporte_artesanos_rubro_pdf(request):
 
 
 # Vista empleada para el carrousel de portada y mapa
-
 def vista_portada(request):
     # 1. Obtenemos los productos para alimentar el carrusel de la portada
     try:
@@ -175,7 +174,7 @@ def vista_portada(request):
 
     datos_mapa = {p: {"stands": []} for p in pabellones_validos}
 
-    # 3. Traemos todos los stands y aplicamos el mapeo blindado (incluyendo la C)
+    # 3. Traemos todos los stands y aplicamos el mapeo blindado
     stands = Stand.objects.select_related('artesano', 'artesano__emprendimiento').order_by('numero')
 
     for s in stands:

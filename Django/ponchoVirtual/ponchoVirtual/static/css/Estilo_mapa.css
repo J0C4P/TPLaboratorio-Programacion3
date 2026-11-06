@@ -1,6 +1,10 @@
-.leaflet-popup-content-wrapper { border-radius: 12px; padding: 4px; }
-.leaflet-popup-content { margin: 10px 14px; line-height: 1.4; }
-        /* Contenedor del edificio / pabellón */
+.leaflet-popup-content-wrapper {
+    border-radius: 12px; padding: 4px;
+}
+.leaflet-popup-content {
+    margin: 10px 14px; line-height: 1.4;
+}
+
 .custom-pabellon-marker {
     background: transparent;
     border: none;

@@ -59,13 +59,12 @@ def portada(request):
         "Pabellón D: Orfebreria y Joyeria": {"lat": -28.4475, "lng": -65.7576, "stands": []},
     }
 
-    # Traemos todos los stands con su artesano y emprendimiento en vivo
+    # Traemos todos los stands con su artesano y emprendimiento
     stands_db = Stand.objects.select_related('artesano__emprendimiento').order_by('numero')
 
     for st in stands_db:
         zona_texto = (st.zona or "").upper()
-        
-        # Mapeamos según la letra del pabellón
+
         if "B" in zona_texto:
             destino = "Pabellón B: Cerámica"
         elif "C" in zona_texto:
@@ -97,7 +96,7 @@ def portada(request):
             "rubro": emp_rubro
         })
 
-    # Pasamos el diccionario directo (Django se encarga de serializarlo en el template)
+    # Pasamos el diccionario directo
     contexto = {
         "datos_mapa": pabellones_dict,
     }
