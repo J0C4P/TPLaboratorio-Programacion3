@@ -67,11 +67,8 @@
                             </div>
                         </td>
                         <td>
-                            <a href="{% url 'usuario:reconsiderar_solicitud_admin' art.dni %}"
-                               class="btn btn-sm btn-outline-primary text-nowrap"
-                               onclick="return confirm('¿Deseas volver a evaluar la solicitud de este artesano?');">
-                                Volver a evaluar
-                            </a>
+                            <a href="{% url 'usuario:reconsiderar_solicitud_admin' art.dni %}" class="btn btn-sm btn-outline-primary text-nowrap"
+                               onclick="return confirm('¿Deseas volver a evaluar la solicitud de este artesano?');">Volver a evaluar</a>
                         </td>
                     </tr>
                     {% empty %}

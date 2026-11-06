@@ -15,22 +15,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const datosMapa = JSON.parse(scriptDatos.textContent || "{}");
 
     const configuracionPabellones = {
-        "Pabellón A: Textiles y Telar": {
+        "Pabellón A: Textiles": {
             bounds: [[-28.44835, -65.75860], [-28.44775, -65.75800]],
             borde: "#1a5276",
             fondo: "#ebf5fb"
         },
-        "Pabellón B: Cerámica, Madera y Metal": {
+        "Pabellón B: Cerámica": {
             bounds: [[-28.44745, -65.75780], [-28.44685, -65.75720]],
             borde: "#784212",
             fondo: "#fef5e7"
         },
-        "Pabellón C: Gastronomía y Sabores": {
+        "Pabellón C: Gastronomía regional": {
             bounds: [[-28.44970, -65.75760], [-28.44910, -65.75700]],
             borde: "#7d6608",
             fondo: "#fef9e7"
         },
-        "Pabellón D: Artesanías en Cuero": {
+        "Pabellón D: Orfebreria y Joyeria": {
             bounds: [[-28.44830, -65.75720], [-28.44770, -65.75660]],
             borde: "#4a235a",
             fondo: "#f4ecf7"

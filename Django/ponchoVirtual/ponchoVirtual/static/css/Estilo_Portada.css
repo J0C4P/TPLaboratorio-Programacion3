@@ -76,3 +76,11 @@ h1{
     line-height: 1.6;
     color: #555555;
 }
+
+.separador-poncho {
+    border: 0;
+    height: 2px;
+    background: linear-gradient(to right, rgba(139, 69, 19, 0), rgba(139, 69, 19, 0.4), rgba(139, 69, 19, 0));
+    margin: 60px auto;
+    width: 80%;
+}

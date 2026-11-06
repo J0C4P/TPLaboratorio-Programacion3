@@ -1,0 +1,91 @@
+.leaflet-popup-content-wrapper {
+    border-radius: 12px; padding: 4px;
+}
+.leaflet-popup-content {
+    margin: 10px 14px; line-height: 1.4;
+}
+
+.custom-pabellon-marker {
+    background: transparent;
+    border: none;
+}
+
+.pabellon-edificio {
+    background: #ffffff;
+    border: 2px solid #8B4513;
+    border-radius: 8px;
+    width: 170px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.pabellon-edificio:hover {
+    transform: scale(1.04);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+/* Cabecera del pabellón */
+.pabellon-techo {
+    background: #8B4513;
+    color: #ffffff;
+    padding: 3px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.pabellon-resumen {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    padding: 1px 4px;
+    font-size: 9px;
+}
+
+/* Grilla interior con los cuadritos de los stands */
+.pabellon-planta {
+    padding: 6px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    background: #faf6f0;
+}
+
+/* Cuadrito chico de stand individual */
+.stand-cuadro {
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-size: 9px;
+    font-weight: bold;
+    border-width: 1.5px;
+    border-style: solid;
+    transition: filter 0.15s ease;
+}
+
+.stand-cuadro:hover {
+    filter: brightness(0.9);
+}
+
+/* Stand disponible (verde) */
+.stand-cuadro-libre {
+    background-color: #d1fae5;
+    border-color: #10b981;
+    color: #065f46;
+}
+
+/* Stand ocupado (rojo) */
+.stand-cuadro-ocupado {
+    background-color: #fee2e2;
+    border-color: #ef4444;
+    color: #991b1b;
+}
+
+.stand-num {
+    pointer-events: none;
+}

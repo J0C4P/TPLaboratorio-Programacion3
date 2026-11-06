@@ -41,7 +41,7 @@
                 <h5 class="fw-bold mb-3">Estado actual</h5>
 
                 {% if usuario.is_active %}
-                    <!-- CASO APROBADA -->
+                    <!-- caso aprobada -->
                     <div class="alert alert-success mb-3" role="alert">
                         <strong>Solicitud aprobada!!.</strong> Tu postulación fue <strong>ACEPTADA</strong>.
                         {% if artesano.stand %}
@@ -59,7 +59,7 @@
                     </div>
 
                 {% elif artesano.motivo_rechazo %}
-                    <!-- CASO RECHAZADA CON MOTIVO Y BOTÓN DE MODIFICAR -->
+                    <!-- caso rechazado y con motivo -->
                     <div class="alert alert-danger mb-0" role="alert">
                         <h6 class="fw-bold mb-2">Solicitud no admitida</h6>
                         <p class="mb-2">Tu postulación fue evaluada y ha sido <strong>RECHAZADA</strong>.</p>
@@ -71,14 +71,14 @@
                     </div>
 
                     <div class="text-center mt-4">
-                        <p class="text-muted">Modificá los datos necesarios para completar correctamente tu solicitud.</p>
+                        <p class="text-muted">Modifica los datos necesarios para completar correctamente tu solicitud.</p>
                         <a href="{% url 'usuario:modificar_solicitud' artesano.dni %}" class="btn btn-danger px-4 rounded-pill fw-semibold">
                             Modificar solicitud
                         </a>
                     </div>
 
                 {% else %}
-                    <!-- CASO PENDIENTE -->
+                    <!-- caso pendiente -->
                     <div class="alert alert-warning mb-0" role="alert">
                         <strong>Pendiente de revisión.</strong> Tu solicitud todavía sigue <strong>PENDIENTE</strong> de evaluación.
                     </div>

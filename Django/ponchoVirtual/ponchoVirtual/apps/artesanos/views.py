@@ -2,14 +2,13 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import PermissionDenied
 from django.db.models import Count
-from ponchoVirtual.apps.artesanos.forms import ArtesanoForm, EmprendimientoForm, Artesano, ArtesanoModificarForm, EmprendimientoModificarForm, StandForm
-from ponchoVirtual.apps.artesanos.models import Stand, Artesano
+from ponchoVirtual.apps.artesanos.forms import ArtesanoForm, EmprendimientoForm, ArtesanoModificarForm, EmprendimientoModificarForm, StandForm
+from ponchoVirtual.apps.artesanos.models import Stand
 from ponchoVirtual.utils.pdf import generar_reporte_pdf
 from ponchoVirtual.apps.usuarios.models import Usuario
 from django.views.decorators.http import require_POST
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, get_object_or_404
-
 from ponchoVirtual.apps.artesanos.models import Artesano
 
 
@@ -38,7 +37,7 @@ def solicitud_artesano(request):
             artesano.emprendimiento = emprendimiento
             artesano.save()
 
-            # Crear el usuario pendiente
+            # Crea el usuario pendiente
             Usuario.objects.create_user(
                 username=dni,
                 email=email,
@@ -49,15 +48,9 @@ def solicitud_artesano(request):
                 is_active=False  # Inactivo hasta que el administrador lo apruebe en el Admin
             )
 
-            # Renderizar pantalla  con boton de volver al inicio
-            #  Mostrar la pantalla   estado pendiente
-            contexto = {
-                'nombre': nombre,
-                'apellido': apellido,
-                'dni': dni
-            }
-            return render(request, 'solicitud_pendiente.html', contexto)
+            contexto = {'nombre': nombre,'apellido': apellido,'dni': dni}
 
+            return render(request, 'solicitud_pendiente.html', contexto)
 
     else:
         form_artesano = ArtesanoForm()
@@ -66,6 +59,7 @@ def solicitud_artesano(request):
     return render(request, 'Crear_art_emp.html', {'form_art': form_artesano, 'form_emp': form_emprendimiento})
 
 
+# Para visualizar los datos del artesano respectivo a un producto
 def datos_artesano(request, dni_artesano):
     artesano = get_object_or_404(Artesano, dni=dni_artesano)
     emprendimiento = artesano.emprendimiento
@@ -182,6 +176,7 @@ def gestion_stands(request):
     dnis_aprobados = Usuario.objects.filter(is_active=True).values('documento_identidad')
     artesanos_sin_stand = Artesano.objects.filter(stand__isnull=True, dni__in=dnis_aprobados)
     ocupados = sum(1 for s in stands if s.artesano_id)
+
     contexto = {
         'stands': stands,
         'artesanos_sin_stand': artesanos_sin_stand,
@@ -190,7 +185,6 @@ def gestion_stands(request):
         'disponibles': len(stands) - ocupados,
     }
     return render(request, 'gestion_stands.html', contexto)
-
 
 
 @login_required(login_url='usuario:login')

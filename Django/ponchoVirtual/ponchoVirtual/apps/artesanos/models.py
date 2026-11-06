@@ -11,14 +11,14 @@ class Artesano(models.Model):
     localidad = models.CharField(max_length=50)
     provincia = models.CharField(max_length=80)
     emprendimiento = models.OneToOneField('Emprendimiento', on_delete=CASCADE, related_name="artesano")
+    # Campo independiente para evaluar la solicitud
+    motivo_rechazo = models.TextField(blank=True, null=True)
 
     class Meta:
         ordering = ('nombre_artesano', )
 
     def __str__(self):
         return f"{self.nombre_artesano} {self.apellido}"
-    # Campo independiente para el motivo
-    motivo_rechazo = models.TextField(blank=True, null=True)
 
 
 class Stand(models.Model):
