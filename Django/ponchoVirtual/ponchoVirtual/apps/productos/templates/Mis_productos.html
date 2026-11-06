@@ -88,6 +88,8 @@
 
         <script src="{% static 'js/buscador.js' %}"></script>
     {% else %}
-        <h1 style="color: red">No coincide el DNI del artesano con los productos solicitados</h1>
+        <div class="alert alert-danger" role="alert">
+            <h2>No coincide el DNI del artesano con los productos solicitados</h2>
+        </div>
     {% endif %}
 {% endblock %}
