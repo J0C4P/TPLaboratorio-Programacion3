@@ -73,7 +73,7 @@
 
                         <div class="card-body">
                             <h3 class="card-title h5 mb-3">{{producto.nombre}}</h3>
-                            <p class="card-text mb-3"><strong>Categoría:</strong> {{producto.categoria}}</p>
+                            <p class="card-text mb-3 categoria-art"><strong>Categoría:</strong> {{producto.categoria}}</p>
                             <p class="card-text mb-3"><strong>Precio:</strong> ${{producto.precio}} $</p>
                             <p class="card-text mb-3"><strong>Descripción:</strong> {{producto.descripcion}} </p>
                             <p class="card-text mb-3"><strong>Stock disponible:</strong> {{producto.stock}} Unidades</p>
@@ -85,4 +85,5 @@
     </section>
 
     <script src="{% static 'js/buscador.js' %}"></script>
+    <script src="{% static 'js/filtro_productos_art.js' %}"></script>
 {% endblock %}

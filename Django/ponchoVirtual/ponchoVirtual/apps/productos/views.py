@@ -13,7 +13,7 @@ from ponchoVirtual.utils.pdf import generar_reporte_pdf
 def listar_productos(request):
     productos = Producto.objects.all()
     categorias = Producto.objects.values_list('categoria', flat=True).distinct()
-    localidades = Producto.objects.values_list('localidad', flat=True).distinct()
+    localidades = Producto.objects.values_list('localidad', flat=True).order_by('localidad').distinct()
 
     context = {'productos': productos, 'categorias': categorias, 'localidades': localidades}
 
@@ -23,9 +23,10 @@ def listar_productos(request):
 # Lista todos los productos de un artesano particular desde el lado del visitante
 def ver_productos_artesano(request, artesano_dni):
     productos_artesano = Producto.objects.filter(artesano__dni=artesano_dni)
+    categorias = productos_artesano.values_list('categoria', flat=True).distinct()
     artesano = get_object_or_404(Artesano, dni=artesano_dni)
 
-    return render(request, 'Productos_artesano.html',{'productos_artesano': productos_artesano, 'artesano': artesano})
+    return render(request, 'Productos_artesano.html',{'productos_artesano': productos_artesano, 'artesano': artesano, 'categorias': categorias})
 
 
 # Lista todos los productos de un artesano particular desde el lado del artesano dueño
