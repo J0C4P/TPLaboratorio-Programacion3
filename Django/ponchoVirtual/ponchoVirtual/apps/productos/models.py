@@ -19,4 +19,4 @@ class Producto(models.Model):
         ordering = ('categoria', )
 
     def __str__(self):
-        return f"Producto: '{self.nombre}' perteneciente a '{self.artesano.nombre} {self.artesano.apellido}'"
+        return f"Producto: '{self.nombre}' perteneciente a '{self.artesano}'"

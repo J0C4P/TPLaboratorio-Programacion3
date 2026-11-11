@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.models import Group
@@ -188,9 +189,17 @@ def evaluar_solicitud_admin(request, dni):
 def modificar_solicitud(request, dni):
     artesano = get_object_or_404(Artesano, dni=dni)
     emprendimiento = artesano.emprendimiento
+
+    # Sólo se puede corregir una solicitud RECHAZADA y que siga inactiva
+    usuario = Usuario.objects.filter(documento_identidad=dni).first()
+    if not artesano.motivo_rechazo or (usuario and usuario.is_active):
+        raise PermissionDenied
+
     if request.method == "POST":
         form_artesano = ArtesanoForm(request.POST, instance=artesano)
         form_emprendimiento = EmprendimientoForm(request.POST, instance=emprendimiento)
+        # El DNI no se puede cambiar: es el vínculo con el Usuario
+        form_artesano.fields['dni'].disabled = True
 
         if form_artesano.is_valid() and form_emprendimiento.is_valid():
 
@@ -203,6 +212,7 @@ def modificar_solicitud(request, dni):
     else:
         form_artesano = ArtesanoForm(instance=artesano)
         form_emprendimiento = EmprendimientoForm(instance=emprendimiento)
+        form_artesano.fields['dni'].disabled = True
 
     return render(request, 'modificar_solicitud.html', {'form_artesano': form_artesano, 'form_emprendimiento': form_emprendimiento})
 
@@ -300,10 +310,20 @@ def listar_artesanos_aceptados(request):
         # CASO B: Reasignar stand
         nuevo_stand_id = request.POST.get('nuevo_stand_id')
         if nuevo_stand_id:
-            Stand.objects.filter(artesano=artesano).update(artesano=None)
+            # Validar PRIMERO que el stand destino exista (si no, 404 sin tocar nada)
             nuevo_stand = get_object_or_404(Stand, id=nuevo_stand_id)
-            nuevo_stand.artesano = artesano
-            nuevo_stand.save()
+
+            # El stand destino debe estar libre (o ser ya el del propio artesano)
+            if nuevo_stand.artesano_id and nuevo_stand.artesano_id != artesano.id:
+                messages.error(request, f"El {nuevo_stand} ya está ocupado. Libéralo antes de asignarlo.")
+                return redirect('usuario:listar_artesanos_aceptados')
+
+            # Liberar el stand viejo y asignar el nuevo, todo o nada
+            with transaction.atomic():
+                Stand.objects.filter(artesano=artesano).update(artesano=None)
+                nuevo_stand.artesano = artesano
+                nuevo_stand.save()
+
             messages.success(request, f"Se actualizó la ubicación de {artesano.nombre_artesano}.")
 
         return redirect('usuario:listar_artesanos_aceptados')
